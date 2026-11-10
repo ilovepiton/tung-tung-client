@@ -19,8 +19,9 @@
     },
     {
       "module": "invis_mode",
-      "texture": "assets/minecraft/textures/item/potion.png",
-      "sha256": "6a09a39bb6c41bc92bd5eca1f51caf5b582a85f68206b164476c8e14a4669416"
+      "texture": "assets/minecraft/textures/entity/ghast/ghast.png",
+      "sha256": "1827d7f083780363ba4bb221f77058a261673389757b256921e08f010b55285d",
+      "extraction": "Vanilla ghast front-face UV [16,16,32,32], no recoloring"
     },
     {
       "module": "item_finder",
@@ -29,8 +30,8 @@
     },
     {
       "module": "night_vision",
-      "texture": "assets/minecraft/textures/item/golden_carrot.png",
-      "sha256": "8f96f1f3eda35e077b0077b58a0f3b1dea5757cf2404faa37a9a4314a5728246"
+      "texture": "assets/minecraft/textures/mob_effect/night_vision.png",
+      "sha256": "b040a6aa0f74ab87714a14ce37bc22e890d228d6e3e662538717d4979dc566b1"
     },
     {
       "module": "combat_bot",

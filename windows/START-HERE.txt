@@ -1,4 +1,4 @@
-TUNG TUNG CLIENT 1.30.4 — WINDOWS QUICK START
+TUNG TUNG CLIENT 1.30.5 — WINDOWS QUICK START
 Minecraft Java 26.3 / Fabric Loader 0.19.5 / Java 25
 
 1. Extract the ENTIRE archive to a normal folder.
