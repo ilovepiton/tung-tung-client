@@ -32,7 +32,7 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
     private var ready = false
     private var installing = false
     private var installProgress = 0
-    private var installStatus = "Close Minecraft and its Launcher, then install Fabric Core 1.30.1."
+    private var installStatus = "Close Minecraft and its Launcher, then install Fabric Core 1.30.3."
     private var lastError = ""
     private var bridgeError = ""
     private var pendingReplies: [(String, Any)] = []
@@ -195,7 +195,7 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
     @objc func quit() { NSApp.terminate(nil) }
     @objc func about() {
         NSApp.orderFrontStandardAboutPanel(options: [.applicationName: "Tung Tung Client",
-            .applicationVersion: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.30.1",
+            .applicationVersion: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.30.3",
             .credits: NSAttributedString(string: "Native macOS client · Minecraft Java 26.3 / Fabric\nGame functions use the authenticated localhost bridge.")])
     }
     private func launcherURL() -> URL? {
@@ -299,13 +299,13 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
          "installProgress": installProgress, "installStatus": currentCoreStatus(), "launcherAvailable": launcherURL() != nil, "voiceRuntime": VoiceRuntime.status(),
          "simpleVoiceChat": simpleVoiceChat,
          "lastError": lastError.isEmpty ? bridgeError : lastError,
-         "version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.30.1"]
+         "version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.30.3"]
     }
     private func currentCoreStatus() -> String {
         guard !installing, bridge.latestState["transportConnected"] as? Bool == true else { return installStatus }
         guard let version = bridge.latestState["gameVersion"] as? String,
-              version.compare("1.30.1", options: .numeric) != .orderedAscending else {
-            return "Core update required. Close Minecraft and its Launcher, install Fabric Core 1.30.1, then restart Tung Tung Client 26.3."
+              version.compare("1.30.3", options: .numeric) != .orderedAscending else {
+            return "Core update required. Close Minecraft and its Launcher, install Fabric Core 1.30.3, then restart Tung Tung Client 26.3."
         }
         return "Game core \(version) is connected. Enable a module, then click Return to Minecraft."
     }
@@ -722,7 +722,7 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
         }
     }
     private func capturePages(index: Int, result: [String: Any], completion: @escaping ([String: Any]) -> Void) {
-        let pages = ["home", "world-tools", "findings", "finder-settings", "pvp", "pvp-settings", "player-settings", "tutorials", "settings", "camera-settings", "assist-settings", "find-player", "resource-highlights", "microphone", "texture-packs", "media-settings", "module-settings", "stream", "keyboard-customize", "chess", "roblox-home", "roblox-modules", "roblox-visuals", "roblox-players", "roblox-setup"]
+        let pages = ["home", "world-tools", "findings", "finder-settings", "pvp", "pvp-settings", "player-settings", "tutorials", "settings", "camera-settings", "assist-settings", "find-player", "resource-highlights", "microphone", "texture-packs", "media-settings", "module-settings", "keyboard-customize"]
         guard index < pages.count, let qaOutput else { completion(result); return }
         let page = pages[index]
         web.evaluateJavaScript("window.TungNative.navigate('\(page)');document.querySelector('#continue-intro')?.click()") { [weak self] _, navigationError in

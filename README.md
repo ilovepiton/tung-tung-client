@@ -2,22 +2,22 @@
 
 Desktop companion for Minecraft Java, with separate Mac and Windows packages.
 
-**Current desktop: 1.30.2 · Game core: 1.30.1 · Minecraft 26.3 · Fabric Loader 0.19.5 · Java 25**
+**Current desktop: 1.30.3 · Game core: 1.30.3 · Minecraft 26.3 · Fabric Loader 0.19.5 · Java 25**
 
 ## Download
 
 [Download the latest release](https://github.com/ilovepiton/tung-tung-client/releases/latest)
 
-[Mac download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.2/Tung-Tung-Client-Mac-1.30.2-Voice-Chat.zip) · [Windows download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.2/Tung-Tung-Client-Windows-1.30.2-Voice-Chat.zip) · [All files](https://github.com/ilovepiton/tung-tung-client/releases/tag/v1.30.2)
+[Mac download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.3/Tung-Tung-Client-Mac-1.30.3-Voice-Chat.zip) · [Windows download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.3/Tung-Tung-Client-Windows-1.30.3-Voice-Chat.zip) · [All files](https://github.com/ilovepiton/tung-tung-client/releases/tag/v1.30.3)
 
 Choose your package:
 
 | File | Use |
 | --- | --- |
-| `Tung-Tung-Client-Mac-1.30.2-Voice-Chat.zip` | macOS 13+, Apple Silicon and Intel, Simple Voice Chat |
-| `Tung-Tung-Client-Windows-1.30.2-Voice-Chat.zip` | Windows 10/11 x64, Simple Voice Chat |
-| `Tung-Tung-Client-1.30.1-Voice-Chat-Prism.zip` | Importable Prism Launcher instance |
-| `Tung-Tung-Client-1.30.2-Share.zip` | All platforms, instructions and source snapshot |
+| `Tung-Tung-Client-Mac-1.30.3-Voice-Chat.zip` | macOS 13+, Apple Silicon and Intel, Simple Voice Chat |
+| `Tung-Tung-Client-Windows-1.30.3-Voice-Chat.zip` | Windows 10/11 x64, Simple Voice Chat |
+| `Tung-Tung-Client-1.30.3-Voice-Chat-Prism.zip` | Importable Prism Launcher instance |
+| `Tung-Tung-Client-1.30.3-Share.zip` | All platforms, instructions and source snapshot |
 
 Extract the whole archive. Close Minecraft and Launcher, install the Fabric core
 from **Control center**, then launch **Tung Tung Client 26.3** and join a world.
@@ -38,17 +38,21 @@ Updating the desktop app alone does not replace the loaded game core.
 - **Arsenal** — combat and inventory modules, with separate switches and keybind settings.
 - **Texture Packs** — resource packs and visual customization.
 - **Microphone** — Simple Voice Chat setup.
-- **Stream** — streaming controls.
-- **Roblox / Chess** — separate workspaces; availability depends on their documented integrations.
+- **Stream** — visible but locked in this release.
+- **Chess.com / Roblox / Stream** — locked in this release.
 
 Server permissions, protocol compatibility and the data received by the game
 determine which modules can work. A private server alone does not add a Roblox
 runtime; this package does not include an executor or injector.
 
-## Desktop 1.30.2
+## New in 1.30.3
 
-Map controls moved into Texture Packs → Map Art. Roblox uses its official
-white Tilt logo; Stream shows only Twitch. Game core remains 1.30.1.
+- Original icons for 43 Minecraft modules, including different Freecam and Elytra Finder symbols.
+- Twenty miniature keyboard designs in Texture Packs and per-key customization.
+- Readable description dialogs with usage instructions and settings links.
+- Find Player shows actual skin faces beside online players, with loading placeholders.
+- Chess.com, Roblox and Stream stay visible with locks; their pages cannot be opened.
+- Game core 1.30.3 supplies faces, fetched in the background from advertised official skin textures.
 
 ## Map art
 

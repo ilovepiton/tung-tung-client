@@ -1,4 +1,4 @@
-TUNG TUNG CLIENT — DESKTOP 1.30.2 / MINECRAFT CORE 1.30.1
+TUNG TUNG CLIENT — DESKTOP 1.30.3 / MINECRAFT CORE 1.30.3
 Auto Totem always refills the offhand from inventory at any health, without
 a fixed post-pop delay. It supports player slots in ordinary container screens.
 Kill Aura is on the first Arsenal row beside Auto Totem; normal weapon reach applies.
@@ -21,7 +21,7 @@ A compatible in-game Luau host is required. This app does not load code into
 stock Roblox Player; joining a third-party private server alone is insufficient.
 Controls stay disabled until the real runtime connects and acknowledges actions.
 No Roblox login, password, cookie or account token is requested.
-Minecraft Core is 1.30.1; the existing Voice Chat profile is preserved.
+Minecraft Core is 1.30.3; the existing Voice Chat profile is preserved.
 
 TUNG TUNG CLIENT 1.19.1 — Minecraft Java 26.3
 

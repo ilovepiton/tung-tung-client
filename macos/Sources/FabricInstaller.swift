@@ -18,7 +18,7 @@ enum FabricInstaller {
     static let defaultMinecraftDirectory = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support/minecraft", isDirectory: true)
     static let officialLauncherDownloadURL = URL(string: "https://www.minecraft.net/en-us/download")!
     private static let fm = FileManager.default
-    private static let baseMods = Set(["tung-tung-bridge-1.30.1.jar", "fabric-api-0.162.0+26.3.jar", "client_maps-1.3.4.jar", "map-in-slot-3.5.0.jar"])
+    private static let baseMods = Set(["tung-tung-bridge-1.30.3.jar", "fabric-api-0.162.0+26.3.jar", "client_maps-1.3.4.jar", "map-in-slot-3.5.0.jar"])
     private static let voiceChatMod = "voicechat-fabric-2.6.24+26.3.jar"
     private static let voiceChatSHA512 = "414eb51967305fe7740d34016bc8e3e4e2fa1590e1278ad06bcdfa0687f65007b825d345dc09f79a992704a51ec93baf01fe727e0bbc32fdf506828b5a65d85a"
 
@@ -286,7 +286,7 @@ enum FabricInstaller {
         let manifest = try fileData(base.appendingPathComponent("manifest.json"), maximum: 1024 * 1024)
         guard let document = try JSONSerialization.jsonObject(with: manifest) as? [String: Any],
               document["minecraft"] as? String == "26.3", document["loader"] as? String == "0.19.5",
-              document["version"] as? String == "1.30.1", let files = document["files"] as? [[String: Any]] else {
+              document["version"] as? String == "1.30.3", let files = document["files"] as? [[String: Any]] else {
             throw problem("The bundled Minecraft/Fabric manifest is invalid. Download a fresh complete Mac ZIP.")
         }
         var withVoiceChat = false
@@ -439,7 +439,7 @@ enum FabricInstaller {
         try check(try Data(contentsOf: first.appendingPathComponent("saves/KeepWorld/level.dat")) == Data("world-unchanged".utf8), "world untouched")
         try check(try Data(contentsOf: mods.appendingPathComponent("unrelated-mod.jar")) == Data("other-mod".utf8), "unrelated mod untouched")
         try check(!fm.fileExists(atPath: mods.appendingPathComponent("tung-tung-bridge-1.7.0.jar").path), "old bridge backed up and removed")
-        try check(try Data(contentsOf: mods.appendingPathComponent("tung-tung-bridge-1.30.1.jar")) == sourcePayload.mods["tung-tung-bridge-1.30.1.jar"], "real bridge installed exactly")
+        try check(try Data(contentsOf: mods.appendingPathComponent("tung-tung-bridge-1.30.3.jar")) == sourcePayload.mods["tung-tung-bridge-1.30.3.jar"], "real bridge installed exactly")
         try check(try Data(contentsOf: mods.appendingPathComponent("voicechat-neoforge-existing.jar")) == Data("other-loader-voice".utf8), "other loader voice mod preserved")
         if let voice = sourcePayload.mods[voiceChatMod] {
             try check(try Data(contentsOf: mods.appendingPathComponent(voiceChatMod)) == voice, "real pinned voice chat installed exactly")
@@ -468,7 +468,7 @@ enum FabricInstaller {
         do { _ = try testInstall(rollback, fail: sourcePayload.mods[voiceChatMod] == nil ? 5 : 6); throw problem("Injected failure did not fire") } catch {}
         try check(try Data(contentsOf: rollback.appendingPathComponent("launcher_profiles.json")) == before, "failed install preserves Launcher bytes")
         try check(try Data(contentsOf: rm.appendingPathComponent("tung-tung-bridge-1.6.0.jar")) == Data("rollback-old-bridge".utf8), "rollback restores removed old bridge")
-        try check(!fm.fileExists(atPath: rm.appendingPathComponent("tung-tung-bridge-1.30.1.jar").path), "rollback removes newly written bridge")
+        try check(!fm.fileExists(atPath: rm.appendingPathComponent("tung-tung-bridge-1.30.3.jar").path), "rollback removes newly written bridge")
         try check(try Data(contentsOf: rm.appendingPathComponent(oldVoiceName)) == oldVoice, "rollback preserves or restores original voice chat")
         try check(!fm.fileExists(atPath: rm.appendingPathComponent(voiceChatMod).path), "rollback leaves no new voice chat")
         let corrupt = try fixture("corrupt")
@@ -491,7 +491,7 @@ enum FabricInstaller {
         let tamperedResources = root.appendingPathComponent("tampered-resources")
         try fm.createDirectory(at: tamperedResources, withIntermediateDirectories: true)
         try fm.copyItem(at: resources.appendingPathComponent("payload"), to: tamperedResources.appendingPathComponent("payload"))
-        try Data("tampered".utf8).write(to: tamperedResources.appendingPathComponent("payload/mods/tung-tung-bridge-1.30.1.jar"))
+        try Data("tampered".utf8).write(to: tamperedResources.appendingPathComponent("payload/mods/tung-tung-bridge-1.30.3.jar"))
         rejected = false; do { _ = try perform(minecraftDirectory: try fixture("hash"), resources: tamperedResources, processCheck: {}, failAfter: nil) } catch { rejected = true }
         try check(rejected, "payload checksum mismatch rejected before writing")
         let staleVersion = try payloadFixture("stale-core-version") { document, _ in document["version"] = "1.28.0" }
@@ -499,7 +499,7 @@ enum FabricInstaller {
         try check(rejected, "stale core manifest rejected before writing")
         let staleCore = try payloadFixture("stale-core-filename") { document, _ in
             var files = document["files"] as! [[String: Any]]
-            for index in files.indices where files[index]["path"] as? String == "mods/tung-tung-bridge-1.30.1.jar" {
+            for index in files.indices where files[index]["path"] as? String == "mods/tung-tung-bridge-1.30.3.jar" {
                 files[index]["path"] = "mods/tung-tung-bridge-1.28.0.jar"
             }
             document["files"] = files

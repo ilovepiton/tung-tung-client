@@ -11,7 +11,7 @@ import java.util.*;
 public final class PlayerLocator {
     private static final Gson JSON = new Gson();
     private PinnedPlayer saved;
-    public record Row(String id, String name, boolean observable, boolean self, Integer x, Integer y, Integer z, Long distance) {}
+    public record Row(String id, String name, boolean observable, boolean self, Integer x, Integer y, Integer z, Long distance, String face) {}
 
     public PlayerLocator() {
         if (Files.isRegularFile(path())) try { saved = JSON.fromJson(Files.readString(path()), PinnedPlayer.class); }
@@ -36,7 +36,7 @@ public final class PlayerLocator {
             rows.add(new Row(profile.id().toString(), profile.name(), visible,
                     profile.id().equals(client.player.getUUID()), pos == null ? null : pos.getX(),
                     pos == null ? null : pos.getY(), pos == null ? null : pos.getZ(),
-                    visible ? Math.round((double)player.distanceTo(client.player)) : null));
+                    visible ? Math.round((double)player.distanceTo(client.player)) : null, PlayerFaces.face(profile)));
         }
         rows.sort(Comparator.comparing((Row r) -> !r.observable()).thenComparing(Row::name, String.CASE_INSENSITIVE_ORDER));
         return List.copyOf(rows.stream().limit(512).toList());

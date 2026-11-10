@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.30.3 — 2026-11-10
+
+- Original icons for all 43 Minecraft modules and 20 keyboard profiles.
+- Larger module description dialogs with instructions and settings links.
+- Find Player faces cropped from actual advertised Minecraft skins, cached off the game thread.
+- Chess.com, Roblox and Stream remain visible but their entry points are locked.
+- Game core 1.30.3 supplies face thumbnails; older cores show an unavailable-skin placeholder.
+
+
 ## Desktop 1.30.2 — 2026-11-10
 
 - Moved Client Maps and Map in Slot into Texture Packs → Map Art.

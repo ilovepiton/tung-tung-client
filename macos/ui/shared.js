@@ -21,7 +21,10 @@ function icon(name, cls = '') {
  };
  return `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${shapes[name]||shapes.cube}</svg>`;
 }
-function moduleImage(id,cls='module-icon'){if(id==='elytra_finder')return discoveryImage('items/elytra_finder',cls,'Elytra');if(id==='mace_bot')return discoveryImage('mace/mace',cls,'Mace');if(id==='auto_vault')return discoveryImage('vault/ominous_trial_key',cls,'Ominous Trial Key');if(['diamond_esp','ore_esp','lava_esp'].includes(id))return discoveryImage('items/'+id,cls,({diamond_esp:'Diamond',ore_esp:'Emerald',lava_esp:'Lava bucket'})[id]);const aliases={invis_mode:'freelook',item_finder:'player_detection',combat_bot:'auto_crystal',aim_cursor:'trigger_bot',auto_punch:'killaura',auto_kill_steal:'auto_weapon',player_info:'player_detection'};return asset('items/'+(aliases[id]||id)+'.png',cls,'Minecraft item icon');}
+function moduleImage(id,cls='module-icon'){
+ const known=MODULES.find(m=>m.id===id);
+ return `<img class="${cls}" src="assets/designed/${escapeHTML(known?id:'chunk_finder')}.svg" alt="${escapeHTML(known?.name||'Module')} icon" draggable="false">`;
+}
 function moduleIcon(id) {
  if(id==='auto_crystal'||id==='amethyst_esp')return 'crystal';if(id==='auto_anchor')return 'anchor';if(id==='trigger_bot')return 'crosshair';
  if(id==='auto_gapple'||id==='auto_totem')return 'heart';if(id==='auto_weapon'||id==='killaura')return 'sword';
