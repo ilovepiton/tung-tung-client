@@ -1,5 +1,11 @@
 # Changelog
 
+## Desktop 1.30.6 — 2026-11-10
+
+- Invis Mode now shows a translucent white-gray Steve PNG on a transparent background.
+- All other module images and behavior remain unchanged.
+- Game core remains 1.30.3.
+
 ## Desktop 1.30.5 — 2026-11-10
 
 - Night Vision uses the original Minecraft night-vision effect icon.

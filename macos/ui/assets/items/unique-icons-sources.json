@@ -1,5 +1,5 @@
 {
-  "source": "Local unmodified Minecraft 26.3 client resources",
+  "source": "Minecraft 26.3 textures and explicitly identified generated replacement assets",
   "ownership": "Minecraft artwork belongs to Mojang/Microsoft. Selected textures only.",
   "items": [
     {
@@ -19,9 +19,9 @@
     },
     {
       "module": "invis_mode",
-      "texture": "assets/minecraft/textures/entity/ghast/ghast.png",
-      "sha256": "700ca336af792dd709c69ecf34b928aaa410477470f1f5cbe39d6ec551cda6e3",
-      "extraction": "Vanilla ghast front-face UV [32,32,64,64], no recoloring"
+      "source": "Built-in imagegen: translucent white-gray Steve character on transparent background",
+      "prompt": "invis-mode-prompt.txt",
+      "sha256": "b5e0e33cce9d5409783b31741fc3f887ddc32c7d074a2323f39fde736cc5bb0a"
     },
     {
       "module": "item_finder",

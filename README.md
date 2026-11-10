@@ -2,22 +2,22 @@
 
 Desktop companion for Minecraft Java, with separate Mac and Windows packages.
 
-**Current desktop: 1.30.5 · Game core: 1.30.3 · Minecraft 26.3 · Fabric Loader 0.19.5 · Java 25**
+**Current desktop: 1.30.6 · Game core: 1.30.3 · Minecraft 26.3 · Fabric Loader 0.19.5 · Java 25**
 
 ## Download
 
 [Download the latest release](https://github.com/ilovepiton/tung-tung-client/releases/latest)
 
-[Mac download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.5/Tung-Tung-Client-Mac-1.30.5-Voice-Chat.zip) · [Windows download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.5/Tung-Tung-Client-Windows-1.30.5-Voice-Chat.zip) · [All files](https://github.com/ilovepiton/tung-tung-client/releases/tag/v1.30.5)
+[Mac download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.6/Tung-Tung-Client-Mac-1.30.6-Voice-Chat.zip) · [Windows download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.6/Tung-Tung-Client-Windows-1.30.6-Voice-Chat.zip) · [All files](https://github.com/ilovepiton/tung-tung-client/releases/tag/v1.30.6)
 
 Choose your package:
 
 | File | Use |
 | --- | --- |
-| `Tung-Tung-Client-Mac-1.30.5-Voice-Chat.zip` | macOS 13+, Apple Silicon and Intel, Simple Voice Chat |
-| `Tung-Tung-Client-Windows-1.30.5-Voice-Chat.zip` | Windows 10/11 x64, Simple Voice Chat |
+| `Tung-Tung-Client-Mac-1.30.6-Voice-Chat.zip` | macOS 13+, Apple Silicon and Intel, Simple Voice Chat |
+| `Tung-Tung-Client-Windows-1.30.6-Voice-Chat.zip` | Windows 10/11 x64, Simple Voice Chat |
 | `Tung-Tung-Client-1.30.3-Voice-Chat-Prism.zip` | Importable Prism Launcher instance |
-| `Tung-Tung-Client-1.30.5-Share.zip` | All platforms, instructions and source snapshot |
+| `Tung-Tung-Client-1.30.6-Share.zip` | All platforms, instructions and source snapshot |
 
 Extract the whole archive. Close Minecraft and Launcher, install the Fabric core
 from **Control center**, then launch **Tung Tung Client 26.3** and join a world.
@@ -45,10 +45,10 @@ Server permissions, protocol compatibility and the data received by the game
 determine which modules can work. A private server alone does not add a Roblox
 runtime; this package does not include an executor or injector.
 
-## New in desktop 1.30.5
+## New in desktop 1.30.6
 
-Night Vision uses the original Minecraft status-effect icon. Invis Mode uses
-the vanilla ghast face. All other images and World Tools remain unchanged.
+Invis Mode uses a translucent white-gray Steve PNG on a transparent background.
+Night Vision and all other module images remain unchanged.
 All 43 module PNGs are distinct. Game core remains 1.30.3.
 
 ## Features retained from 1.30.3
