@@ -20,8 +20,8 @@
     {
       "module": "invis_mode",
       "texture": "assets/minecraft/textures/entity/ghast/ghast.png",
-      "sha256": "1827d7f083780363ba4bb221f77058a261673389757b256921e08f010b55285d",
-      "extraction": "Vanilla ghast front-face UV [16,16,32,32], no recoloring"
+      "sha256": "700ca336af792dd709c69ecf34b928aaa410477470f1f5cbe39d6ec551cda6e3",
+      "extraction": "Vanilla ghast front-face UV [32,32,64,64], no recoloring"
     },
     {
       "module": "item_finder",
