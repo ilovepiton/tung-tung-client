@@ -54,6 +54,14 @@ runtime; this package does not include an executor or injector.
 - Chess.com, Roblox and Stream stay visible with locks; their pages cannot be opened.
 - Game core 1.30.3 supplies faces, fetched in the background from advertised official skin textures.
 
+## Interface preview
+
+Original keyboard designs and readable module descriptions. Screenshots show the interface with test data.
+
+![Keyboard collection](docs/images/keyboards.png)
+
+![Module description](docs/images/description.png)
+
 ## Map art
 
 **Texture Packs → Map Art** contains two separate modules, enabled by default in
