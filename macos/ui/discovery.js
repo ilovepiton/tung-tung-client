@@ -3,7 +3,7 @@ function discoveryImage(name,cls='discovery-icon',alt=''){return `<img class="${
 function discoveryTabs(active){return `<div class="discovery-tabs"><button data-page="find-player" class="${active==='players'?'selected':''}">${discoveryImage('find-player-v2')}<span>Find Player</span></button><button data-page="resource-highlights" class="${active==='resources'?'selected':''}">${discoveryImage('items/xray')}<span>Resource highlights</span></button></div>`;}
 function playerFace(p){
  const face=typeof p.face==='string'&&p.face.length<32768&&/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(p.face)?p.face:'';
- return face?`<img class="locator-face" src="${face}" alt="${escapeHTML(p.name)} skin face" title="${escapeHTML(p.name)} skin">`:`<img class="locator-face face-pending" src="assets/designed/player_info.svg" alt="Skin not yet available" title="Skin not yet available">`;
+ return face?`<img class="locator-face" src="${face}" alt="${escapeHTML(p.name)} skin face" title="${escapeHTML(p.name)} skin">`:`<img class="locator-face face-pending" src="assets/items/player_info.png" alt="Skin not yet available" title="Skin not yet available">`;
 }
 function findPlayerPage(){
  const roster=connected()&&Array.isArray(connectionState.players)?connectionState.players:[],nearby=roster.filter(p=>p.observable),pin=connected()?connectionState.playerWaypoint:null;

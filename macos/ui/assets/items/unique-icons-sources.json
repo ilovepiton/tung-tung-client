@@ -1,0 +1,71 @@
+{
+  "source": "Local unmodified Minecraft 26.3 client resources",
+  "ownership": "Minecraft artwork belongs to Mojang/Microsoft. Selected textures only.",
+  "items": [
+    {
+      "module": "freecam",
+      "texture": "assets/minecraft/textures/item/phantom_membrane.png",
+      "sha256": "278576989e6e9ab11a001355db7a7b15959cbff193120dee1288e86e417157d7"
+    },
+    {
+      "module": "donut_flight_bypass",
+      "texture": "assets/minecraft/textures/item/firework_rocket.png",
+      "sha256": "661a46e05516554d8ab2df91bd34dfa18dec1728e77a2d369270c429dedc208b"
+    },
+    {
+      "module": "anti_kick",
+      "texture": "assets/minecraft/textures/item/turtle_helmet.png",
+      "sha256": "0e178a0c477e486bbca03a202d2c0e14ce8c3881cecc7626c73fda2d3d92d902"
+    },
+    {
+      "module": "invis_mode",
+      "texture": "assets/minecraft/textures/item/potion.png",
+      "sha256": "6a09a39bb6c41bc92bd5eca1f51caf5b582a85f68206b164476c8e14a4669416"
+    },
+    {
+      "module": "item_finder",
+      "texture": "assets/minecraft/textures/item/bundle.png",
+      "sha256": "f6802172a7d95792766bc41b23861ef625601c3d57dff54f51a2045b24aac50c"
+    },
+    {
+      "module": "night_vision",
+      "texture": "assets/minecraft/textures/item/golden_carrot.png",
+      "sha256": "8f96f1f3eda35e077b0077b58a0f3b1dea5757cf2404faa37a9a4314a5728246"
+    },
+    {
+      "module": "combat_bot",
+      "texture": "assets/minecraft/textures/item/netherite_axe.png",
+      "sha256": "aa1c6ff73e24c7a6fd06bc3ae59b4961ffd08d22fb51b7e2b93678ce82d5a1aa"
+    },
+    {
+      "module": "aim_cursor",
+      "texture": "assets/minecraft/textures/item/bow.png",
+      "sha256": "1e2cb18545e4ed9286e1120686c3f835d6619b8bd853970f1011163b68426a54"
+    },
+    {
+      "module": "auto_punch",
+      "texture": "assets/minecraft/textures/item/iron_sword.png",
+      "sha256": "455f2c306a9ddc1da19b04603ae0047211e2f4e4817b105573fcdc29b3c6945f"
+    },
+    {
+      "module": "auto_kill_steal",
+      "texture": "assets/minecraft/textures/item/iron_axe.png",
+      "sha256": "8dea40bac06c6f14bb0ad9e8b47de63250f6d6a46ae9439b85ddd1377f1edb49"
+    },
+    {
+      "module": "player_info",
+      "texture": "assets/minecraft/textures/item/name_tag.png",
+      "sha256": "27d4af791458a11eb1777e2f77273659769fc3c26c200790f437e0424afee2b7"
+    },
+    {
+      "module": "client_maps",
+      "texture": "assets/minecraft/textures/item/filled_map.png",
+      "sha256": "b7988bf00ef59f612f94cfc7aac5ea72237d81842d14def7b8cce5eef90cfecb"
+    },
+    {
+      "module": "map_in_slot",
+      "texture": "assets/minecraft/textures/item/item_frame.png",
+      "sha256": "af00b6cbefe21d968bd607da62ac349286c6fc4b58ae8c50855fc6bb201eaa3d"
+    }
+  ]
+}

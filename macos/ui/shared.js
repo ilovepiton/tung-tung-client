@@ -23,7 +23,8 @@ function icon(name, cls = '') {
 }
 function moduleImage(id,cls='module-icon'){
  const known=MODULES.find(m=>m.id===id);
- return `<img class="${cls}" src="assets/designed/${escapeHTML(known?id:'chunk_finder')}.svg" alt="${escapeHTML(known?.name||'Module')} icon" draggable="false">`;
+ const paths={mace_bot:'mace/mace',auto_vault:'vault/ominous_trial_key'};
+ return `<img class="${cls}" src="assets/${paths[id]||'items/'+(known?id:'chunk_finder')}.png" alt="${escapeHTML(known?.name||'Minecraft item')}" draggable="false">`;
 }
 function moduleIcon(id) {
  if(id==='auto_crystal'||id==='amethyst_esp')return 'crystal';if(id==='auto_anchor')return 'anchor';if(id==='trigger_bot')return 'crosshair';

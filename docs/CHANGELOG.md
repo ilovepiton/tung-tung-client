@@ -1,5 +1,14 @@
 # Changelog
 
+## Desktop 1.30.4 — 2026-11-10
+
+- Restored Minecraft PNG item images for all 43 modules.
+- Replaced duplicate images with distinct, appropriate vanilla textures.
+- Freecam uses phantom membrane; Elytra Finder keeps Elytra.
+- Keyboard illustrations, description dialogs, player faces and workspace locks are retained.
+- Game core remains 1.30.3.
+
+
 ## 1.30.3 — 2026-11-10
 
 - Original icons for all 43 Minecraft modules and 20 keyboard profiles.
