@@ -6,7 +6,11 @@ Desktop companion for Minecraft Java, with separate Mac and Windows packages.
 
 ## Download
 
-Open **Releases** on this repository and choose your package:
+[Download the latest release](https://github.com/ilovepiton/tung-tung-client/releases/latest)
+
+[Mac download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.1/Tung-Tung-Client-Mac-1.30.1-Voice-Chat.zip) · [Windows download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.1/Tung-Tung-Client-Windows-1.30.1-Voice-Chat.zip) · [All files](https://github.com/ilovepiton/tung-tung-client/releases/tag/v1.30.1)
+
+Choose your package:
 
 | File | Use |
 | --- | --- |
