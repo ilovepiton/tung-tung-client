@@ -1,8 +1,8 @@
-TUNG TUNG CLIENT — DESKTOP 1.30.1 / MINECRAFT CORE 1.30.1
+TUNG TUNG CLIENT — DESKTOP 1.30.2 / MINECRAFT CORE 1.30.1
 Auto Totem always refills the offhand from inventory at any health, without
 a fixed post-pop delay. It supports player slots in ordinary container screens.
 Kill Aura is on the first Arsenal row beside Auto Totem; normal weapon reach applies.
-Invis Mode: Texture Packs > Map Art. Reveals received invisible player avatars and
+Invis Mode: World Tools > Visual. Reveals received invisible player avatars and
 adds a red Invisible header above Player Info. Actual invisibility is preserved.
 Loot Protection defaults ON: no living non-friend opponent within 32 blocks
 blocks Crystal use and explosive Anchor activation, including manual clicks.
