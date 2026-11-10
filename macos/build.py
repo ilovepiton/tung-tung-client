@@ -12,8 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 MAC = ROOT / "macos"
 OUT = ROOT / "build" / "macos"
 DIST = ROOT / "dist"
-APP = DIST / "Tung-Tung-Client-Mac-1.30.1" / "Tung Tung Client.app"
-VERSION = "1.30.1"
+APP = DIST / "Tung-Tung-Client-Mac-1.30.2" / "Tung Tung Client.app"
+VERSION = "1.30.2"
 PAYLOAD_VERSION = "1.30.1"
 VOICE_RUNTIME_VERSION = "1.12.0"
 VOICE_RUNTIME_BUILD = "1120"
@@ -101,7 +101,7 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
         "CFBundleName": "Tung Tung Client", "CFBundleDisplayName": "Tung Tung Client",
         "CFBundleIdentifier": "dev.tungtung.client", "CFBundleExecutable": "TungTungClient",
         "CFBundlePackageType": "APPL", "CFBundleShortVersionString": VERSION,
-        "CFBundleVersion": "1301", "LSMinimumSystemVersion": "13.0",
+        "CFBundleVersion": "1302", "LSMinimumSystemVersion": "13.0",
         "NSHighResolutionCapable": True, "NSPrincipalClass": "NSApplication",
         "NSMicrophoneUsageDescription": "Simple Voice Chat in Tung Tung Minecraft needs your microphone so other players can hear you.",
         "NSAppTransportSecurity": {"NSAllowsLocalNetworking": True},

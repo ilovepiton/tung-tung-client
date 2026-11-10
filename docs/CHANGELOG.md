@@ -1,5 +1,14 @@
 # Changelog
 
+## Desktop 1.30.2 — 2026-11-10
+
+- Moved Client Maps and Map in Slot into Texture Packs → Map Art.
+- Preserved independent module switches and keybind settings, with Back returning to Texture Packs.
+- Replaced the sidebar Roblox approximation with the official white Tilt icon.
+- Stream now shows only one Twitch logo.
+- Minecraft game core remains 1.30.1; no gameplay changes.
+- Browser UI checks passed for relocation, navigation, icons and JavaScript errors.
+
 ## 1.30.1 — 2026-11-10
 
 - Bundled Client Maps 1.3.4 and Map in Slot 3.5.0.

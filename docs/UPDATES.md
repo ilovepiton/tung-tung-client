@@ -2,7 +2,7 @@
 
 ## Current release
 
-Version **1.30.1**, Minecraft Java **26.3**, Fabric Loader **0.19.5**, Java **25**.
+Desktop **1.30.2**, game core **1.30.1**, Minecraft Java **26.3**, Fabric Loader **0.19.5**, Java **25**.
 Desktop app and game core are separate components. Updating the app alone does
 not update code already running inside Minecraft.
 
@@ -14,7 +14,7 @@ not update code already running inside Minecraft.
    folder and start its EXE, preserving your previous folder as a rollback copy.
 4. Open Control center, verify the Minecraft folder and install the Fabric core.
 5. Launch the Tung Tung profile, join a world and verify the app/core versions.
-6. Verify Client Maps and Map in Slot are available under World Tools → Visual.
+6. Verify Client Maps and Map in Slot are available under Texture Packs → Map Art.
 
 Do not combine several versions of the core in one mods folder. Keep worlds,
 configuration and `.client_maps` data when updating. Never share account files.

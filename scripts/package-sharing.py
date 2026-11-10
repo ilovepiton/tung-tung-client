@@ -7,7 +7,8 @@ import shutil
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1.30.1'
+VERSION = '1.30.2'
+CORE_VERSION = '1.30.1'
 DEST = ROOT / 'dist' / f'Tung-Tung-Client-{VERSION}-Share'
 
 
@@ -24,7 +25,7 @@ def main():
     packages = {
         'Mac': f'Tung-Tung-Client-Mac-{VERSION}-Voice-Chat.zip',
         'Windows': f'Tung-Tung-Client-Windows-{VERSION}-Voice-Chat.zip',
-        'Prism': f'Tung-Tung-Client-{VERSION}-Voice-Chat-Prism.zip',
+        'Prism': f'Tung-Tung-Client-{CORE_VERSION}-Voice-Chat-Prism.zip',
     }
     for folder, name in packages.items():
         target = DEST / folder
@@ -41,14 +42,14 @@ def main():
     shutil.copy2(ROOT / 'windows/START-HERE.txt', DEST / 'Windows/START-HERE.txt')
     shutil.copy2(ROOT / 'macos/README.txt', DEST / 'Mac/README.txt')
     shutil.copy2(ROOT / 'LICENSE', DEST / 'LICENSE.txt')
-    (DEST / 'README.md').write_text('''# Tung Tung Client 1.30.1
+    (DEST / 'README.md').write_text('''# Tung Tung Client 1.30.2
 
 ## Начни здесь
 
 1. Выбери папку **Mac** или **Windows** и распакуй ZIP полностью.
 2. Следуй [простой инструкции](Instructions/EASY-SETUP-RU.md).
 3. После установки ядра перезапусти Minecraft, выбери Tung Tung Client 26.3.
-4. Client Maps и Map in Slot: **World Tools → Visual**.
+4. Client Maps и Map in Slot: **Texture Packs → Map Art**.
 
 ## Что в папках
 
@@ -88,7 +89,7 @@ Windows собран без ошибок компиляции; запуск на
         for path in sorted(set(files)):
             if path.is_file():
                 archive.write(path, path.relative_to(ROOT))
-    (srcdir / 'BUILD-NOTES.txt').write_text('''SOURCE SNAPSHOT 1.30.1
+    (srcdir / 'BUILD-NOTES.txt').write_text('''SOURCE SNAPSHOT 1.30.2
 
 Includes production sources, UI assets, tests, Gradle wrapper, map-art inputs
 and texture library. No accounts, saved worlds, game logs or pairing data.
@@ -102,7 +103,7 @@ That machine-specific SDK cache is NOT bundled; provision those dependencies
 before rebuilding Windows. Prebuilt Windows EXE and DLLs are in Windows/.
 No promise of an offline one-command build on a fresh machine is made.
 ''')
-    manifest = {'version': VERSION, 'minecraft': '26.3', 'fabricLoader': '0.19.5',
+    manifest = {'version': VERSION, 'gameCoreVersion': CORE_VERSION, 'minecraft': '26.3', 'fabricLoader': '0.19.5',
                 'java': 25, 'updateMode': 'manual', 'updateFeed': None,
                 'validation': {'mac': 'native self-test and isolated game startup passed',
                                'windows': 'cross-compilation passed; Windows runtime not tested'},

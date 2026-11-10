@@ -2,14 +2,14 @@ TUNG TUNG CLIENT — DESKTOP 1.30.1 / MINECRAFT CORE 1.30.1
 Auto Totem always refills the offhand from inventory at any health, without
 a fixed post-pop delay. It supports player slots in ordinary container screens.
 Kill Aura is on the first Arsenal row beside Auto Totem; normal weapon reach applies.
-Invis Mode: World Tools > Visual. Reveals received invisible player avatars and
+Invis Mode: Texture Packs > Map Art. Reveals received invisible player avatars and
 adds a red Invisible header above Player Info. Actual invisibility is preserved.
 Loot Protection defaults ON: no living non-friend opponent within 32 blocks
 blocks Crystal use and explosive Anchor activation, including manual clicks.
 Safe anchor placement and glowstone charging remain available in both hands.
 Arsenal > PvP settings > right-click assist contains its switch and radius.
 World Tools > Item Finder selects 50 dropped item types, range and chunk markers.
-Night Vision: World Tools > Visual > Night Vision. Full-bright caves and nights;
+Night Vision: Texture Packs > Map Art > Night Vision. Full-bright caves and nights;
 disable to restore normal lighting. Gamma and real potion effects are preserved.
 Auto Anchor returns to an available anchor after confirmed detonation, before
 waiting for inventory cleanup. Fast Assist keeps its existing zero-stage-delay
@@ -85,5 +85,5 @@ Auto Totem includes configurable reserved-slot, reaction-delay and refill-cooldo
 MAP ART
 Client Maps 1.3.4 stores map pixels received from each server. Map in Slot
 3.5.0 renders those received maps directly inside inventory slots. Both are ON
-by default under World Tools > Visual and can be switched independently or
+by default under Texture Packs > Map Art and can be switched independently or
 assigned their own keybinds. Their data and rendering stay client-side.

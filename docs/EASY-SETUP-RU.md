@@ -1,9 +1,9 @@
-# Tung Tung Client 1.30.1 — установка
+# Tung Tung Client 1.30.2 — установка
 
 ## Сначала выбери систему
 
-- **Mac:** папка `Mac`, архив с окончанием `Mac-1.30.1-Voice-Chat.zip`.
-- **Windows:** папка `Windows`, архив с окончанием `Windows-1.30.1-Voice-Chat.zip`.
+- **Mac:** папка `Mac`, архив с окончанием `Mac-1.30.2-Voice-Chat.zip`.
+- **Windows:** папка `Windows`, архив с окончанием `Windows-1.30.2-Voice-Chat.zip`.
 - **Prism Launcher:** папка `Prism`, импортируй ZIP как новый экземпляр.
 
 Архивы для разных систем не нужно устанавливать одновременно.
@@ -12,7 +12,7 @@
 
 1. Распакуй Mac ZIP. Закрой старый Tung Tung Client через ⌘Q.
 2. Перемести `Tung Tung Client.app` в «Программы», замени старую копию.
-3. Открой приложение. Внизу должно быть **macOS 1.30.1**.
+3. Открой приложение. Внизу должно быть **macOS 1.30.2**.
 4. Закрой Minecraft через Quit Game и Launcher через ⌘Q.
 5. Открой **Control center → Choose Minecraft Folder**. Для официального лаунчера выбери `~/Library/Application Support/minecraft`.
 6. Нажми **Install Fabric Core** и дождись результата.
@@ -34,7 +34,7 @@
 
 ## Карты / map art
 
-В **World Tools → Visual** есть две отдельные карточки:
+В **Texture Packs → Map Art** есть две отдельные карточки:
 
 - **Client Maps** — сохраняет полученные от сервера изображения карт отдельно для каждого сервера.
 - **Map in Slot** — рисует содержимое карты в её ячейке инвентаря.
