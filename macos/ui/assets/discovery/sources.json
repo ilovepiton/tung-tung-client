@@ -1,0 +1,11 @@
+{
+  "note": "Unmodified Minecraft Java 26.3 item texture; artwork belongs to Mojang/Microsoft.",
+  "items": [
+    {
+      "file": "lava_bucket.png",
+      "texture": "assets/minecraft/textures/item/lava_bucket.png",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "bd3528401d4bba44e196480194a1becb47a33974df2202d464922cd412183b1a"
+    }
+  ]
+}

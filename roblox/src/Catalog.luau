@@ -1,0 +1,34 @@
+--!strict
+-- Shared IDs are also used by the Tung Tung desktop catalog.
+local entries = {
+    {id="fly", name="Fly", category="Movement", kind="toggle", scope="self", detail="WASD flight. Space rises, Ctrl descends. The server may correct movement.", min=1, max=300, default=48, unit="studs/s"},
+    {id="noclip", name="NoClip", category="Movement", kind="toggle", scope="self", detail="Your character passes through parts. Return to a clear area before turning off."},
+    {id="speed", name="Walk Speed", category="Movement", kind="toggle", scope="self", detail="Local character speed; a server can correct it.", min=1, max=100, default=32, unit="studs/s"},
+    {id="super_jump", name="Super Jump", category="Movement", kind="toggle", scope="self", detail="Higher grounded jumps; supports JumpPower and JumpHeight.", min=1, max=4, default=2, unit="×"},
+    {id="low_gravity", name="Low Gravity", category="Movement", kind="toggle", scope="self", detail="Less gravity for your character only.", min=0.1, max=1, default=0.35, unit="gravity"},
+    {id="dash", name="Dash", category="Movement", kind="action", scope="self", detail="A short forward impulse. Two-second cooldown."},
+    {id="double_jump", name="Double Jump", category="Movement", kind="toggle", scope="self", detail="One extra jump per airborne sequence."},
+    {id="air_jump", name="Air Jump", category="Movement", kind="toggle", scope="self", detail="Repeat mid-air jumps with a short cooldown."},
+    {id="self_fling", name="Self Fling", category="Fun", kind="action", scope="self", detail="Launch yourself with a bounded, resettable impulse."},
+    {id="friend_fling", name="Fling Friends", category="Fun", kind="action", scope="server-required", detail="Requires a trusted game-side consent adapter; unavailable in an unmodified third-party game."},
+    {id="slide", name="Slide", category="Movement", kind="action", scope="self", detail="A grounded forward burst; 1.5-second cooldown."},
+    {id="spin", name="Spin", category="Fun", kind="toggle", scope="self", detail="A controlled character spin.", min=0.5, max=8, default=3, unit="rad/s"},
+    {id="freeze", name="Freeze Self", category="Fun", kind="toggle", scope="self", detail="Hold your own character in place; turn off to resume."},
+    {id="respawn", name="Respawn", category="Fun", kind="action", scope="server-required", detail="Requires an authorized game-side respawn adapter."},
+    {id="return_spawn", name="Return to Spawn", category="Movement", kind="action", scope="self", detail="Return to your character's saved spawn position."},
+    {id="spectate", name="Spectate", category="Camera", kind="toggle", scope="client", detail="Watch a selected player's character; your body stays put."},
+    {id="freecam", name="Free Camera", category="Camera", kind="toggle", scope="client", detail="WASD camera movement. Hold right mouse to look; Space/Ctrl vertical.", min=1, max=300, default=36, unit="studs/s"},
+    {id="fov", name="Wide FOV", category="Camera", kind="toggle", scope="client", detail="Adjust your camera's field of view.", min=30, max=120, default=90, unit="°"},
+    {id="fullbright", name="Fullbright", category="Visuals", kind="toggle", scope="client", detail="Brighter local lighting without changing other players' view."},
+    {id="sunset", name="Golden Hour", category="Visuals", kind="toggle", scope="client", detail="A warm local sunset preset."},
+    {id="bloom", name="Neon Bloom", category="Visuals", kind="toggle", scope="client", detail="Soft highlights using Roblox BloomEffect."},
+    {id="depth_of_field", name="Cinematic Focus", category="Visuals", kind="toggle", scope="client", detail="Depth-of-field camera focus. Graphics quality may affect visibility."},
+    {id="color_grade", name="Copper Grade", category="Visuals", kind="toggle", scope="client", detail="A warm copper ColorCorrectionEffect preset."},
+    {id="trails", name="Avatar Trails", category="Fun", kind="toggle", scope="self", detail="Copper light ribbons that follow your character."},
+}
+local byId = {}
+for _, entry in entries do
+    assert(not byId[entry.id], "Duplicate module ID")
+    byId[entry.id] = entry
+end
+return {entries=entries, byId=byId, protocol=1, version="1.0.0"}

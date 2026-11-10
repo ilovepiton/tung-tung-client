@@ -1,0 +1,20 @@
+TUNG TUNG CLIENT — OPTIONAL COMPATIBILITY MODS
+
+ViaFabricPlus 5.1.3
+Copyright its contributors. Licensed under GPL-3.0-only.
+Source and license: https://github.com/ViaVersion/ViaFabricPlus/releases/tag/5.1.3
+
+The installer downloads the unmodified JAR from the official Modrinth CDN and
+verifies its published SHA-512 checksum. It provides per-server Minecraft
+protocol selection. Servers remain authoritative and may reject a connection.
+
+Auto Totem Pro 3.0.0 was reviewed as an MIT-licensed behavioral reference for
+the configurable reserved-slot, reaction-delay and refill-cooldown controls in
+Tung Tung Client. Its JAR is not redistributed or installed.
+Source: https://modrinth.com/mod/auto-totem-pro/version/F0PnRbKj
+
+Client Maps 1.3.4 is included unmodified as a separate MIT-licensed client mod.
+Map in Slot 3.5.0 is an MIT-licensed mod supplied by the user, adapted to read
+Tung Tung's runtime on/off switch before drawing previews. The adapted source
+is in src/mapInSlotPatch/java; the original license is retained and bundled.
+Client Maps source: https://github.com/red-stoned/client_maps

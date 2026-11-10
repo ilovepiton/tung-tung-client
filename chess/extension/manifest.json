@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Tung \u00b7 Chess.com Auto Next",
+  "version": "1.0.0",
+  "description": "Starts your next live Chess.com game after the result, using the time selected in Tung Tung Client.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAngqnof1Z0luVFN3jGEE7Xsr63IzGVgCLJG0CFHwjjzN9NrYpWXmXDYSGt4j2dUZ+MZORq/EokNjN2aic1NoGW7unc/JUSn+xh0oEqLAhsS0NIN4U9VKdHrnMVaWM6hmb6dfLR7N1+Ut2ta1ZDpZJw2B1LH0vOugpGIcy47Uhw7cMRIpXwK9soCQ35d7N26500f5Cwd4aQlN/MT4qUzyNwNfD4zHBshQUQJRqL+0Hl4pWd75yMVfzYwBwiimn075L3hxiZcIblx36N4w3aaoKUMsR2N0OUYWM9wVdzDFXs2tQHLO7+12U7cLgW8KBIxv3YtbO6RRyVSJBvxR5KoxqBQIDAQAB",
+  "permissions": [
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1/*",
+    "https://www.chess.com/*",
+    "https://chess.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Tung \u00b7 Auto Next Game",
+    "default_popup": "options.html",
+    "default_icon": "icon.png"
+  },
+  "options_page": "options.html",
+  "icons": {
+    "128": "icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.chess.com/*",
+        "https://chess.com/*"
+      ],
+      "js": [
+        "engine.js",
+        "content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ]
+}

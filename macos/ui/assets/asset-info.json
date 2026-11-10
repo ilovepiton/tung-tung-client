@@ -1,0 +1,66 @@
+{
+  "world-mascot.png": {
+    "size": [
+      500,
+      500
+    ],
+    "alpha_bbox": [
+      155,
+      26,
+      329,
+      499
+    ],
+    "alpha_range": [
+      0,
+      255
+    ]
+  },
+  "pvp-mascot.png": {
+    "size": [
+      420,
+      420
+    ],
+    "alpha_bbox": [
+      42,
+      9,
+      386,
+      405
+    ],
+    "alpha_range": [
+      0,
+      255
+    ]
+  },
+  "dancer.png": {
+    "size": [
+      941,
+      1672
+    ],
+    "alpha_bbox": [
+      31,
+      33,
+      927,
+      1632
+    ],
+    "alpha_range": [
+      0,
+      255
+    ]
+  },
+  "logo.png": {
+    "size": [
+      1840,
+      854
+    ],
+    "alpha_bbox": [
+      25,
+      112,
+      1814,
+      828
+    ],
+    "alpha_range": [
+      0,
+      255
+    ]
+  }
+}

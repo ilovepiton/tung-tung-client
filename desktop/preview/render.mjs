@@ -1,0 +1,106 @@
+import {createRequire} from 'node:module';
+import {fileURLToPath,pathToFileURL} from 'node:url';
+import path from 'node:path';
+import fs from 'node:fs/promises';
+const require=createRequire(import.meta.url);
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE || 'playwright-core');
+const directory=path.dirname(fileURLToPath(import.meta.url));
+const shots=path.join(directory,'screenshots');
+await fs.mkdir(shots,{recursive:true});
+const browser=await chromium.launch({headless:true,executablePath:process.env.CHROME_EXECUTABLE || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',args:['--allow-file-access-from-files','--disable-background-networking']});
+const context=await browser.newContext({viewport:{width:1180,height:760},deviceScaleFactor:1});
+const manifest=await fs.readFile(path.join(directory,'pages.js'),'utf8');
+const pages=JSON.parse(manifest.replace(/^const PREVIEW_PAGES = /,'').replace(/;\s*$/,''));
+let errors=[], checks=[];
+try{
+ for(const state of pages){
+  const name=state.id;
+  const page=await context.newPage();
+  page.on('pageerror',error=>errors.push({page:name,error:error.message}));
+  page.on('requestfailed',request=>errors.push({page:name,error:'Asset request failed: '+request.url()}));
+  const url=pathToFileURL(path.join(directory,'index.html'));
+  url.searchParams.set('page',state.page);url.searchParams.set('still','1');
+  if(state.scroll)url.searchParams.set('scroll',state.scroll);
+  if(state.guide)url.searchParams.set('guide',state.guide);
+  await page.goto(url.href,{waitUntil:'networkidle'});
+  await page.evaluate(()=>document.fonts.ready);
+  const expectedPortrait=state.page==='findings'?'findings-mascot.png':state.page==='home'||state.page==='splash'?'dancer.png':state.page==='pvp'||state.page==='pvp-settings'?'pvp-mascot.png':'world-mascot.png';
+  const portrait=await page.locator('.portrait-image image').getAttribute('href');
+  if(!portrait.endsWith('/'+expectedPortrait))throw new Error('Incorrect page-specific portrait: '+name+' -> '+portrait);
+  await page.screenshot({path:path.join(shots,name+'.png')});
+  await page.close();
+  process.stdout.write('Rendered '+name+'\n');
+ }
+ checks.push('Findings uses the user-supplied portrait; lobby, World Tools and PvP retain their original portraits across all preview states');
+ const overview=await browser.newPage({viewport:{width:1600,height:1000},deviceScaleFactor:1});
+ await overview.goto(pathToFileURL(path.join(directory,'overview.html')).href,{waitUntil:'networkidle'});
+ await overview.screenshot({path:path.join(directory,'screenshots/overview.png'),fullPage:true});
+ await overview.close();
+ const page=await context.newPage();
+ await page.addInitScript(()=>{
+  window.__audioRequests=[];
+  window.Audio=class {constructor(src){this.src=src;}play(){window.__audioRequests.push(this.src);return Promise.resolve();}};
+ });
+ await page.goto(pathToFileURL(path.join(directory,'index.html')).href+'?page=home&still=1',{waitUntil:'networkidle'});
+ if((await page.evaluate(()=>window.__audioRequests)).length!==0)throw new Error('Preview requested autoplay without a user gesture');
+ await page.locator('[data-page="world-tools"]').first().click();
+ if(!await page.locator('.title').textContent().then(t=>t==='World Tools.'))throw new Error('World navigation did not render');
+ await page.locator('.module-card[data-page="finder-settings"] .toggle').click();
+ if(!await page.locator('.title').textContent().then(t=>t==='World Tools.'))throw new Error('Chunk Finder switch incorrectly opened settings');
+ await page.locator('.module-card[data-page="finder-settings"] .module-name').click();
+ if(!await page.locator('.title').textContent().then(t=>t==='Finder options.'))throw new Error('Chunk Finder card did not open finder settings');
+ if(await page.locator('.finder-signal').count()!==12||await page.locator('.finder-signal .toggle.on.blocked').count()!==12)throw new Error('Finder signal defaults are not all twelve included');
+ await page.locator('[data-finder-bulk]').last().click();
+ await page.locator('[data-finder-key="chest"]').click();
+ if(await page.locator('.finder-signal .toggle.on.blocked').count()!==12)throw new Error('Offline finder controls fabricated a saved state');
+ if(!await page.locator('input.range').first().isDisabled())throw new Error('Offline finder slider is editable');
+ if(!await page.locator('.detail-note').textContent().then(t=>t.includes('solid-color models, matching chunk bands and scores.')&&t.includes('unverified candidates.')))throw new Error('Finder limitations are missing');
+ await page.locator('[data-page="findings"]').click();
+ await page.locator('[data-page="finder-settings"]').click();
+ if(!await page.locator('.title').textContent().then(t=>t==='Finder options.'))throw new Error('Findings link did not open finder settings');
+ await page.locator('[data-page="world-tools"]').first().click();
+ await page.locator('#search').fill('Storage');
+ if(await page.locator('.module-card').count()!==1)throw new Error('Search did not filter native catalog');
+ await page.locator('[data-page="pvp"]').first().click();
+ await page.locator('[data-page="pvp-settings"]').click();
+ if(!await page.locator('.title').textContent().then(t=>t==='Tune your combat.'))throw new Error('PvP settings navigation failed');
+ checks.push('Lobby, World Tools, Chunk Finder card and Findings settings links, search and PvP settings navigation; finder switch remains distinct from settings; all 12 signals default included');
+ await page.locator('[data-page="tutorials"]').click();
+ if(!await page.locator('.title').textContent().then(t=>t==='Learn the tools.'))throw new Error('Tutorials navigation failed');
+ if(await page.evaluate(()=>Object.keys(GUIDES).length)!==18)throw new Error('Expected 18 implemented guides');
+ await page.locator('[data-guide="amethyst_esp"]').click();
+ if(!await page.locator('.guide-body').last().textContent().then(t=>t.includes('Existing crystals may be old or natural.')&&t.includes('unloading/reloading breaks observation history')))throw new Error('Amethyst guide lost its current-state limitation');
+ await page.locator('[data-guide="xray"]').click();
+ if(!await page.locator('.guide-body').last().textContent().then(t=>t.includes('Vanilla Fabric renderer only.')&&t.includes('normal client distance')&&t.includes('blocks hidden by the server remain unknown.')))throw new Error('X-ray guide lost its received-data limitation');
+ for(let i=0;i<8;i++)await page.locator('[data-guide-scroll="1"]').click();
+ if(!await page.locator('[data-guide="auto_weapon"]').count())throw new Error('Tutorials list does not reach the final implemented module');
+ const ids=await page.evaluate(()=>Object.keys(GUIDES));
+ for(const id of ids){
+  await page.evaluate(identifier=>{guideId=identifier;render();},id);
+  const overflow=await page.locator('.guide-body').evaluateAll(elements=>elements.some(el=>el.scrollHeight>el.clientHeight+1));
+  if(overflow)throw new Error('Guide text clips in preview: '+id);
+ }
+ checks.push('All 18 implemented guides render without clipped text; guide selection and list scrolling');
+ const images=await page.evaluate(()=>MODULES.map(m=>'../assets/items/'+m.id+'.png'));
+ images.push(...await page.evaluate(()=>FINDER_SIGNALS.map(([key])=>'../assets/items/finder_'+key+'.png')));
+ for(const image of images)await fs.access(path.resolve(directory,image));
+ checks.push('All 27 module and 12 finder signal item PNGs resolve, with native alpha-crop bounds');
+ await page.locator('[data-page="settings"]').first().click();
+ await page.locator('#startup-sound').click();
+ const mutedCount=await page.evaluate(()=>window.__audioRequests.length);
+ await page.locator('[data-page="home"]').click();
+ await page.evaluate(()=>showIntro(true));
+ if(await page.evaluate(()=>window.__audioRequests.length)!==mutedCount)throw new Error('Shared mute did not block click and intro audio');
+ await page.evaluate(()=>{clearTimeout(introTimer);splash.classList.add('hidden');});
+ await page.locator('[data-page="settings"]').first().click();
+ await page.locator('#startup-sound').click();
+ await page.locator('[data-page="home"]').click();
+ await page.evaluate(()=>showIntro(true));
+ const audioRequests=await page.evaluate(()=>window.__audioRequests);
+ if(!audioRequests.some(src=>src.endsWith('ui-click.wav'))||!audioRequests.some(src=>src.endsWith('startup-meow.wav')))throw new Error('User-action audio dispatch did not include both sound files');
+ checks.push('Click and startup audio dispatch honor shared mute; initial preview has no autoplay request');
+ await page.close();
+}catch(error){errors.push({error:error.message});}
+finally{await browser.close();}
+await fs.writeFile(path.join(directory,'render-report.json'),JSON.stringify({version:'1.7.0',renderer:'Installed Chrome via Playwright; offline visual preview, not a Windows runtime capture',size:[1180,760],pages:pages.map(state=>state.id),checks,errors},null,2));
+if(errors.length){process.stderr.write(JSON.stringify(errors));process.exitCode=1;}

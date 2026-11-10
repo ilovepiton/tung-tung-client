@@ -1,0 +1,40 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.amethyst.finder.modules.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "CameraMixin",
+    "InvisPlayerMixin",
+    "MouseHandlerMixin",
+    "CursorMouseMixin",
+    "CursorWindowMixin",
+    "CrosshairStyleMixin",
+    "ItemStackGlintMixin",
+    "ArsenalBotInputMixin",
+    "BotActionTickMixin",
+    "ModuleKeybindMixin",
+    "FreecamInteractionMixin",
+    "MovementLifecycleMixin",
+    "PvpAcknowledgementMixin",
+    "PlayerTotemEventMixin",
+    "PvpManualUseMixin",
+    "LootProtectionMixin",
+    "PvpManualInputMixin",
+    "PvpManualMouseMixin",
+    "XraySectionMixin",
+    "XrayFacesMixin",
+    "XrayVisibilityMixin",
+    "XrayFluidMixin",
+    "XrayLightmapMixin",
+    "XrayFogMixin",
+    "GuiGraphicsAccessor",
+    "ChunkDirtyMixin",
+    "RiptideReleaseMixin",
+    "MaceDamageMixin",
+    "ElytraAlertMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

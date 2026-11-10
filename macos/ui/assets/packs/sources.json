@@ -1,0 +1,32 @@
+[
+  {
+    "variant": "black",
+    "source": "pack.png",
+    "upstreamSHA256": "7fe4f9427a039f884e84d7068b22067d14af4e35fb75c1bf76e7515ee2a0a2b4",
+    "imageSHA256": "fbd410bda78407ee839c1486607cc9b184cb2acc82d4b841aa0571563f9d51a9"
+  },
+  {
+    "variant": "white",
+    "source": "pack.png",
+    "upstreamSHA256": "82d0afbe8bbe97e8279f737cb7425d332571a242c6ba2093f4731f44f0e0a386",
+    "imageSHA256": "33c2c2295f8f144bf6cac1715a11f0a5097d0d0927108396879f92398038f6f7"
+  },
+  {
+    "variant": "purple",
+    "source": "pack.png",
+    "upstreamSHA256": "ee178028cc1c42c3fb99eec44a2adfa72f0f0c37d5df395c057f9d444381ac47",
+    "imageSHA256": "ab3db27e74a28a80b2e6987896b6fe54349e417c5ddb4d2d01db3e305fea80b9"
+  },
+  {
+    "variant": "classic",
+    "source": "pack.png",
+    "upstreamSHA256": "aff7570317795ebec0ff4a76140326570b2201d2bf6a85f98f5243602029429c",
+    "imageSHA256": "517ceadf64b885e235dbd98c513870067f2a0017d1d1bb02dd9e08df3a85be21"
+  },
+  {
+    "variant": "error",
+    "source": "pack.png",
+    "upstreamSHA256": "3c945816701f9a2924943208708b79dd4363d89d5553d9e1a588e2357643bbbc",
+    "imageSHA256": "0535da8f743506a8f497a3f66256ae53bf07ecbeedf1bdaf93eee73add8dcfc8"
+  }
+]

@@ -1,0 +1,281 @@
+{
+  "source": "https://piston-data.mojang.com/v1/objects/e877b6a07acd633fb3bb475002175cec036e7b87/client.jar",
+  "note": "Unmodified selected vanilla item/block PNGs. Minecraft artwork belongs to Mojang/Microsoft. No game installation or full client download.",
+  "items": [
+    {
+      "module": "chunk_finder",
+      "texture": "assets/minecraft/textures/item/amethyst_shard.png",
+      "bytes": 183,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "dc64feb12d553ec59b819534ae57b46e99ac95a3ab61cb71de317a5d7b857584"
+    },
+    {
+      "module": "storage_esp",
+      "texture": "assets/minecraft/textures/item/chest_minecart.png",
+      "bytes": 265,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "2ed9c4cf90de90086a7aa5376f74087c050ab2713c500c73f721b60a5c7da7ab"
+    },
+    {
+      "module": "player_esp",
+      "texture": "assets/minecraft/textures/item/ender_eye.png",
+      "bytes": 213,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "95843c3a2fc9bf92359f304617cc9a3905d955796c53dd3c8f6958a04dff3c82"
+    },
+    {
+      "module": "amethyst_esp",
+      "texture": "assets/minecraft/textures/block/amethyst_cluster.png",
+      "bytes": 202,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "1dc3ee2f06ed48824d698bfa06de38e2f1d12dedd5f5f5e2956abc8e620e6918"
+    },
+    {
+      "module": "freecam",
+      "texture": "assets/minecraft/textures/item/elytra.png",
+      "bytes": 199,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "7a83137eea9fd1e1eb75906cb573a277a90cc0796e2aa2a04d0605abc5b21717"
+    },
+    {
+      "module": "freelook",
+      "texture": "assets/minecraft/textures/item/spyglass.png",
+      "bytes": 206,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "8c068d097c8e9693eff9bdf1b9fdc9910e7b6365d3d60594ee14005732e91423"
+    },
+    {
+      "module": "auto_totem",
+      "texture": "assets/minecraft/textures/item/totem_of_undying.png",
+      "bytes": 205,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "5b713e2f41ddb310b024751a66a6ecc80714e4874070b77e2f0905a74788b565"
+    },
+    {
+      "module": "auto_crystal",
+      "texture": "assets/minecraft/textures/item/end_crystal.png",
+      "bytes": 219,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "e91e697f2ec866835bf63fc4062bf69cc396c8048e1141b5c7dcb5de1a238d73"
+    },
+    {
+      "module": "auto_anchor",
+      "texture": "assets/minecraft/textures/block/respawn_anchor_top.png",
+      "bytes": 5839,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "d457b9127d8fd24f685db03b848bc7fc76465aff667f11713aa9dcc1462e27e4"
+    },
+    {
+      "module": "auto_gapple",
+      "texture": "assets/minecraft/textures/item/golden_apple.png",
+      "bytes": 200,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "a5880840585b9e8bf3e50e8002500d81204028215e341500d30ac31c8f0e96d6"
+    },
+    {
+      "module": "trigger_bot",
+      "texture": "assets/minecraft/textures/item/crossbow_standby.png",
+      "bytes": 228,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "6ea28ffcdf20314406cfaddcf9c1684523ff27211a482e6a709c2bd4543bb468"
+    },
+    {
+      "module": "auto_weapon",
+      "texture": "assets/minecraft/textures/item/netherite_sword.png",
+      "bytes": 203,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "8f1584739b0c4e9aa09f901bdfc9251a0a6fa1e0172b8c2a5a869e9fbaf25906"
+    },
+    {
+      "module": "killaura",
+      "texture": "assets/minecraft/textures/item/diamond_sword.png",
+      "bytes": 194,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "5634a8cb79a70beb306210de9ec492fc2d4dc8f739372683e9882ef06bf63008"
+    },
+    {
+      "module": "player_chunks",
+      "texture": "assets/minecraft/textures/item/map.png",
+      "bytes": 209,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "37b9cf1f6501ab13590ffa7d1e5f8f8616ba10467f65332279ead786d119cfd0"
+    },
+    {
+      "module": "base_chunks",
+      "texture": "assets/minecraft/textures/item/brick.png",
+      "bytes": 178,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "e99b08880e41cc4e0de8f29b3f9332b7e498aefe67dc540e06ec77990c2b1fee"
+    },
+    {
+      "module": "player_detection",
+      "texture": "assets/minecraft/textures/item/compass_16.png",
+      "bytes": 205,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "f0c1a41cc50cf5e2a3e2bc0477ab063c682cc8498e41ab0b643b4719e8d80ea8"
+    },
+    {
+      "module": "spawner_chunks",
+      "texture": "assets/minecraft/textures/block/spawner.png",
+      "bytes": 207,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "e228d0554328a65f62d2f11054e9b9307a09616ab8b31b70e2483e77bb68b0b4"
+    },
+    {
+      "module": "xray",
+      "texture": "assets/minecraft/textures/item/diamond_pickaxe.png",
+      "bytes": 181,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "dfec8e1467b335133521a42c8fde0f124ba7b5c45c0a84fba789736df4f92325"
+    },
+    {
+      "module": "flight",
+      "texture": "assets/minecraft/textures/item/feather.png",
+      "bytes": 135,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "36e6f12de8ddabd5c1f58c2b99feb2be4f1a13a46a74525e68a06a3e7cf88cd1"
+    },
+    {
+      "module": "noclip",
+      "texture": "assets/minecraft/textures/item/ender_pearl.png",
+      "bytes": 206,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "ff40529856c82317ce24cec4ba384971f56aec0f8ce3756e059d2eb17f3b310a"
+    },
+    {
+      "module": "boat_fly",
+      "texture": "assets/minecraft/textures/item/oak_boat.png",
+      "bytes": 215,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "7ea5445b3ae6af56f82abeb89d5fc6a462ab8eee711a2ae1b4ec272ff54544b6"
+    },
+    {
+      "module": "fast_swim",
+      "texture": "assets/minecraft/textures/item/tropical_fish.png",
+      "bytes": 197,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "5bac57a75a250059b2ce03d3196c8f7c7baad8cf2522ee2779fb537c261f3cd1"
+    },
+    {
+      "module": "super_trident",
+      "texture": "assets/minecraft/textures/item/trident.png",
+      "bytes": 166,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "2bb1397727939c03c0c5c87307e91b41246e8ffd1b0ceddd73c7cc40bb9cf19d"
+    },
+    {
+      "module": "anti_kick",
+      "texture": "assets/minecraft/textures/item/totem_of_undying.png",
+      "bytes": 205,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "5b713e2f41ddb310b024751a66a6ecc80714e4874070b77e2f0905a74788b565"
+    },
+    {
+      "module": "deepslate_bypass",
+      "texture": "assets/minecraft/textures/block/deepslate.png",
+      "bytes": 181,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "dc72c722bec23c929817fab7cc56e08e5e828ae3607fbfb7e7730e68b67d4cfc"
+    },
+    {
+      "module": "donut_flight_bypass",
+      "texture": "assets/minecraft/textures/item/elytra.png",
+      "bytes": 199,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "7a83137eea9fd1e1eb75906cb573a277a90cc0796e2aa2a04d0605abc5b21717"
+    },
+    {
+      "module": "auction_sniper",
+      "texture": "assets/minecraft/textures/item/gold_ingot.png",
+      "bytes": 187,
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87",
+      "sha256": "e4c1e2ea6d1fa70299163ebff573b4bfda1ef09099bedc4b5789c598f0a65738"
+    }
+  ],
+  "finder_targets": [
+    {
+      "target": "chest",
+      "texture": "assets/minecraft/textures/item/chest_minecart.png",
+      "bytes": 265,
+      "sha256": "2ed9c4cf90de90086a7aa5376f74087c050ab2713c500c73f721b60a5c7da7ab",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    },
+    {
+      "target": "spawner",
+      "texture": "assets/minecraft/textures/block/spawner.png",
+      "bytes": 207,
+      "sha256": "e228d0554328a65f62d2f11054e9b9307a09616ab8b31b70e2483e77bb68b0b4",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    },
+    {
+      "target": "barrel",
+      "texture": "assets/minecraft/textures/block/barrel_side.png",
+      "bytes": 204,
+      "sha256": "30f31d8cecfbd44412af13983eee56220bcffbf7ce8dd5a948f1ab73c98d8dc8",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    },
+    {
+      "target": "shulker",
+      "texture": "assets/minecraft/textures/item/shulker_shell.png",
+      "bytes": 188,
+      "sha256": "b39fa843deb1dbd9774e2d39c80f6ae602f2945e2129e2c0c86741b8d4e1be63",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    },
+    {
+      "target": "ender_chest",
+      "texture": "assets/minecraft/textures/item/ender_eye.png",
+      "bytes": 213,
+      "sha256": "95843c3a2fc9bf92359f304617cc9a3905d955796c53dd3c8f6958a04dff3c82",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    },
+    {
+      "target": "hopper",
+      "texture": "assets/minecraft/textures/block/hopper_top.png",
+      "bytes": 155,
+      "sha256": "b6bb8d17e0fe5fc1ddcf8a9f4584d3844015629062876243850a079d506a243a",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    },
+    {
+      "target": "furnace",
+      "texture": "assets/minecraft/textures/block/furnace_front.png",
+      "bytes": 224,
+      "sha256": "aae808f71f1bddf4a25592f7dd3d7f6e9b3adaa739502170766424f4eb6bf9c5",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    },
+    {
+      "target": "crafting",
+      "texture": "assets/minecraft/textures/block/crafting_table_top.png",
+      "bytes": 203,
+      "sha256": "251e8aa014e30d040261022895853db3204bba241b9b44c11762628550986f2d",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    },
+    {
+      "target": "enchanting",
+      "texture": "assets/minecraft/textures/item/book.png",
+      "bytes": 198,
+      "sha256": "8b851a52e2a5d81fa925774f0df30040bc86411c8c86d3d69495486adcd2a046",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    },
+    {
+      "target": "anvil",
+      "texture": "assets/minecraft/textures/block/anvil_top.png",
+      "bytes": 165,
+      "sha256": "757d6f79099583c159e3f95e9981efe0b16b524bed90739ae213142ad40fad26",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    },
+    {
+      "target": "beacon",
+      "texture": "assets/minecraft/textures/item/nether_star.png",
+      "bytes": 186,
+      "sha256": "1378e77a3ff64e219a3fa7d5812340a4b4c96c7b2066b728df1940a4f61b89f1",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    },
+    {
+      "target": "armor_stand",
+      "texture": "assets/minecraft/textures/item/armor_stand.png",
+      "bytes": 184,
+      "sha256": "54d95c69cf2bb9e566c6a013c8258bd44e998de5d0578fc79acb8d16b38b1c8a",
+      "source_client_sha1": "e877b6a07acd633fb3bb475002175cec036e7b87"
+    }
+  ]
+}

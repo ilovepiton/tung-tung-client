@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tung Tung Client — offline visual preview</title>
+<link rel="stylesheet" href="preview.css">
+</head>
+<body>
+<div id="viewport"><main id="app" aria-label="Tung Tung Client offline visual preview"></main></div>
+<div id="splash" class="splash" aria-label="Startup visual preview">
+  <img class="intro-logo" src="../assets/logo.png" alt="Tung Tung Client">
+  <img class="intro-dancer dancer" src="../assets/dancer.png" alt="Dancing Tung Tung character">
+  <div class="intro-caption">Welcome to your client.</div>
+  <button class="intro-continue" id="continue-intro">P / ESC · SKIP INTRO</button><button class="intro-close" id="intro-close">×</button>
+  <span class="intro-preview">OFFLINE VISUAL PREVIEW</span>
+</div>
+<div id="toast" role="status"></div><div id="preview-tools"><button id="replay-intro">Replay intro · Preview</button><a href="gallery.html">All page previews</a></div>
+<script src="asset-bounds.js"></script><script src="catalog.js"></script><script src="finder-signals.js"></script><script src="tutorials-data.js"></script><script src="preview.js"></script>
+</body></html>

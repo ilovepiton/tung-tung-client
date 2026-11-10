@@ -1,0 +1,44 @@
+TUNG TUNG CLIENT 1.30.1 — WINDOWS QUICK START
+Minecraft Java 26.3 / Fabric Loader 0.19.5 / Java 25
+
+1. Extract the ENTIRE archive to a normal folder.
+2. Run START-TUNG-TUNG-CLIENT.cmd or Tung-Tung-Client.exe.
+3. Close Minecraft and Minecraft Launcher.
+4. Control center > CHOOSE MINECRAFT FOLDER: choose %APPDATA%\.minecraft
+   for the official Launcher, or the minecraft folder of your Prism instance.
+5. Click INSTALL FABRIC CORE and wait for success.
+6. Minecraft Launcher > Tung Tung Client 26.3 > Play > join a world.
+7. Return to the desktop app and verify the core is connected.
+
+MAP ART
+World Tools > Visual > Client Maps / Map in Slot.
+Both default on in the core. Each card has its own toggle and keybind settings.
+Client Maps saves received map pixels per server; Map in Slot previews maps in
+inventory slots. Map in Slot is adapted to obey the Tung Tung runtime switch.
+
+VOICE CHAT
+Press V in Minecraft, choose the microphone and run its test. The server must
+also support Simple Voice Chat. Windows microphone access must be enabled.
+
+UPDATES
+Close the app, game and Launcher; extract the next complete release; run its
+INSTALL FABRIC CORE again, then restart the game. Updating only the desktop
+app does not replace a loaded game core. Keep worlds, config and .client_maps.
+This release has manual updates; an automatic updater is a future plan.
+
+TROUBLESHOOTING
+CORE DISCONNECTED: launch the correct Fabric profile and check its folder.
+Old version in footer: close the old app and open the new EXE.
+Incompatible client: choose a supported server protocol with ViaFabricPlus
+when installed, or use a compatible Minecraft profile.
+
+REQUIREMENTS AND CHECKS
+Windows 10/11 x64, .NET Framework 4.8 and Microsoft WebView2.
+Keep DLLs, ui and payload beside the EXE. A Microsoft WebView2 installer is
+included. This build is cross-compiled on Mac; Windows runtime/gameplay has
+not been tested on a real Windows computer.
+
+P and Escape do not hide the desktop app. Individual in-game module bindings
+are configured separately. Optional downloads require an Internet connection.
+See Instructions in the shareable distribution for the Russian easy guide,
+changelog and future plans. Licenses are in licenses/.

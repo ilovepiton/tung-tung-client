@@ -1,0 +1,498 @@
+{
+  "schema": 1,
+  "title": "Tung Tung Roblox original UI icons",
+  "license": "MIT for original SVG icon sources and rendered icons; original generated mascot asset included for Tung Tung Client.",
+  "generator": ".tools/build-roblox-icons.mjs",
+  "style": "Copper and blue original vector UI art rendered as transparent PNG; no external logos or textures.",
+  "icons": [
+    {
+      "id": "game",
+      "file": "game.png",
+      "source": "source/game.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 25238,
+      "opaquePixels": 8360,
+      "antialiasedPixels": 3266,
+      "alphaBounds": [
+        36,
+        33,
+        164,
+        171
+      ],
+      "sha256": "98b484e2a5b93bbbb330527fc1c06da8eb3908806b8e464ce606a8d0b217f57b",
+      "bytes": 9377
+    },
+    {
+      "id": "fly",
+      "file": "fly.png",
+      "source": "source/fly.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 21548,
+      "opaquePixels": 8748,
+      "antialiasedPixels": 6568,
+      "alphaBounds": [
+        6,
+        3,
+        166,
+        188
+      ],
+      "sha256": "c7d06c6bdf5da23ad359b5522bc021c52e4946d81781e0fb4608f93dca243713",
+      "bytes": 20563
+    },
+    {
+      "id": "noclip",
+      "file": "noclip.png",
+      "source": "source/noclip.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 23126,
+      "opaquePixels": 5394,
+      "antialiasedPixels": 8344,
+      "alphaBounds": [
+        22,
+        28,
+        166,
+        163
+      ],
+      "sha256": "1bcd4bccfe304ec873ff604fefde6686ff4dabd8190227bb6cd42ea3cb5cfb2e",
+      "bytes": 18898
+    },
+    {
+      "id": "speed",
+      "file": "speed.png",
+      "source": "source/speed.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 24025,
+      "opaquePixels": 6490,
+      "antialiasedPixels": 6349,
+      "alphaBounds": [
+        10,
+        27,
+        171,
+        183
+      ],
+      "sha256": "13b4c284cc2f85d41710ba919d27f23d4cc7d7f7db0d9515fd27ca35ab8643d8",
+      "bytes": 12382
+    },
+    {
+      "id": "super_jump",
+      "file": "super_jump.png",
+      "source": "source/super_jump.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 24600,
+      "opaquePixels": 5919,
+      "antialiasedPixels": 6345,
+      "alphaBounds": [
+        18,
+        3,
+        145,
+        176
+      ],
+      "sha256": "f7b01d5f1d7f0093b892f69164fd7e1cda5ed2bf0dc415a4b73b77913f80f5ff",
+      "bytes": 12138
+    },
+    {
+      "id": "low_gravity",
+      "file": "low_gravity.png",
+      "source": "source/low_gravity.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 24057,
+      "opaquePixels": 6352,
+      "antialiasedPixels": 6455,
+      "alphaBounds": [
+        16,
+        24,
+        170,
+        181
+      ],
+      "sha256": "a37955ac40de98418e54f292377e03f862bbab05e06568041f9d2dd0f735b7a4",
+      "bytes": 15248
+    },
+    {
+      "id": "dash",
+      "file": "dash.png",
+      "source": "source/dash.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 25585,
+      "opaquePixels": 5968,
+      "antialiasedPixels": 5311,
+      "alphaBounds": [
+        18,
+        40,
+        174,
+        172
+      ],
+      "sha256": "0ac947bf91addf7302c7c8654cabae23bf4009c43f39d2c895bab66a16457b85",
+      "bytes": 9795
+    },
+    {
+      "id": "double_jump",
+      "file": "double_jump.png",
+      "source": "source/double_jump.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 25687,
+      "opaquePixels": 5297,
+      "antialiasedPixels": 5880,
+      "alphaBounds": [
+        18,
+        0,
+        162,
+        180
+      ],
+      "sha256": "940789b10f71b0ab4528a6a69859e731ac9ed3d15e9ae2e93ffad7ae9e4ced3f",
+      "bytes": 12487
+    },
+    {
+      "id": "air_jump",
+      "file": "air_jump.png",
+      "source": "source/air_jump.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 24179,
+      "opaquePixels": 6727,
+      "antialiasedPixels": 5958,
+      "alphaBounds": [
+        16,
+        1,
+        153,
+        179
+      ],
+      "sha256": "254d2a00bc2a68d26e8780719100ae69489367ae1f8b791c5a47565e6622b568",
+      "bytes": 12939
+    },
+    {
+      "id": "self_fling",
+      "file": "self_fling.png",
+      "source": "source/self_fling.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 22685,
+      "opaquePixels": 6616,
+      "antialiasedPixels": 7563,
+      "alphaBounds": [
+        19,
+        27,
+        175,
+        170
+      ],
+      "sha256": "93b529f957ecf7f73b7e48c1b6596af94b674a2fc348dfccd680d3549b2eaa37",
+      "bytes": 21692
+    },
+    {
+      "id": "friend_fling",
+      "file": "friend_fling.png",
+      "source": "source/friend_fling.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 23635,
+      "opaquePixels": 6625,
+      "antialiasedPixels": 6604,
+      "alphaBounds": [
+        15,
+        28,
+        184,
+        160
+      ],
+      "sha256": "a2fe924e485515b7926fed472833066650ba6fb7578072c1056386af858177a6",
+      "bytes": 20777
+    },
+    {
+      "id": "slide",
+      "file": "slide.png",
+      "source": "source/slide.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 24768,
+      "opaquePixels": 6545,
+      "antialiasedPixels": 5551,
+      "alphaBounds": [
+        16,
+        42,
+        170,
+        173
+      ],
+      "sha256": "3e195eda295dede39d1c2514c7a4cc41b2227f10175b6f95b2d5addba20ed452",
+      "bytes": 11052
+    },
+    {
+      "id": "spin",
+      "file": "spin.png",
+      "source": "source/spin.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 24209,
+      "opaquePixels": 6085,
+      "antialiasedPixels": 6570,
+      "alphaBounds": [
+        15,
+        14,
+        170,
+        182
+      ],
+      "sha256": "07ad1c759a39835a4d95a07919d9569e32e9552c312f9c3e81eff2dd6f288049",
+      "bytes": 16902
+    },
+    {
+      "id": "freeze",
+      "file": "freeze.png",
+      "source": "source/freeze.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 22479,
+      "opaquePixels": 11609,
+      "antialiasedPixels": 2776,
+      "alphaBounds": [
+        26,
+        32,
+        166,
+        167
+      ],
+      "sha256": "66988f2abf7c58c4b9cd777ec50cf115052ceec534283c2fcadebbf870f2390a",
+      "bytes": 12161
+    },
+    {
+      "id": "respawn",
+      "file": "respawn.png",
+      "source": "source/respawn.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 23945,
+      "opaquePixels": 6213,
+      "antialiasedPixels": 6706,
+      "alphaBounds": [
+        18,
+        28,
+        175,
+        177
+      ],
+      "sha256": "a50d835f516112fa3fa1ad6fd1768808bd4dcfbb6ac18c2df9393cb9dab8d991",
+      "bytes": 14474
+    },
+    {
+      "id": "return_spawn",
+      "file": "return_spawn.png",
+      "source": "source/return_spawn.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 19772,
+      "opaquePixels": 11751,
+      "antialiasedPixels": 5341,
+      "alphaBounds": [
+        17,
+        32,
+        185,
+        171
+      ],
+      "sha256": "9f14f87929e9f84f3dc6d3260294b61b05687e007e47171531c3115519b735a9",
+      "bytes": 13296
+    },
+    {
+      "id": "spectate",
+      "file": "spectate.png",
+      "source": "source/spectate.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 23242,
+      "opaquePixels": 9512,
+      "antialiasedPixels": 4110,
+      "alphaBounds": [
+        8,
+        9,
+        184,
+        190
+      ],
+      "sha256": "b909af030da4d651ec0837c8f2a927a44eca172afb96dcd726f9707da4af4779",
+      "bytes": 12867
+    },
+    {
+      "id": "freecam",
+      "file": "freecam.png",
+      "source": "source/freecam.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 22439,
+      "opaquePixels": 10496,
+      "antialiasedPixels": 3929,
+      "alphaBounds": [
+        22,
+        28,
+        175,
+        152
+      ],
+      "sha256": "5200f529bbb7d2ac1de26393afc14080c38c88f0618de2ae22d3f529378bdfca",
+      "bytes": 10979
+    },
+    {
+      "id": "fov",
+      "file": "fov.png",
+      "source": "source/fov.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 24978,
+      "opaquePixels": 7309,
+      "antialiasedPixels": 4577,
+      "alphaBounds": [
+        16,
+        31,
+        176,
+        176
+      ],
+      "sha256": "053a614efb44347a919c9fc9cf578e0258bc0c0976e9bc2a0caa1e1aed2d81cc",
+      "bytes": 11847
+    },
+    {
+      "id": "fullbright",
+      "file": "fullbright.png",
+      "source": "source/fullbright.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 26169,
+      "opaquePixels": 5188,
+      "antialiasedPixels": 5507,
+      "alphaBounds": [
+        3,
+        7,
+        189,
+        192
+      ],
+      "sha256": "d7d56846bd7ca88c4280302ac6afa0ba535e81d8fbab5c1c7153be60ec04fe60",
+      "bytes": 9690
+    },
+    {
+      "id": "sunset",
+      "file": "sunset.png",
+      "source": "source/sunset.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 22807,
+      "opaquePixels": 7958,
+      "antialiasedPixels": 6099,
+      "alphaBounds": [
+        20,
+        13,
+        172,
+        171
+      ],
+      "sha256": "e15d8f37bbe2d366b7d2374f50c46dbea4235a144ebdf396ecfd5f856a4ec1da",
+      "bytes": 9701
+    },
+    {
+      "id": "bloom",
+      "file": "bloom.png",
+      "source": "source/bloom.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 24256,
+      "opaquePixels": 3647,
+      "antialiasedPixels": 8961,
+      "alphaBounds": [
+        6,
+        10,
+        186,
+        188
+      ],
+      "sha256": "e4b2e9c09538d1d6d1ab38b1dff5f6df1b0998f46f6194402d3836d4f75620c7",
+      "bytes": 21780
+    },
+    {
+      "id": "depth_of_field",
+      "file": "depth_of_field.png",
+      "source": "source/depth_of_field.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 18673,
+      "opaquePixels": 12861,
+      "antialiasedPixels": 5330,
+      "alphaBounds": [
+        16,
+        21,
+        178,
+        176
+      ],
+      "sha256": "01516035d1ed381da60890779b6594dcb33897cc9cddfe2f41cb42d32d84970d",
+      "bytes": 16886
+    },
+    {
+      "id": "color_grade",
+      "file": "color_grade.png",
+      "source": "source/color_grade.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 22500,
+      "opaquePixels": 10877,
+      "antialiasedPixels": 3487,
+      "alphaBounds": [
+        26,
+        30,
+        175,
+        168
+      ],
+      "sha256": "da6d448c1039d382869a7b6177d0f4840fbff842f7269f783785222a012063ad",
+      "bytes": 11031
+    },
+    {
+      "id": "trails",
+      "file": "trails.png",
+      "source": "source/trails.svg",
+      "width": 192,
+      "height": 192,
+      "channels": 4,
+      "transparentPixels": 25590,
+      "opaquePixels": 4968,
+      "antialiasedPixels": 6306,
+      "alphaBounds": [
+        10,
+        16,
+        157,
+        178
+      ],
+      "sha256": "ae92fb39cd4a2cb8e562b95fe181b4c5f6c2d5f2f0ec00b9e74e5868365f6d76",
+      "bytes": 15727
+    }
+  ],
+  "hero": {
+    "file": "hero.png",
+    "width": 1222,
+    "height": 1287,
+    "channels": 4,
+    "transparentPixels": 983391,
+    "opaquePixels": 782,
+    "antialiasedPixels": 588541,
+    "sha256": "99593afe48b4dd387cff04b763a0f7d32f37d568491fbc488b380005fa5668c6",
+    "bytes": 1162335,
+    "method": "Built-in image_gen transparent-background generation",
+    "source": "/Users/klim/.codex/generated_images/01a17890-ad04-7112-bc29-7245a42528ca/exec-a91fd069-2ed8-4626-9c96-41e6a116d0a9.png",
+    "promptSummary": "Original flying blue-shirt block-avatar with brown wood hair and copper jetpack; full-body transparent premium toy-like 3D render; no logos, text, scenery or watermark."
+  }
+}

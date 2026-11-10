@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "purpose": "Recognizable platform marks for the game selector",
+  "generator": ".tools/sidebar-platforms-1.29.1/build-assets.mjs",
+  "note": "Code-native redraws of third-party platform marks. All trademarks belong to their respective owners.",
+  "icons": [
+    {
+      "id": "roblox",
+      "file": "roblox.png",
+      "source": "source/roblox.svg",
+      "width": 128,
+      "height": 128,
+      "transparentPixels": 8659,
+      "solidPixels": 7152,
+      "bytes": 1809,
+      "sha256": "9b9a10913887b2484c36bb0572bf8ba7d5255682ffee4663730638dd28028d29"
+    },
+    {
+      "id": "twitch",
+      "file": "twitch.png",
+      "source": "source/twitch.svg",
+      "width": 128,
+      "height": 128,
+      "transparentPixels": 6520,
+      "solidPixels": 9776,
+      "bytes": 755,
+      "sha256": "0ca512d8884f71fe84362ccda1024a249375c2d34001b3923875052ca09ab3a6"
+    },
+    {
+      "id": "youtube",
+      "file": "youtube.png",
+      "source": "source/youtube.svg",
+      "width": 128,
+      "height": 128,
+      "transparentPixels": 7680,
+      "solidPixels": 8383,
+      "bytes": 1276,
+      "sha256": "d9f804c79a6fa8b96d93123507170e211749c5733eae9583d9d13df3947c11de"
+    },
+    {
+      "id": "tiktok",
+      "file": "tiktok.png",
+      "source": "source/tiktok.svg",
+      "width": 128,
+      "height": 128,
+      "transparentPixels": 11059,
+      "solidPixels": 5006,
+      "bytes": 3284,
+      "sha256": "44cf3977b7ba3592c324a597d894046c65bc3630593b5a0221c7515a698adc31"
+    },
+    {
+      "id": "kick",
+      "file": "kick.png",
+      "source": "source/kick.svg",
+      "width": 128,
+      "height": 128,
+      "transparentPixels": 9520,
+      "solidPixels": 6864,
+      "bytes": 394,
+      "sha256": "eb199b925827c26f03d3ed68e8dae3e724beedd2188a091dc96039c56d33ee08"
+    }
+  ]
+}

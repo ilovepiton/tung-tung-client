@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "amethyst_chunk_finder",
+  "version": "${version}",
+  "name": "Tung Tung Client Bridge",
+  "description": "Scoped persistent chunk observations, red storage chunks, purple amethyst growth, observed structure evidence, current player/spawner chunks and in-game analysis.",
+  "authors": [
+    "Klim"
+  ],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.amethyst.finder.ChunkFinderClient"
+    ],
+    "voicechat": [
+      "dev.amethyst.finder.audio.VoiceInputPlugin"
+    ]
+  },
+  "mixins": [
+    "tuntun.modules.mixins.json",
+    "tuntun.voice.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "26.3",
+    "java": ">=25",
+    "fabric-api": ">=0.162.0"
+  }
+}

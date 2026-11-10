@@ -1,0 +1,33 @@
+TUNG TUNG CLIENT 1.12.0 — BUILT-IN MAC MICROPHONE FIX
+
+The included Simple Voice Chat mod is the unmodified official
+voicechat-fabric-2.6.24+26.3.jar (upstream beta).
+
+Use the normal Minecraft Launcher with your existing account:
+1. Open Tung Tung Client → Microphone.
+2. Quit Minecraft Launcher and click Apply microphone fix.
+3. Open Launcher, select Tung Tung Client 26.3 and Play.
+4. When macOS asks, allow Tung Tung Minecraft to use your microphone.
+5. In-game press V, select the input device and test your microphone.
+
+The client changes only the Java executable of its own Launcher profile.
+The Launcher still authenticates you. A bundled native Mac helper starts
+that Java process, allowing macOS to show its normal microphone prompt.
+The original launcher profiles are backed up in:
+~/Library/Application Support/Tung Tung Client/voice-backups/
+
+If you previously denied access, use the Open Mac Microphone Settings
+button and enable Tung Tung Minecraft, then restart Minecraft.
+The currently running game needs one restart to use this launch path.
+
+Multiplayer proximity voice also requires a compatible configured server
+and a reachable voice connection. This fix does not add server voice support.
+The desktop companion does not record microphone audio. The game uses
+Simple Voice Chat's own device selection, mute and microphone test controls.
+
+The optional Prism import profile remains available as an alternative:
+Tung-Tung-Client-1.14.0-Voice-Chat-Prism.zip
+The ordinary Launch Minecraft button continues to open Minecraft Launcher.
+
+Upstream microphone background:
+https://modrepo.de/minecraft/voicechat/wiki/macos

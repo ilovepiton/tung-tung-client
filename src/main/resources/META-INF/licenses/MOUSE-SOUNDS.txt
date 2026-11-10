@@ -1,0 +1,36 @@
+Seven recorded physical mouse clicks. CC0-1.0. No synthesized sounds.
+
+click01: Orochi V2 Left by Sadiquecat
+https://raw.githubusercontent.com/kamillobinski/thock-soundpacks/213e1443c5005a99d5e51b46e31e17f30e4d752a/mouse/razer/sadiquecat/orochi_v2/3222385c-d428-4d98-8ce9-1cbc992c3373.zip
+Source SHA256: 5a5268f08ae469622bd5d7eb3ef7ee729d3aa0c31d7479dd70c0f2ce88add8fb
+First recorded impact; silence trimming, mono/resample, bounded gain, 1ms edge fades. No synthesis.
+
+click02: Orochi V2 Right by Sadiquecat
+https://raw.githubusercontent.com/kamillobinski/thock-soundpacks/213e1443c5005a99d5e51b46e31e17f30e4d752a/mouse/razer/sadiquecat/orochi_v2/3222385c-d428-4d98-8ce9-1cbc992c3373.zip
+Source SHA256: 149322a06c61839615ce47d119879f96537c5afe0eb962637ef704cb2de75886
+First recorded impact; silence trimming, mono/resample, bounded gain, 1ms edge fades. No synthesis.
+
+click03: Middle Button by 1j01
+https://opengameart.org/content/middle-mouse-click
+Source SHA256: 8a0ec2e7341f70b33f0802aadeb6a0689aed893048a600bfd46b1a6716fbe8fe
+First recorded impact; silence trimming, mono/resample, bounded gain, 1ms edge fades. No synthesis.
+
+click04: NEC ECM-S5002 by Darklanlan
+https://commons.wikimedia.org/wiki/File:Computer_mouse_single_click.ogg
+Source SHA256: a7922e8fc27b708f5cfb70a31333cb017514528b6a2cb4ee2ca1721606b37943
+First recorded impact; silence trimming, mono/resample, bounded gain, 1ms edge fades. No synthesis.
+
+click05: Raspberry Pi by Joseph SARDIN
+https://bigsoundbank.com/raspberry-mouse-single-click-s1735.html
+Source SHA256: e476a4526e7da72cae5090cbbb02b217fef77fda17ad5e067bc65ea42a39bcde
+First recorded impact; silence trimming, mono/resample, bounded gain, 1ms edge fades. No synthesis.
+
+click06: Studio Mouse by Joseph SARDIN
+https://bigsoundbank.com/computer-mouse-s0029.html
+Source SHA256: 142ff8d7629027faea244f537d6a7dbcdcbde0128af324b8ddd23706266acfab
+First recorded impact; silence trimming, mono/resample, bounded gain, 1ms edge fades. No synthesis.
+
+click07: DeathAdder Essential by Katsuhira
+https://freesound.org/people/Katsuhira/sounds/555394/
+Source SHA256: 96fe850f26500abcbb592d6b8ce1b388234a6c860a0d76c8285557febee75dd7
+First recorded impact; silence trimming, mono/resample, bounded gain, 1ms edge fades. No synthesis.

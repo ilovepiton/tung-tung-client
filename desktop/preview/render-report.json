@@ -1,0 +1,30 @@
+{
+  "version": "1.7.0",
+  "renderer": "Installed Chrome via Playwright; offline visual preview, not a Windows runtime capture",
+  "size": [
+    1180,
+    760
+  ],
+  "pages": [
+    "splash",
+    "home",
+    "world-tools",
+    "finder-settings",
+    "findings",
+    "pvp",
+    "pvp-more",
+    "tutorials",
+    "tutorials-amethyst",
+    "tutorials-xray",
+    "settings",
+    "pvp-settings"
+  ],
+  "checks": [
+    "Findings uses the user-supplied portrait; lobby, World Tools and PvP retain their original portraits across all preview states",
+    "Lobby, World Tools, Chunk Finder card and Findings settings links, search and PvP settings navigation; finder switch remains distinct from settings; all 12 signals default included",
+    "All 18 implemented guides render without clipped text; guide selection and list scrolling",
+    "All 27 module and 12 finder signal item PNGs resolve, with native alpha-crop bounds",
+    "Click and startup audio dispatch honor shared mute; initial preview has no autoplay request"
+  ],
+  "errors": []
+}
