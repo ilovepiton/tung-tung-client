@@ -4,11 +4,11 @@ License declared by the official mod: All Rights Reserved.
 This local personal bundle contains the unmodified official Fabric mod.
 Simple Voice Chat is a separate project and is not authored by Tung Tung Client.
 
-Version: 2.6.24+26.3 (Fabric, Modrinth beta release)
-Modrinth version ID: OLnMVWXy
+Version: 2.6.27+26.3 (Fabric, Modrinth beta release)
+Modrinth version ID: x9jLR94Q
 Minecraft: 26.3.x; Java: 25+; Fabric Loader: 0.19.3+.
 The combined profile uses Loader 0.19.5 and Fabric API 0.162.0+26.3.
-SHA-256: 97074fa1d094a22f17d5ac11282176965a45137950b66627d3813618810c3d00
+SHA-256: 9e1c93144a3f7498e546102f6786aea6e4992866c4c5d21bd2e0edb702399153
 Official download: https://modrinth.com/plugin/simple-voice-chat/versions
 Official documentation: https://modrepo.de/minecraft/voicechat/wiki/installation
 Source and project terms: https://github.com/henkelmax/simple-voice-chat

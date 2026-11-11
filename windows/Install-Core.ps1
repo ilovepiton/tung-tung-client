@@ -36,7 +36,7 @@ function Install-TunTun {
         throw 'Minecraft Launcher profiles were not found. Open the official Launcher once, close it, and select its .minecraft folder.'
     }
     $manifest = Get-Content -LiteralPath (Join-Path $BundlePath 'manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-    if (!$manifest -or !$manifest.PSObject.Properties['files'] -or @($manifest.files).Count -eq 0 -or !$manifest.PSObject.Properties['version'] -or $manifest.version -ne '1.30.3' -or !$manifest.PSObject.Properties['gameCoreVersion'] -or $manifest.gameCoreVersion -ne '1.30.3' -or !$manifest.PSObject.Properties['minecraft'] -or $manifest.minecraft -ne '26.3') { throw 'The ZIP manifest must describe desktop and Fabric Core 1.30.3 for Minecraft 26.3. Extract a fresh complete copy.' }
+    if (!$manifest -or !$manifest.PSObject.Properties['files'] -or @($manifest.files).Count -eq 0 -or !$manifest.PSObject.Properties['version'] -or $manifest.version -ne '1.30.7' -or !$manifest.PSObject.Properties['gameCoreVersion'] -or $manifest.gameCoreVersion -ne '1.30.3' -or !$manifest.PSObject.Properties['minecraft'] -or $manifest.minecraft -ne '26.3') { throw 'The ZIP manifest must describe desktop 1.30.7 and Fabric Core 1.30.3 for Minecraft 26.3. Extract a fresh complete copy.' }
     $prefix = $BundlePath.TrimEnd([char[]]@([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)) + [IO.Path]::DirectorySeparatorChar
     foreach ($asset in $manifest.files) {
         if ([IO.Path]::IsPathRooted($asset.path)) { throw 'Invalid absolute path in bundle manifest.' }
@@ -49,8 +49,12 @@ function Install-TunTun {
     $modAssets = @($manifest.files | Where-Object { $_.kind -eq 'mod' })
     $bridgeAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'tung-tung-bridge-1.30.3.jar' })
     $fabricAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'fabric-api-0.162.0+26.3.jar' })
-    $voiceAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'voicechat-fabric-2.6.24+26.3.jar' })
-    if ($bridgeAssets.Count -ne 1 -or $fabricAssets.Count -ne 1 -or $voiceAssets.Count -ne 1 -or $modAssets.Count -ne 3) { throw 'The bundle must contain the Tung Tung Client bridge, pinned Fabric API and Simple Voice Chat.' }
+    $voiceAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'voicechat-fabric-2.6.27+26.3.jar' })
+    $clientMapsAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'client_maps-1.3.4.jar' })
+    $mapInSlotAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'map-in-slot-3.5.0.jar' })
+    if ($bridgeAssets.Count -ne 1 -or $fabricAssets.Count -ne 1 -or $voiceAssets.Count -ne 1 -or $clientMapsAssets.Count -ne 1 -or $mapInSlotAssets.Count -ne 1 -or $modAssets.Count -ne 5) { throw 'The bundle must contain the Tung Tung Client bridge, Fabric API, Simple Voice Chat and both map-art mods.' }
+    $voiceHash = (Get-FileHash -LiteralPath (Join-Path $BundlePath $voiceAssets[0].path) -Algorithm SHA512).Hash.ToLowerInvariant()
+    if ($voiceHash -ne 'f2de66761c0f249bb0f9a4b348f98b97ab4e89d3ed3fd37638420364b7431b757933aa08c0cc3e7ba3dd85a602d6c2de313c2309fc587e93cabf31fc5f6df27e') { throw 'Simple Voice Chat does not match the official pinned download.' }
     $fabricJson = Get-Content -LiteralPath (Join-Path $BundlePath 'payload/fabric-profile.json') -Raw -Encoding UTF8
     $fabricProfile = $fabricJson | ConvertFrom-Json
     if ($fabricProfile.id -ne $versionId -or $fabricProfile.inheritsFrom -ne '26.3') { throw 'Unexpected Fabric version in bundle.' }

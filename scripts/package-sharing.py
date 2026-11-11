@@ -7,7 +7,7 @@ import shutil
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1.30.6'
+VERSION = '1.30.7'
 CORE_VERSION = '1.30.3'
 DEST = ROOT / 'dist' / f'Tung-Tung-Client-{VERSION}-Share'
 
@@ -25,7 +25,7 @@ def main():
     packages = {
         'Mac': f'Tung-Tung-Client-Mac-{VERSION}-Voice-Chat.zip',
         'Windows': f'Tung-Tung-Client-Windows-{VERSION}-Voice-Chat.zip',
-        'Prism': f'Tung-Tung-Client-{CORE_VERSION}-Voice-Chat-Prism.zip',
+        'Prism': f'Tung-Tung-Client-{VERSION}-Voice-Chat-Prism.zip',
     }
     for folder, name in packages.items():
         target = DEST / folder
@@ -42,7 +42,7 @@ def main():
     shutil.copy2(ROOT / 'windows/START-HERE.txt', DEST / 'Windows/START-HERE.txt')
     shutil.copy2(ROOT / 'macos/README.txt', DEST / 'Mac/README.txt')
     shutil.copy2(ROOT / 'LICENSE', DEST / 'LICENSE.txt')
-    (DEST / 'README.md').write_text('''# Tung Tung Client 1.30.6
+    (DEST / 'README.md').write_text('''# Tung Tung Client 1.30.7
 
 ## Начни здесь
 
@@ -82,14 +82,14 @@ Windows собран без ошибок компиляции; запуск на
     for name in vendor:
         files.extend(p for p in (ROOT / name).rglob('*') if p.is_file() and p.name != '.DS_Store')
     for name in ['fabric-api-0.162.0+26.3.jar', 'FABRIC-API-LICENSE.txt',
-                 'voicechat-fabric-2.6.24+26.3.jar', 'fabric-profile-26.3.json',
+                 'voicechat-fabric-2.6.27+26.3.jar', 'fabric-profile-26.3.json',
                  'anti-leak-1.28.0/optional-mods.json']:
         files.append(ROOT / '.tools' / name)
     with zipfile.ZipFile(sourcezip, 'w', zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
         for path in sorted(set(files)):
             if path.is_file():
                 archive.write(path, path.relative_to(ROOT))
-    (srcdir / 'BUILD-NOTES.txt').write_text('''SOURCE SNAPSHOT 1.30.6
+    (srcdir / 'BUILD-NOTES.txt').write_text('''SOURCE SNAPSHOT 1.30.7
 
 Includes production sources, UI assets, tests, Gradle wrapper, map-art inputs
 and texture library. No accounts, saved worlds, game logs or pairing data.

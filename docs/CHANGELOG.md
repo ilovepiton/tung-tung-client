@@ -1,5 +1,13 @@
 # Changelog
 
+## Desktop 1.30.7 — 2026-11-11
+
+- Ordinary Tung Tung Client bundles official Simple Voice Chat 2.6.27+26.3 on Mac, Windows and Prism.
+- Installers recognize the new voice mod and replace the older managed version.
+- Fixed Windows installation rejecting the desktop version and the five-mod payload containing both map-art mods.
+- No diagnostic Voice Test profile is included in any release. Game core remains 1.30.3.
+- The upgraded voice mod starts successfully on Mac. DonutSMP voice negotiation remains unresolved; this release does not claim to fix it.
+
 ## Desktop 1.30.6 — 2026-11-10
 
 - Invis Mode now shows a translucent white-gray Steve PNG on a transparent background.

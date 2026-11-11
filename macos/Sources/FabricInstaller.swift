@@ -19,8 +19,8 @@ enum FabricInstaller {
     static let officialLauncherDownloadURL = URL(string: "https://www.minecraft.net/en-us/download")!
     private static let fm = FileManager.default
     private static let baseMods = Set(["tung-tung-bridge-1.30.3.jar", "fabric-api-0.162.0+26.3.jar", "client_maps-1.3.4.jar", "map-in-slot-3.5.0.jar"])
-    private static let voiceChatMod = "voicechat-fabric-2.6.24+26.3.jar"
-    private static let voiceChatSHA512 = "414eb51967305fe7740d34016bc8e3e4e2fa1590e1278ad06bcdfa0687f65007b825d345dc09f79a992704a51ec93baf01fe727e0bbc32fdf506828b5a65d85a"
+    private static let voiceChatMod = "voicechat-fabric-2.6.27+26.3.jar"
+    private static let voiceChatSHA512 = "f2de66761c0f249bb0f9a4b348f98b97ab4e89d3ed3fd37638420364b7431b757933aa08c0cc3e7ba3dd85a602d6c2de313c2309fc587e93cabf31fc5f6df27e"
 
     struct InstallerError: LocalizedError {
         let message: String

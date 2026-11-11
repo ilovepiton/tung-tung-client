@@ -2,7 +2,7 @@
 
 ## Current release
 
-Desktop **1.30.6**, game core **1.30.3**, Minecraft Java **26.3**, Fabric Loader **0.19.5**, Java **25**.
+Desktop **1.30.7**, game core **1.30.3**, Minecraft Java **26.3**, Fabric Loader **0.19.5**, Java **25**.
 Desktop app and game core are separate components. Updating the app alone does
 not update code already running inside Minecraft.
 
@@ -40,3 +40,5 @@ published update endpoint yet. Future features have no promised date.
 - Publish binaries as release assets, source as a separate archive; never add
   account data, worlds, logs, pairing descriptors or local token files.
 - Publish version metadata only once the release assets actually exist.
+
+Simple Voice Chat: **2.6.27+26.3**. Профиль игры — **Tung Tung Client 26.3**. Диагностический Voice Test в пакет не входит. Обновление мода проверено при запуске на Mac; проблема голосового подключения к DonutSMP пока не подтверждена как исправленная.

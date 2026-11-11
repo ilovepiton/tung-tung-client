@@ -8,7 +8,7 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.30.6"
+VERSION = "1.30.7"
 CORE = "1.30.3"
 DEPS = ROOT / ".tools/windows-build"
 STAGE = ROOT / "dist" / f"Tung-Tung-Client-Windows-{VERSION}"
@@ -84,7 +84,7 @@ def build(reuse_stage=None):
     (payload / "mods").mkdir(parents=True, exist_ok=True)
     for old_core in (payload / "mods").glob("tung-tung-bridge-*.jar"):
         if old_core.name != f"tung-tung-bridge-{CORE}.jar": old_core.unlink()
-    for source in (ROOT / f"build/libs/tung-tung-bridge-{CORE}.jar", ROOT / ".tools/fabric-api-0.162.0+26.3.jar", ROOT / ".tools/voicechat-fabric-2.6.24+26.3.jar", ROOT / ".tools/map-art/client_maps-1.3.4.jar"):
+    for source in (ROOT / f"build/libs/tung-tung-bridge-{CORE}.jar", ROOT / ".tools/fabric-api-0.162.0+26.3.jar", ROOT / ".tools/voicechat-fabric-2.6.27+26.3.jar", ROOT / ".tools/map-art/client_maps-1.3.4.jar"):
         shutil.copy2(source, payload / "mods" / source.name)
     shutil.copy2(ROOT / ".tools/map-art/map-in-slot-3.5.0-tuntun.jar", payload / "mods/map-in-slot-3.5.0.jar")
     copy_tree(ROOT / ".tools/anti-leak-1.28.0/library/resourcepacks", payload / "resourcepacks")

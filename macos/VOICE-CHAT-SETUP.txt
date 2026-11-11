@@ -1,7 +1,7 @@
 TUNG TUNG CLIENT 1.12.0 — BUILT-IN MAC MICROPHONE FIX
 
 The included Simple Voice Chat mod is the unmodified official
-voicechat-fabric-2.6.24+26.3.jar (upstream beta).
+voicechat-fabric-2.6.27+26.3.jar (upstream beta).
 
 Use the normal Minecraft Launcher with your existing account:
 1. Open Tung Tung Client → Microphone.

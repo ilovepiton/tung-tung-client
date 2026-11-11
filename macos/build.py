@@ -12,13 +12,13 @@ ROOT = Path(__file__).resolve().parents[1]
 MAC = ROOT / "macos"
 OUT = ROOT / "build" / "macos"
 DIST = ROOT / "dist"
-APP = DIST / "Tung-Tung-Client-Mac-1.30.6" / "Tung Tung Client.app"
-VERSION = "1.30.6"
+APP = DIST / "Tung-Tung-Client-Mac-1.30.7" / "Tung Tung Client.app"
+VERSION = "1.30.7"
 PAYLOAD_VERSION = "1.30.3"
 VOICE_RUNTIME_VERSION = "1.12.0"
 VOICE_RUNTIME_BUILD = "1120"
-VOICE_FILE = "voicechat-fabric-2.6.24+26.3.jar"
-VOICE_SHA512 = "414eb51967305fe7740d34016bc8e3e4e2fa1590e1278ad06bcdfa0687f65007b825d345dc09f79a992704a51ec93baf01fe727e0bbc32fdf506828b5a65d85a"
+VOICE_FILE = "voicechat-fabric-2.6.27+26.3.jar"
+VOICE_SHA512 = "f2de66761c0f249bb0f9a4b348f98b97ab4e89d3ed3fd37638420364b7431b757933aa08c0cc3e7ba3dd85a602d6c2de313c2309fc587e93cabf31fc5f6df27e"
 
 def run(args):
     subprocess.run([str(arg) for arg in args], check=True)
@@ -64,7 +64,7 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
                  payload / "mods" / "map-in-slot-3.5.0.jar")
     if voice_chat:
         voice = ROOT / ".tools" / VOICE_FILE
-        if voice.stat().st_size != 5612855 or hashlib.sha512(voice.read_bytes()).hexdigest() != VOICE_SHA512:
+        if voice.stat().st_size != 5611159 or hashlib.sha512(voice.read_bytes()).hexdigest() != VOICE_SHA512:
             raise RuntimeError("The Simple Voice Chat download does not match its official Modrinth hash")
         shutil.copy2(voice, payload / "mods")
     shutil.copy2(ROOT / ".tools" / "fabric-profile-26.3.json", payload / "fabric-profile.json")
@@ -89,7 +89,7 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
     if voice_chat:
         for name in ("VOICE-CHAT-SETUP.txt", "SIMPLE-VOICE-CHAT-NOTICE.txt"):
             shutil.copy2(MAC / name, resources / name)
-        pack = DIST / f"Tung-Tung-Client-{PAYLOAD_VERSION}-Voice-Chat-Prism.zip"
+        pack = DIST / f"Tung-Tung-Client-{VERSION}-Voice-Chat-Prism.zip"
         if not pack.is_file():
             raise RuntimeError("Build the combined Prism import profile before the Voice Chat app")
         shutil.copy2(pack, resources / pack.name)
@@ -101,7 +101,7 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
         "CFBundleName": "Tung Tung Client", "CFBundleDisplayName": "Tung Tung Client",
         "CFBundleIdentifier": "dev.tungtung.client", "CFBundleExecutable": "TungTungClient",
         "CFBundlePackageType": "APPL", "CFBundleShortVersionString": VERSION,
-        "CFBundleVersion": "1306", "LSMinimumSystemVersion": "13.0",
+        "CFBundleVersion": "1307", "LSMinimumSystemVersion": "13.0",
         "NSHighResolutionCapable": True, "NSPrincipalClass": "NSApplication",
         "NSMicrophoneUsageDescription": "Simple Voice Chat in Tung Tung Minecraft needs your microphone so other players can hear you.",
         "NSAppTransportSecurity": {"NSAllowsLocalNetworking": True},
