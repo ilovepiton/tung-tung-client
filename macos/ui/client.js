@@ -27,7 +27,8 @@ function nativeRequest(action,payload={}){
  const handler=nativeHandler();if(!handler)return Promise.reject(new Error('Open Tung Tung Client.app to use native controls.'));
  const id='ui-'+(++sequence);
  return new Promise((resolve,reject)=>{
-  const timer=setTimeout(()=>{requests.delete(id);reject(new Error('Native request timed out.'));},['install','importSky'].includes(action)?180000:12000);
+  const timeout=['install','installCore','installExtras'].includes(action)?200000:action==='importSky'?180000:12000;
+  const timer=setTimeout(()=>{requests.delete(id);reject(new Error('Native request timed out.'));},timeout);
   requests.set(id,{resolve,reject,timer,action,bridgeGeneration:payload.bridgeGeneration,intentRevision:connectionRevision,robloxSessionId:payload.sessionId,robloxRevision});
   try{handler.postMessage({id,action,payload});}catch(error){clearTimeout(timer);requests.delete(id);reject(error);}
  });
