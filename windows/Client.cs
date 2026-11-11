@@ -12,8 +12,8 @@ using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json.Linq;
 
-[assembly: System.Reflection.AssemblyVersion("1.30.7.0")]
-[assembly: System.Reflection.AssemblyFileVersion("1.30.7.0")]
+[assembly: System.Reflection.AssemblyVersion("1.30.8.0")]
+[assembly: System.Reflection.AssemblyFileVersion("1.30.8.0")]
 [assembly: System.Reflection.AssemblyTitle("Tung Tung Client")]
 
 namespace TungTung.Windows
@@ -61,7 +61,7 @@ namespace TungTung.Windows
             }
             catch { }
             bridge = new GameBridge(minecraft);
-            Text = "Tung Tung Client 1.30.7"; BackColor = Color.FromArgb(16, 12, 9);
+            Text = "Tung Tung Client 1.30.8"; BackColor = Color.FromArgb(16, 12, 9);
             StartPosition = FormStartPosition.CenterScreen; ClientSize = new Size(1180, 760); MinimumSize = new Size(1000, 700);
             web.Dock = DockStyle.Fill; web.DefaultBackgroundColor = BackColor; Controls.Add(web);
             tray.Icon = SystemIcons.Application; tray.Text = "Tung Tung Client";
@@ -138,7 +138,7 @@ namespace TungTung.Windows
         }
         private JObject Preferences()
         {
-            return new JObject { ["minecraftFolder"] = minecraft, ["soundsEnabled"] = sounds, ["simpleVoiceChat"] = true, ["installing"] = installing, ["installStatus"] = installStatus, ["launcherAvailable"] = true, ["version"] = "1.30.7" };
+            return new JObject { ["minecraftFolder"] = minecraft, ["soundsEnabled"] = sounds, ["simpleVoiceChat"] = true, ["installing"] = installing, ["installStatus"] = installStatus, ["launcherAvailable"] = true, ["version"] = "1.30.8" };
         }
         private JObject Presented(JObject state) { state["native"] = Preferences(); return state; }
         private void Post(object message) { if (!IsDisposed && web.CoreWebView2 != null) web.CoreWebView2.PostWebMessageAsJson(Newtonsoft.Json.JsonConvert.SerializeObject(message)); }
@@ -218,7 +218,7 @@ namespace TungTung.Windows
                             if (dialog.ShowDialog(this) == DialogResult.OK) File.WriteAllText(dialog.FileName, json); break;
                     case "sounds": sounds = (bool?)payload["enabled"] == true; SavePreferences(); result = Preferences(); break;
                     case "playSound": PlaySound((string)payload["name"]); break;
-                    case "about": MessageBox.Show("Tung Tung Client 1.30.7\nMinecraft Java 26.3 / Fabric Core 1.30.3\nSimple Voice Chat 2.6.27\nRoblox compatible-runtime tools", Text); break;
+                    case "about": MessageBox.Show("Tung Tung Client 1.30.8\nMinecraft Java 26.3 / Fabric Core 1.30.3\nSimple Voice Chat 2.6.27\nRoblox compatible-runtime tools", Text); break;
                     case "quit": exiting = true; Close(); return;
                     default: throw new IOException("Unknown client action.");
                 }
@@ -239,7 +239,7 @@ namespace TungTung.Windows
                 string output = await Task.Run(() =>
                 {
                     var start = new ProcessStartInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "WindowsPowerShell", "v1.0", "powershell.exe"));
-                    start.Arguments = "-NoLogo -NoProfile -ExecutionPolicy Bypass -File " + Quote(Path.Combine(bundle, "desktop", "Install-Core.ps1")) + " -MinecraftPath " + Quote(root);
+                    start.Arguments = "-NoLogo -NoProfile -ExecutionPolicy Bypass -File " + Quote(Path.Combine(bundle, "desktop", "Install-Core.ps1")) + " -MinecraftPath " + Quote(root) + " -BundlePath " + Quote(bundle);
                     start.WorkingDirectory = bundle; start.UseShellExecute = false; start.CreateNoWindow = true;
                     start.RedirectStandardOutput = true; start.RedirectStandardError = true;
                     using (var process = Process.Start(start))

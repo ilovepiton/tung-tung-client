@@ -1,5 +1,13 @@
 # Changelog
 
+## Desktop 1.30.8 — 2026-11-11
+
+- Fixed Windows installation failing with `Split-Path: Path is an empty string`.
+- Desktop passes the bundle folder explicitly; script resolves its fallback only after parameter binding.
+- Added installer CLI checks for explicit/inferred bundle paths, spaces and a different working directory.
+- Replacement Install-Core.ps1 also supports the existing 1.30.7 Windows bundle.
+- Minecraft core remains 1.30.3; Simple Voice Chat remains 2.6.27+26.3. DonutSMP voice negotiation is still unresolved.
+
 ## Desktop 1.30.7 — 2026-11-11
 
 - Ordinary Tung Tung Client bundles official Simple Voice Chat 2.6.27+26.3 on Mac, Windows and Prism.

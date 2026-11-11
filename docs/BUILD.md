@@ -24,4 +24,4 @@ is not a complete offline desktop build environment.
 No launcher accounts, authentication tokens, saved worlds, user configuration
 or connection descriptors should be added to commits or release assets.
 
-For desktop 1.30.7, run `python3 scripts/package-voice-profile.py` before the Mac voice build. It updates the existing 1.30.3 Prism snapshot to the pinned voice mod; the baseline archive must exist under `dist/`.
+For desktop 1.30.8, run `python3 scripts/package-voice-profile.py` before the Mac voice build. It updates the existing 1.30.3 Prism snapshot to the pinned voice mod; the baseline archive must exist under `dist/`.

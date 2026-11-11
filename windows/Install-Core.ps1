@@ -1,10 +1,19 @@
 ﻿[CmdletBinding()]
 param(
     [string]$MinecraftPath,
-    [string]$BundlePath = (Split-Path -Parent $PSScriptRoot)
+    [string]$BundlePath
 )
 
 Set-StrictMode -Version 2.0
+
+# Resolve defaults after parameter binding. Windows PowerShell can evaluate
+# parameter defaults before PSScriptRoot is available.
+if ([string]::IsNullOrWhiteSpace($BundlePath)) {
+    $installerPath = $PSCommandPath
+    if ([string]::IsNullOrWhiteSpace($installerPath)) { $installerPath = $MyInvocation.MyCommand.Path }
+    if ([string]::IsNullOrWhiteSpace($installerPath)) { throw 'Cannot locate Install-Core.ps1. Extract the complete ZIP and start the client from its folder.' }
+    $BundlePath = [IO.Path]::GetDirectoryName([IO.Path]::GetDirectoryName([IO.Path]::GetFullPath($installerPath)))
+}
 
 function Install-TunTun {
     [CmdletBinding()]
@@ -36,7 +45,7 @@ function Install-TunTun {
         throw 'Minecraft Launcher profiles were not found. Open the official Launcher once, close it, and select its .minecraft folder.'
     }
     $manifest = Get-Content -LiteralPath (Join-Path $BundlePath 'manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-    if (!$manifest -or !$manifest.PSObject.Properties['files'] -or @($manifest.files).Count -eq 0 -or !$manifest.PSObject.Properties['version'] -or $manifest.version -ne '1.30.7' -or !$manifest.PSObject.Properties['gameCoreVersion'] -or $manifest.gameCoreVersion -ne '1.30.3' -or !$manifest.PSObject.Properties['minecraft'] -or $manifest.minecraft -ne '26.3') { throw 'The ZIP manifest must describe desktop 1.30.7 and Fabric Core 1.30.3 for Minecraft 26.3. Extract a fresh complete copy.' }
+    if (!$manifest -or !$manifest.PSObject.Properties['files'] -or @($manifest.files).Count -eq 0 -or !$manifest.PSObject.Properties['version'] -or @('1.30.7', '1.30.8') -notcontains $manifest.version -or !$manifest.PSObject.Properties['gameCoreVersion'] -or $manifest.gameCoreVersion -ne '1.30.3' -or !$manifest.PSObject.Properties['minecraft'] -or $manifest.minecraft -ne '26.3') { throw 'The ZIP manifest must describe desktop 1.30.7 or 1.30.8 and Fabric Core 1.30.3 for Minecraft 26.3. Extract a fresh complete copy.' }
     $prefix = $BundlePath.TrimEnd([char[]]@([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)) + [IO.Path]::DirectorySeparatorChar
     foreach ($asset in $manifest.files) {
         if ([IO.Path]::IsPathRooted($asset.path)) { throw 'Invalid absolute path in bundle manifest.' }

@@ -7,7 +7,7 @@ import shutil
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1.30.7'
+VERSION = '1.30.8'
 CORE_VERSION = '1.30.3'
 DEST = ROOT / 'dist' / f'Tung-Tung-Client-{VERSION}-Share'
 
@@ -42,7 +42,7 @@ def main():
     shutil.copy2(ROOT / 'windows/START-HERE.txt', DEST / 'Windows/START-HERE.txt')
     shutil.copy2(ROOT / 'macos/README.txt', DEST / 'Mac/README.txt')
     shutil.copy2(ROOT / 'LICENSE', DEST / 'LICENSE.txt')
-    (DEST / 'README.md').write_text('''# Tung Tung Client 1.30.7
+    (DEST / 'README.md').write_text('''# Tung Tung Client 1.30.8
 
 ## Начни здесь
 
@@ -89,7 +89,7 @@ Windows собран без ошибок компиляции; запуск на
         for path in sorted(set(files)):
             if path.is_file():
                 archive.write(path, path.relative_to(ROOT))
-    (srcdir / 'BUILD-NOTES.txt').write_text('''SOURCE SNAPSHOT 1.30.7
+    (srcdir / 'BUILD-NOTES.txt').write_text('''SOURCE SNAPSHOT 1.30.8
 
 Includes production sources, UI assets, tests, Gradle wrapper, map-art inputs
 and texture library. No accounts, saved worlds, game logs or pairing data.
