@@ -1,4 +1,4 @@
-TUNG TUNG CLIENT — DESKTOP 1.30.8 / MINECRAFT CORE 1.30.3
+TUNG TUNG CLIENT — DESKTOP 1.30.9 / MINECRAFT CORE 1.30.3
 Auto Totem always refills the offhand from inventory at any health, without
 a fixed post-pop delay. It supports player slots in ordinary container screens.
 Kill Aura is on the first Arsenal row beside Auto Totem; normal weapon reach applies.

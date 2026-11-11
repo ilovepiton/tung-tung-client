@@ -1,5 +1,14 @@
 # Changelog
 
+## Desktop 1.30.9 — 2026-11-11
+
+- Windows core installation uses only bundled files: five core mods and 39 packs. The former 15 optional downloads no longer block setup.
+- Added a separate Optional Extras button with bounded downloads, caching and nonfatal failure reporting.
+- Added live installation progress and a local `%LOCALAPPDATA%/TungTungClient/install.log`.
+- Added installation locks, an installer deadline and a desktop process timeout; quitting the app stops its own installer.
+- Tested the full production payload offline, plus CLI spaced paths and optional-download failures.
+- Minecraft core remains 1.30.3 and Voice Chat remains 2.6.27. DonutSMP voice negotiation remains unresolved.
+
 ## Desktop 1.30.8 — 2026-11-11
 
 - Fixed Windows installation failing with `Split-Path: Path is an empty string`.

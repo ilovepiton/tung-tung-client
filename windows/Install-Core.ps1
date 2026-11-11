@@ -1,7 +1,8 @@
 ﻿[CmdletBinding()]
 param(
     [string]$MinecraftPath,
-    [string]$BundlePath
+    [string]$BundlePath,
+    [switch]$InstallExtras
 )
 
 Set-StrictMode -Version 2.0
@@ -19,7 +20,8 @@ function Install-TunTun {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)][string]$MinecraftPath,
-        [Parameter(Mandatory = $true)][string]$BundlePath
+        [Parameter(Mandatory = $true)][string]$BundlePath,
+        [switch]$InstallExtras
     )
     $ErrorActionPreference = 'Stop'
     $MinecraftPath = [IO.Path]::GetFullPath($MinecraftPath)
@@ -28,6 +30,14 @@ function Install-TunTun {
     $profileName = 'Tung Tung Client 26.3'
     $versionId = 'fabric-loader-0.19.5-26.3'
     $gameDir = Join-Path $MinecraftPath 'tun-tun-26.3'
+    $clock = [Diagnostics.Stopwatch]::StartNew()
+    $warnings = New-Object System.Collections.ArrayList
+    $ProgressPreference = 'SilentlyContinue'
+    function Report-Install([string]$message) {
+        if ($clock.Elapsed.TotalSeconds -gt 120) { throw 'Installation exceeded two minutes. Files will be restored; close Minecraft and Launcher, then retry. See install.log in the client settings folder.' }
+        [Console]::Error.WriteLine('TUNG_PROGRESS:' + $message)
+    }
+    Report-Install 'Checking Minecraft and the bundled files...'
 
     if (Get-Process -Name 'MinecraftLauncher' -ErrorAction SilentlyContinue) {
         throw 'Close Minecraft Launcher before installing, then click Install again.'
@@ -37,6 +47,10 @@ function Install-TunTun {
             $_.CommandLine -and ($_.CommandLine.IndexOf($gameDir, [StringComparison]::OrdinalIgnoreCase) -ge 0 -or $_.CommandLine -match 'net\.minecraft\.client|fabricmc\.loader.*KnotClient')
         })
         if ($games.Count -gt 0) { throw 'Close Minecraft before installing the new core, then click Install again.' }
+        $otherInstallers = @(Get-CimInstance Win32_Process -Filter "Name = 'powershell.exe' OR Name = 'pwsh.exe'" -ErrorAction Stop | Where-Object {
+            $_.ProcessId -ne $PID -and $_.CommandLine -and $_.CommandLine.IndexOf('Install-Core.ps1', [StringComparison]::OrdinalIgnoreCase) -ge 0 -and $_.CommandLine.IndexOf($MinecraftPath, [StringComparison]::OrdinalIgnoreCase) -ge 0
+        })
+        if ($otherInstallers.Count -gt 0) { throw 'An earlier Tung Tung installer is still running. Let it finish, or restart Windows once to stop the stuck installer, then retry.' }
     }
     $profiles = @(@('launcher_profiles.json', 'launcher_profiles_microsoft_store.json') |
         ForEach-Object { Join-Path $MinecraftPath $_ } |
@@ -45,9 +59,12 @@ function Install-TunTun {
         throw 'Minecraft Launcher profiles were not found. Open the official Launcher once, close it, and select its .minecraft folder.'
     }
     $manifest = Get-Content -LiteralPath (Join-Path $BundlePath 'manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-    if (!$manifest -or !$manifest.PSObject.Properties['files'] -or @($manifest.files).Count -eq 0 -or !$manifest.PSObject.Properties['version'] -or @('1.30.7', '1.30.8') -notcontains $manifest.version -or !$manifest.PSObject.Properties['gameCoreVersion'] -or $manifest.gameCoreVersion -ne '1.30.3' -or !$manifest.PSObject.Properties['minecraft'] -or $manifest.minecraft -ne '26.3') { throw 'The ZIP manifest must describe desktop 1.30.7 or 1.30.8 and Fabric Core 1.30.3 for Minecraft 26.3. Extract a fresh complete copy.' }
+    if (!$manifest -or !$manifest.PSObject.Properties['files'] -or @($manifest.files).Count -eq 0 -or !$manifest.PSObject.Properties['version'] -or @('1.30.7', '1.30.8', '1.30.9') -notcontains $manifest.version -or !$manifest.PSObject.Properties['gameCoreVersion'] -or $manifest.gameCoreVersion -ne '1.30.3' -or !$manifest.PSObject.Properties['minecraft'] -or $manifest.minecraft -ne '26.3') { throw 'The ZIP manifest must describe desktop 1.30.7-1.30.9 and Fabric Core 1.30.3 for Minecraft 26.3. Extract a fresh complete copy.' }
     $prefix = $BundlePath.TrimEnd([char[]]@([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)) + [IO.Path]::DirectorySeparatorChar
+    $verified = 0
     foreach ($asset in $manifest.files) {
+        $verified++
+        Report-Install ('Checking files ' + $verified + '/' + @($manifest.files).Count)
         if ([IO.Path]::IsPathRooted($asset.path)) { throw 'Invalid absolute path in bundle manifest.' }
         $source = [IO.Path]::GetFullPath((Join-Path $BundlePath $asset.path))
         if (!$source.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)) { throw 'Invalid path outside the bundle in manifest.' }
@@ -97,6 +114,9 @@ function Install-TunTun {
     $undo = New-Object System.Collections.ArrayList
     $temporaryFiles = New-Object System.Collections.ArrayList
     $utf8 = New-Object System.Text.UTF8Encoding($false)
+    $installLock = $null
+    try { $installLock = [IO.File]::Open((Join-Path $MinecraftPath '.tung-install.lock'), [IO.FileMode]::OpenOrCreate, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None) }
+    catch { throw 'Another Tung Tung installation is using this Minecraft folder. Wait for it to finish, then retry.' }
     function Save-Original([string]$target) {
         if (Test-Path -LiteralPath $target -PathType Container) { throw "A directory occupies an expected file path: $target" }
         $exists = Test-Path -LiteralPath $target -PathType Leaf
@@ -109,6 +129,7 @@ function Install-TunTun {
         [void]$undo.Add([PSCustomObject]@{ Target = $target; Saved = $saved; Existed = $exists })
     }
     function Write-Atomic([string]$target, [string]$source, [string]$json) {
+        Report-Install ('Installing ' + [IO.Path]::GetFileName($target))
         Save-Original $target
         [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($target)) | Out-Null
         $tmp = $target + '.' + [Guid]::NewGuid().ToString('N') + '.tmp'
@@ -153,8 +174,16 @@ function Install-TunTun {
             $source = Join-Path $BundlePath $asset.path
             Write-Atomic (Join-Path $modsDir ([IO.Path]::GetFileName($source))) $source $null
         }
-        if ($manifest.PSObject.Properties['downloads']) {
+        # Optional network downloads must never block creating the core profile.
+        # The desktop explicitly opts into this separate operation.
+        if ($InstallExtras -and $manifest.PSObject.Properties['downloads']) {
+            [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+            $downloadClock = [Diagnostics.Stopwatch]::StartNew()
             foreach ($asset in $manifest.downloads) {
+                if ($downloadClock.Elapsed.TotalSeconds -ge 75) {
+                    [void]$warnings.Add('Optional download time limit reached. Core installation is unaffected; retry Optional Extras later.')
+                    break
+                }
                 $uri = [Uri]$asset.url
                 $isPack = $asset.PSObject.Properties['kind'] -and $asset.kind -eq 'resourcepack'
                 $extension = if ($isPack) { 'zip' } else { 'jar' }
@@ -162,11 +191,19 @@ function Install-TunTun {
                 if ($uri.Scheme -ne 'https' -or !$trustedSource -or $asset.file -notmatch ('^[A-Za-z0-9_.+-]+[.]' + $extension + '$')) { throw 'Invalid optional download.' }
                 $tmp = Join-Path ([IO.Path]::GetTempPath()) ([Guid]::NewGuid().ToString() + '.jar')
                 [void]$temporaryFiles.Add($tmp)
-                Invoke-WebRequest -UseBasicParsing -Uri $uri -OutFile $tmp -TimeoutSec 45
-                if ((Get-FileHash -LiteralPath $tmp -Algorithm SHA512).Hash.ToLowerInvariant() -ne $asset.sha512) { throw 'Optional mod checksum mismatch.' }
-                $maximumBytes = if ($isPack) { 83886080 } else { 33554432 }
-                if ((Get-Item -LiteralPath $tmp).Length -gt $maximumBytes) { throw 'Optional download is too large.' }
                 $targetDir = if ($isPack) { Join-Path $gameDir 'resourcepacks' } else { $modsDir }
+                $existing = Join-Path $targetDir $asset.file
+                if ((Test-Path -LiteralPath $existing -PathType Leaf) -and (Get-FileHash -LiteralPath $existing -Algorithm SHA512).Hash.ToLowerInvariant() -eq $asset.sha512) { continue }
+                Report-Install ('Downloading optional extra: ' + $asset.file)
+                try {
+                    Invoke-WebRequest -UseBasicParsing -Uri $uri -OutFile $tmp -TimeoutSec 10
+                    if ((Get-FileHash -LiteralPath $tmp -Algorithm SHA512).Hash.ToLowerInvariant() -ne $asset.sha512) { throw 'Optional file checksum mismatch.' }
+                    $maximumBytes = if ($isPack) { 83886080 } else { 33554432 }
+                    if ((Get-Item -LiteralPath $tmp).Length -gt $maximumBytes) { throw 'Optional download is too large.' }
+                } catch {
+                    [void]$warnings.Add($asset.file + ': ' + $_.Exception.Message)
+                    continue
+                }
                 Write-Atomic (Join-Path $targetDir $asset.file) $tmp $null
             }
         }
@@ -184,7 +221,8 @@ function Install-TunTun {
         }
         [IO.Directory]::CreateDirectory($backupDir) | Out-Null
         [IO.File]::WriteAllText((Join-Path $backupDir 'restore-map.json'), ($undo | ConvertTo-Json -Depth 10), $utf8)
-        return [PSCustomObject]@{ GameDir = $gameDir; BackupDir = $backupDir; ProfileName = $profileName; VersionId = $versionId }
+        Report-Install 'Installation complete. Open Minecraft Launcher and select Tung Tung Client 26.3.'
+        return [PSCustomObject]@{ GameDir = $gameDir; BackupDir = $backupDir; ProfileName = $profileName; VersionId = $versionId; OptionalExtrasRequested = [bool]$InstallExtras; Warnings = @($warnings.ToArray()) }
     } catch {
         $failure = $_
         $rollbackErrors = New-Object System.Collections.ArrayList
@@ -200,6 +238,7 @@ function Install-TunTun {
         }
         throw $failure
     } finally {
+        if ($installLock) { $installLock.Dispose() }
         foreach ($tmp in $temporaryFiles) {
             if (Test-Path -LiteralPath $tmp -PathType Leaf) { Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue }
         }
@@ -213,7 +252,7 @@ if ($MyInvocation.InvocationName -ne '.') {
         [Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)
         if ([string]::IsNullOrWhiteSpace($MinecraftPath)) { throw 'Choose the Minecraft Launcher .minecraft folder in the client before installing.' }
         $ErrorActionPreference = 'Stop'
-        $result = Install-TunTun -MinecraftPath $MinecraftPath -BundlePath $BundlePath
+        $result = Install-TunTun -MinecraftPath $MinecraftPath -BundlePath $BundlePath -InstallExtras:$InstallExtras
         $result | ConvertTo-Json -Compress
         exit 0
     } catch {

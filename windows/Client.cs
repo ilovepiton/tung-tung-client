@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Media;
+using System.Text;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,8 +13,8 @@ using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json.Linq;
 
-[assembly: System.Reflection.AssemblyVersion("1.30.8.0")]
-[assembly: System.Reflection.AssemblyFileVersion("1.30.8.0")]
+[assembly: System.Reflection.AssemblyVersion("1.30.9.0")]
+[assembly: System.Reflection.AssemblyFileVersion("1.30.9.0")]
 [assembly: System.Reflection.AssemblyTitle("Tung Tung Client")]
 
 namespace TungTung.Windows
@@ -50,6 +51,7 @@ namespace TungTung.Windows
         private bool sounds = true, ready, polling, installing, exiting;
         private long? openSequence;
         private SoundPlayer sound;
+        private Process installerProcess;
 
         public ClientWindow()
         {
@@ -61,7 +63,7 @@ namespace TungTung.Windows
             }
             catch { }
             bridge = new GameBridge(minecraft);
-            Text = "Tung Tung Client 1.30.8"; BackColor = Color.FromArgb(16, 12, 9);
+            Text = "Tung Tung Client 1.30.9"; BackColor = Color.FromArgb(16, 12, 9);
             StartPosition = FormStartPosition.CenterScreen; ClientSize = new Size(1180, 760); MinimumSize = new Size(1000, 700);
             web.Dock = DockStyle.Fill; web.DefaultBackgroundColor = BackColor; Controls.Add(web);
             tray.Icon = SystemIcons.Application; tray.Text = "Tung Tung Client";
@@ -69,7 +71,7 @@ namespace TungTung.Windows
             menu.Items.Add("Quit", null, (s, e) => { exiting = true; Close(); });
             tray.ContextMenuStrip = menu; tray.DoubleClick += (s, e) => ShowClient(); tray.Visible = true;
             FormClosing += (s, e) => { if (!exiting && e.CloseReason == CloseReason.UserClosing) { e.Cancel = true; Hide(); } };
-            FormClosed += (s, e) => { ready = false; roblox.Dispose(); timer.Stop(); timer.Dispose(); tray.Dispose(); if (sound != null) sound.Dispose(); web.Dispose(); };
+            FormClosed += (s, e) => { ready = false; try { if (installerProcess != null && !installerProcess.HasExited) installerProcess.Kill(); } catch { } roblox.Dispose(); timer.Stop(); timer.Dispose(); tray.Dispose(); if (sound != null) sound.Dispose(); web.Dispose(); };
             roblox.OnState = state => { if (ready && !IsDisposed && IsHandleCreated) BeginInvoke((Action)(() => Post(new { kind = "robloxState", state = state }))); };
             timer.Tick += async (s, e) => await Poll();
             Shown += async (s, e) => await Initialize();
@@ -138,7 +140,7 @@ namespace TungTung.Windows
         }
         private JObject Preferences()
         {
-            return new JObject { ["minecraftFolder"] = minecraft, ["soundsEnabled"] = sounds, ["simpleVoiceChat"] = true, ["installing"] = installing, ["installStatus"] = installStatus, ["launcherAvailable"] = true, ["version"] = "1.30.8" };
+            return new JObject { ["minecraftFolder"] = minecraft, ["soundsEnabled"] = sounds, ["simpleVoiceChat"] = true, ["installing"] = installing, ["installStatus"] = installStatus, ["optionalExtrasAvailable"] = true, ["launcherAvailable"] = true, ["version"] = "1.30.9" };
         }
         private JObject Presented(JObject state) { state["native"] = Preferences(); return state; }
         private void Post(object message) { if (!IsDisposed && web.CoreWebView2 != null) web.CoreWebView2.PostWebMessageAsJson(Newtonsoft.Json.JsonConvert.SerializeObject(message)); }
@@ -197,6 +199,7 @@ namespace TungTung.Windows
                         FocusMinecraft(); Hide(); break;
                     case "hide": case "windowClose": Hide(); break;
                     case "install": case "installCore": await Install(); result = Preferences(); break;
+                    case "installExtras": await Install(true); result = Preferences(); break;
                     case "chooseFolder": case "chooseMinecraftFolder":
                         if (installing) throw new IOException("Wait for installation to finish.");
                         using (var dialog = new FolderBrowserDialog { Description = "Choose the Minecraft Launcher .minecraft folder", SelectedPath = minecraft })
@@ -218,7 +221,7 @@ namespace TungTung.Windows
                             if (dialog.ShowDialog(this) == DialogResult.OK) File.WriteAllText(dialog.FileName, json); break;
                     case "sounds": sounds = (bool?)payload["enabled"] == true; SavePreferences(); result = Preferences(); break;
                     case "playSound": PlaySound((string)payload["name"]); break;
-                    case "about": MessageBox.Show("Tung Tung Client 1.30.8\nMinecraft Java 26.3 / Fabric Core 1.30.3\nSimple Voice Chat 2.6.27\nRoblox compatible-runtime tools", Text); break;
+                    case "about": MessageBox.Show("Tung Tung Client 1.30.9\nMinecraft Java 26.3 / Fabric Core 1.30.3\nSimple Voice Chat 2.6.27\nRoblox compatible-runtime tools", Text); break;
                     case "quit": exiting = true; Close(); return;
                     default: throw new IOException("Unknown client action.");
                 }
@@ -227,28 +230,58 @@ namespace TungTung.Windows
             catch (Exception error) { Post(new { kind = "reply", reply = new { id = id, ok = false, error = error.Message } }); }
         }
         private static string Quote(string value) { return "\"" + value.Replace("\"", "").TrimEnd('\\') + "\""; }
-        private async Task Install()
+        private void InstallProgress(string message)
+        {
+            if (IsDisposed || !IsHandleCreated) return;
+            try { BeginInvoke((Action)(() => { if (!installing || IsDisposed) return; installStatus = message; Post(new { kind = "state", state = Presented(bridge.State) }); })); } catch (InvalidOperationException) { }
+        }
+        private async Task Install(bool extras = false)
         {
             if (installing) throw new IOException("Installation is already running."); installing = true;
             string root = minecraft;
             if (String.Equals(Path.GetFileName(root.TrimEnd('\\', '/')), "tun-tun-26.3", StringComparison.OrdinalIgnoreCase)) root = Path.GetDirectoryName(root.TrimEnd('\\', '/'));
             try
             {
-                installStatus = "Installing Fabric core and Simple Voice Chat…";
+                installStatus = extras ? "Installing optional extras — downloads have a time limit…" : "Installing bundled Fabric core and Voice Chat — no downloads needed…";
                 Post(new { kind = "state", state = Presented(bridge.State) });
                 string output = await Task.Run(() =>
                 {
                     var start = new ProcessStartInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "WindowsPowerShell", "v1.0", "powershell.exe"));
                     start.Arguments = "-NoLogo -NoProfile -ExecutionPolicy Bypass -File " + Quote(Path.Combine(bundle, "desktop", "Install-Core.ps1")) + " -MinecraftPath " + Quote(root) + " -BundlePath " + Quote(bundle);
+                    if (extras) start.Arguments += " -InstallExtras";
                     start.WorkingDirectory = bundle; start.UseShellExecute = false; start.CreateNoWindow = true;
                     start.RedirectStandardOutput = true; start.RedirectStandardError = true;
+                    Directory.CreateDirectory(data);
+                    using (var log = new StreamWriter(Path.Combine(data, "install.log"), false, Encoding.UTF8) { AutoFlush = true })
                     using (var process = Process.Start(start))
                     {
-                        Task<string> stderr = process.StandardError.ReadToEndAsync(); string stdout = process.StandardOutput.ReadToEnd(); process.WaitForExit();
-                        if (process.ExitCode != 0) throw new IOException(stderr.Result.Trim()); return stdout;
+                        installerProcess = process;
+                        Task<string> stdout = process.StandardOutput.ReadToEndAsync();
+                        Task<string> stderr = Task.Run(async () => {
+                            var errors = new StringBuilder(); string line;
+                            while ((line = await process.StandardError.ReadLineAsync()) != null) {
+                                log.WriteLine(DateTime.UtcNow.ToString("o") + " " + line);
+                                if (line.StartsWith("TUNG_PROGRESS:", StringComparison.Ordinal)) InstallProgress(line.Substring(14));
+                                else if (errors.Length < 32768) errors.AppendLine(line);
+                            }
+                            return errors.ToString();
+                        });
+                        try {
+                            if (!process.WaitForExit(180000)) {
+                                try { process.Kill(); } catch { }
+                                process.WaitForExit(5000);
+                                try { Task.WaitAll(new Task[] { stdout, stderr }, 5000); } catch { }
+                                throw new IOException("Installer exceeded three minutes and was stopped. Close Minecraft and Launcher, then retry. Details: " + Path.Combine(data, "install.log"));
+                            }
+                            Task.WaitAll(stdout, stderr);
+                            if (process.ExitCode != 0) throw new IOException(String.IsNullOrWhiteSpace(stderr.Result) ? "Installer stopped with exit code " + process.ExitCode + ". See " + Path.Combine(data, "install.log") : stderr.Result.Trim());
+                            return stdout.Result;
+                        } finally { installerProcess = null; }
                     }
                 });
-                JObject.Parse(output.Trim()); installStatus = "Installed. Open Minecraft Launcher, select Tung Tung Client 26.3 and Play.";
+                JObject result = JObject.Parse(output.Trim());
+                JArray warnings = result["Warnings"] as JArray;
+                installStatus = warnings != null && warnings.Count > 0 ? "Core installed. Some optional extras could not download; retry OPTIONAL EXTRAS later. " + (string)warnings[0] : extras ? "Optional extras complete. Open Minecraft Launcher and select Tung Tung Client 26.3." : "Installed. Open Minecraft Launcher, select Tung Tung Client 26.3 and Play. Optional extras are a separate button.";
             }
             catch (Exception error) { installStatus = "Installation failed: " + error.Message; throw; }
             finally { installing = false; Post(new { kind = "state", state = Presented(bridge.State) }); }

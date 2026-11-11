@@ -1,4 +1,4 @@
-TUNG TUNG CLIENT 1.30.8 — WINDOWS QUICK START
+TUNG TUNG CLIENT 1.30.9 — WINDOWS QUICK START
 Minecraft Java 26.3 / Fabric Loader 0.19.5 / Java 25
 
 1. Extract the ENTIRE archive to a normal folder.
@@ -42,3 +42,10 @@ P and Escape do not hide the desktop app. Individual in-game module bindings
 are configured separately. Optional downloads require an Internet connection.
 See Instructions in the shareable distribution for the Russian easy guide,
 changelog and future plans. Licenses are in licenses/.
+
+CORE INSTALLATION
+Install Fabric Core uses the bundled files; no optional downloads are needed.
+Wait for Installed, then select Tung Tung Client 26.3 in Minecraft Launcher.
+Optional Extras is a separate button for performance mods and extra packs.
+Progress appears in Control center. Log: %LOCALAPPDATA%\TungTungClient\install.log
+If an old installer is still running after quitting the previous client, restart Windows before retrying.

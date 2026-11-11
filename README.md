@@ -2,22 +2,22 @@
 
 Desktop companion for Minecraft Java, with separate Mac and Windows packages.
 
-**Current desktop: 1.30.8 · Game core: 1.30.3 · Minecraft 26.3 · Fabric Loader 0.19.5 · Java 25**
+**Current desktop: 1.30.9 · Game core: 1.30.3 · Minecraft 26.3 · Fabric Loader 0.19.5 · Java 25**
 
 ## Download
 
 [Download the latest release](https://github.com/ilovepiton/tung-tung-client/releases/latest)
 
-[Mac download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.8/Tung-Tung-Client-Mac-1.30.8-Voice-Chat.zip) · [Windows download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.8/Tung-Tung-Client-Windows-1.30.8-Voice-Chat.zip) · [All files](https://github.com/ilovepiton/tung-tung-client/releases/tag/v1.30.8)
+[Mac download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.9/Tung-Tung-Client-Mac-1.30.9-Voice-Chat.zip) · [Windows download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.30.9/Tung-Tung-Client-Windows-1.30.9-Voice-Chat.zip) · [All files](https://github.com/ilovepiton/tung-tung-client/releases/tag/v1.30.9)
 
 Choose your package:
 
 | File | Use |
 | --- | --- |
-| `Tung-Tung-Client-Mac-1.30.8-Voice-Chat.zip` | macOS 13+, Apple Silicon and Intel, Simple Voice Chat |
-| `Tung-Tung-Client-Windows-1.30.8-Voice-Chat.zip` | Windows 10/11 x64, Simple Voice Chat |
-| `Tung-Tung-Client-1.30.8-Voice-Chat-Prism.zip` | Importable Prism Launcher instance |
-| `Tung-Tung-Client-1.30.8-Share.zip` | All platforms, instructions and source snapshot |
+| `Tung-Tung-Client-Mac-1.30.9-Voice-Chat.zip` | macOS 13+, Apple Silicon and Intel, Simple Voice Chat |
+| `Tung-Tung-Client-Windows-1.30.9-Voice-Chat.zip` | Windows 10/11 x64, Simple Voice Chat |
+| `Tung-Tung-Client-1.30.9-Voice-Chat-Prism.zip` | Importable Prism Launcher instance |
+| `Tung-Tung-Client-1.30.9-Share.zip` | All platforms, instructions and source snapshot |
 
 Extract the whole archive. Close Minecraft and Launcher, install the Fabric core
 from **Control center**, then launch **Tung Tung Client 26.3** and join a world.
@@ -45,19 +45,28 @@ Server permissions, protocol compatibility and the data received by the game
 determine which modules can work. A private server alone does not add a Roblox
 runtime; this package does not include an executor or injector.
 
-## New in desktop 1.30.8
+## New in desktop 1.30.9
 
-Fixed Windows installation failing with `Split-Path: Path is an empty string`.
-The app now passes its bundle path explicitly and the installer resolves its
-fallback after parameter binding. Installer CLI checks cover spaced paths and
-an unrelated working directory, with and without an explicit bundle path.
+Windows **Install Fabric Core** now installs the five bundled core mods and
+39 bundled texture packs locally. The former 15 optional network downloads
+no longer block the core profile from being created. Extra packs, performance
+mods and the protocol adapter are a separate **Optional Extras** button.
 
-For an existing 1.30.7 Windows folder, download `Install-Core.ps1` from this
-release and replace `desktop/Install-Core.ps1`, then retry Install Fabric Core.
-Alternatively, extract the complete 1.30.8 Windows ZIP into a new folder.
+The client shows live installation steps and saves a local
+`%LOCALAPPDATA%/TungTungClient/install.log`. Optional downloads have a time
+budget and failures are reported without removing the installed core.
+Installation locks and process deadlines prevent silent indefinite waits.
 
-Game core stays 1.30.3 and Voice Chat stays 2.6.27+26.3. DonutSMP voice
-negotiation remains unresolved; this release fixes the Windows installer.
+Tested the actual full production payload with network unavailable, plus
+installer CLI paths with spaces and optional-download failures. Windows
+cross-compiles successfully; physical Windows GUI/runtime testing is pending.
+
+For an existing 1.30.7/1.30.8 Windows folder, download `Install-Core.ps1` from
+this release and replace `desktop/Install-Core.ps1` to get the local core
+installation. Use the complete 1.30.9 ZIP for progress, logging and Extras UI.
+
+Core 1.30.3 and Voice Chat 2.6.27 are unchanged. DonutSMP voice negotiation
+remains unresolved; this release fixes Windows installation behavior.
 
 ## Features retained from 1.30.3
 
