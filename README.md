@@ -2,7 +2,7 @@
 
 Desktop companion for Minecraft Java, with separate Mac and Windows packages.
 
-**Current desktop: 1.31.0 · Game core: 1.30.3 · Minecraft 26.3 · Fabric Loader 0.19.5 · Java 25**
+**Current desktop: 1.31.0 · Game core: 1.31.0 · Minecraft 26.3 · Fabric Loader 0.19.5 · Java 25**
 
 ## Download
 
@@ -17,7 +17,6 @@ Choose your package:
 | `Tung-Tung-Client-Mac-1.31.0-Voice-Chat.zip` | macOS 13+, Apple Silicon and Intel, Simple Voice Chat |
 | `Tung-Tung-Client-Windows-1.31.0-Voice-Chat.zip` | Windows 10/11 x64, Simple Voice Chat |
 | `Tung-Tung-Client-1.31.0-Voice-Chat-Prism.zip` | Importable Prism Launcher instance |
-| `Tung-Tung-Client-1.31.0-Share.zip` | All platforms, instructions and source snapshot |
 
 Extract the whole archive. Close Minecraft and Launcher, install the Fabric core
 from **Control center**, then launch **Tung Tung Client 26.3** and join a world.
