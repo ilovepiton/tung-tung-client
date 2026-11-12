@@ -1,4 +1,6 @@
 const MODULES = [
+ {id:"auto_sell",name:"Auto Sell",category:"Utility",available:true,note:"Sell selected full farm stacks through /sell and a matching deposit menu with a named green Confirm/Sell glass button. Partial stacks and named or enchanted items stay untouched. Green Confirm/Sell glass is required; an optional exact menu title can narrow matching.",status:"Full stacks only"},
+ {id:"auto_logout",name:"Nearby Player Logout",category:"Utility",available:true,note:"Disconnect when any received player, including a friend, approaches your body. Adjustable distance. Turns itself and Auto Sell off; no auto-rejoin.",status:"Received players only"},
  {id:'client_maps',name:'Client Maps',category:'Visual',available:true,note:'Save received map art separately for every server and restore it later in the same Minecraft profile.',status:'Local map storage'},
  {id:'map_in_slot',name:'Map in Slot',category:'Visual',available:true,note:'Render the real received map image directly inside filled-map inventory slots.',status:'Local inventory preview'},
  {id:'invis_mode',name:'Invis Mode',category:'Visual',available:true,note:'Reveal received invisible players and show a red Invisible header above their Player Info. Real invisibility effects are preserved.',status:'Invisible player avatars'},

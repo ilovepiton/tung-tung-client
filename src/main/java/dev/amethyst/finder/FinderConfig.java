@@ -41,6 +41,9 @@ public final class FinderConfig {
     public double playerInfoScale = 0.50;
     public double aimCursorRange = 64.0;
     public double freecamSpeed = CameraSpeed.DEFAULT;
+    public Map<String,Boolean> autoSellItems = dev.amethyst.finder.modules.FarmItems.sanitize(null);
+    public String autoSellCommand = "sell", autoSellMenuTitle = "";
+    public int autoSellIntervalSeconds = 5, autoLogoutRange = 32;
     public boolean chunkHud = true, showHistoricalChunks = true;
     public int chunkRangeBlocks = 256, chunkLimit = 64, chunkMemoryVersion = 1;
     public String historyProfile = "default";
@@ -150,7 +153,7 @@ public final class FinderConfig {
                 c.chunkLimit = 64;
                 c.chunkMemoryVersion = 1;
             }
-            c.migrateBotKeybind();if(c.botCombatVersion<1){if(c.botRange==24)c.botRange=48;c.botCombatVersion=1;}c.sanitize();
+            c.migrateBotKeybind();if(c.botCombatVersion<1){if(c.botRange==24)c.botRange=48;c.botCombatVersion=1;}c.sanitize();c.setModuleEnabled("auto_sell",false);c.setModuleEnabled("auto_logout",false);
             if (migrateLanguage || migrateChunkMemory) c.save();
             return c;
         } catch (IOException | RuntimeException ex) {
@@ -171,6 +174,11 @@ public final class FinderConfig {
         botKeybindVersion=1;
     }
     public void sanitize() {
+        autoSellItems=dev.amethyst.finder.modules.FarmItems.sanitize(autoSellItems);
+        autoSellIntervalSeconds=Math.clamp(autoSellIntervalSeconds,3,120); autoLogoutRange=Math.clamp(autoLogoutRange,8,256);
+        if(autoSellCommand==null||!autoSellCommand.matches("[a-zA-Z0-9_:-]{1,40}"))autoSellCommand="sell";
+        if(autoSellMenuTitle==null)autoSellMenuTitle="";
+        autoSellMenuTitle=autoSellMenuTitle.strip().substring(0,Math.min(80,autoSellMenuTitle.strip().length()));
         itemFinderRange=Math.clamp(itemFinderRange,16,512);itemFinderLimit=Math.clamp(itemFinderLimit,16,192);
         itemFinderTargets=ValuableItems.sanitize(itemFinderTargets);pvpLootProtectionRange=Math.clamp(pvpLootProtectionRange,8,128);
         if(TexturePacks.VARIANTS.stream().noneMatch(v->v.id().equals(pigPackVariant)))pigPackVariant="black";

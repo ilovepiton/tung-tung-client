@@ -59,7 +59,7 @@ function Install-TunTun {
         throw 'Minecraft Launcher profiles were not found. Open the official Launcher once, close it, and select its .minecraft folder.'
     }
     $manifest = Get-Content -LiteralPath (Join-Path $BundlePath 'manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-    if (!$manifest -or !$manifest.PSObject.Properties['files'] -or @($manifest.files).Count -eq 0 -or !$manifest.PSObject.Properties['version'] -or @('1.30.7', '1.30.8', '1.30.9') -notcontains $manifest.version -or !$manifest.PSObject.Properties['gameCoreVersion'] -or $manifest.gameCoreVersion -ne '1.30.3' -or !$manifest.PSObject.Properties['minecraft'] -or $manifest.minecraft -ne '26.3') { throw 'The ZIP manifest must describe desktop 1.30.7-1.30.9 and Fabric Core 1.30.3 for Minecraft 26.3. Extract a fresh complete copy.' }
+    if (!$manifest -or !$manifest.PSObject.Properties['files'] -or @($manifest.files).Count -eq 0 -or !$manifest.PSObject.Properties['version'] -or @('1.30.7', '1.30.8', '1.30.9', '1.31.0') -notcontains $manifest.version -or !$manifest.PSObject.Properties['gameCoreVersion'] -or $manifest.gameCoreVersion -ne $(if ($manifest.version -eq '1.31.0') {'1.31.0'} else {'1.30.3'}) -or !$manifest.PSObject.Properties['minecraft'] -or $manifest.minecraft -ne '26.3') { throw 'The ZIP manifest must describe a matching desktop/core release (1.30.7-1.30.9 / 1.30.3 or 1.31.0 / 1.31.0) for Minecraft 26.3. Extract a fresh complete copy.' }
     $prefix = $BundlePath.TrimEnd([char[]]@([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)) + [IO.Path]::DirectorySeparatorChar
     $verified = 0
     foreach ($asset in $manifest.files) {
@@ -73,7 +73,7 @@ function Install-TunTun {
         if ($actual -ne $asset.sha256.ToLowerInvariant()) { throw "Bundle checksum mismatch: $($asset.path). Extract a fresh copy of the ZIP." }
     }
     $modAssets = @($manifest.files | Where-Object { $_.kind -eq 'mod' })
-    $bridgeAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'tung-tung-bridge-1.30.3.jar' })
+    $bridgeAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq ('tung-tung-bridge-' + $manifest.gameCoreVersion + '.jar') })
     $fabricAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'fabric-api-0.162.0+26.3.jar' })
     $voiceAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'voicechat-fabric-2.6.27+26.3.jar' })
     $clientMapsAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'client_maps-1.3.4.jar' })

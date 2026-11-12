@@ -55,6 +55,12 @@ test {
     dependsOn tasks.named('mapInSlotPatchedJar')
     useJUnitPlatform()
 }
+tasks.register('farmChecks', JavaExec) {
+    dependsOn testClasses
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'dev.amethyst.finder.modules.FarmChecks'
+    enableAssertions = true
+}
 jar { from('LICENSE') { rename { 'LICENSE_amethyst-chunk-finder' } } }
 tasks.named('runClient') { dependsOn tasks.named('mapInSlotPatchedJar') }
 tasks.named('build') { dependsOn tasks.named('mapInSlotPatchedJar') }

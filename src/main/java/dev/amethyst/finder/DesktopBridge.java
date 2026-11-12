@@ -122,6 +122,8 @@ public final class DesktopBridge {
         settings.put("playerInfoScale",c.playerInfoScale);
         settings.put("aimCursorRange",c.aimCursorRange);settings.put("streamTarget",c.streamTarget);settings.put("streamTemplates",c.streamTemplates);settings.put("streamInterval",c.streamInterval);
         settings.put("freecamSpeed",c.freecamSpeed());
+        settings.put("autoSellItems",c.autoSellItems);settings.put("autoSellCommand",c.autoSellCommand);settings.put("autoSellMenuTitle",c.autoSellMenuTitle);
+        settings.put("autoSellIntervalSeconds",c.autoSellIntervalSeconds);settings.put("autoLogoutRange",c.autoLogoutRange);
         settings.put("pvpRange",c.pvpRange);settings.put("pvpDelayTicks",c.pvpDelayTicks);
         settings.put("autoTotemHotbarSlot",c.autoTotemHotbarSlot);
         settings.put("autoTotemReactionDelayMs",c.autoTotemReactionDelayMs);
@@ -282,6 +284,27 @@ public final class DesktopBridge {
                     throw new IllegalArgumentException("Freecam speed must be a finite number.");
                 c.freecamSpeed=value.getAsDouble();
             }
+            if(data.has("autoSellItems")) {
+                var chosen=new java.util.LinkedHashMap<String,Boolean>();
+                for(String id:dev.amethyst.finder.modules.FarmItems.IDS) {
+                    JsonElement value=data.getAsJsonObject("autoSellItems").get(id);
+                    if(value!=null&&(!value.isJsonPrimitive()||!value.getAsJsonPrimitive().isBoolean()))throw new IllegalArgumentException("Farm selections must be boolean");
+                    chosen.put(id,value!=null&&value.getAsBoolean());
+                }
+                c.autoSellItems=chosen;
+            }
+            if(data.has("autoSellCommand")) {
+                String command=data.get("autoSellCommand").getAsString().strip().replaceFirst("^/", "");
+                if(!command.matches("[a-zA-Z0-9_:-]{1,40}"))throw new IllegalArgumentException("Enter a command name only, without arguments");
+                c.autoSellCommand=command;
+            }
+            if(data.has("autoSellMenuTitle")) {
+                String title=data.get("autoSellMenuTitle").getAsString().strip();
+                if(title.length()>80)throw new IllegalArgumentException("Sell menu title is limited to 80 characters");
+                c.autoSellMenuTitle=title;
+            }
+            if(data.has("autoSellIntervalSeconds"))c.autoSellIntervalSeconds=data.get("autoSellIntervalSeconds").getAsInt();
+            if(data.has("autoLogoutRange"))c.autoLogoutRange=data.get("autoLogoutRange").getAsInt();
             if(data.has("pvpRange"))c.pvpRange=data.get("pvpRange").getAsDouble();
             if(data.has("pvpDelayTicks"))c.pvpDelayTicks=data.get("pvpDelayTicks").getAsInt();
             if(data.has("pvpMaxSelfDamage"))c.pvpMaxSelfDamage=data.get("pvpMaxSelfDamage").getAsDouble();

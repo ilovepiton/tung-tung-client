@@ -11,6 +11,8 @@ public final class ModuleCatalog {
     private static final Set<String> VISUALS = Set.of("invis_mode", "client_maps", "map_in_slot", "chunk_finder", "storage_esp", "player_esp", "player_info", "amethyst_esp", "player_chunks", "base_chunks", "spawner_chunks", "xray", "night_vision", "diamond_esp", "ore_esp", "lava_esp");
     private static final Set<String> MOVEMENT = Set.of("flight", "noclip", "boat_fly", "fast_swim", "super_trident", "donut_flight_bypass");
     public static final List<Entry> ENTRIES = List.of(
+            new Entry("auto_sell", "Auto Sell", "Utility", "Sends /sell when selected plain farm resources form full stacks. Deposits one acknowledged stack at a time into a recognized Sell menu, then clicks its named green Confirm/Sell glass button. Partial, named and enchanted stacks stay untouched. Re-arm after reconnecting."),
+            new Entry("auto_logout", "Nearby Player Logout", "Utility", "Disconnects if any received non-spectator player, including a friend, comes within the chosen body distance. Turns itself and Auto Sell off; never reconnects automatically."),
             new Entry("client_maps", "Client Maps", "Visuals", "Stores map pixels received from each server and restores them when that map is no longer being held. Data stays in this Minecraft profile."),
             new Entry("map_in_slot", "Map in Slot", "Visuals", "Renders the real received map image inside filled-map inventory slots. Toggle it without removing the mod."),
             new Entry("item_finder", "Item Finder", "Finder", "Highlights 50 selected valuable dropped item types with names, counts, distance and current chunk outlines. Received entities only; pickup and despawn clear the markers."),

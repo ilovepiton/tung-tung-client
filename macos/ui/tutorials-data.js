@@ -1,4 +1,14 @@
 const GUIDES = {
+  "auto_sell": {
+    "how": "Sends /sell when selected plain farm items form full stacks. Deposits one stack at a time, checks authoritative inventory updates, then clicks the named green Confirm/Sell glass button once.",
+    "start": "World Tools → Utility → Auto Sell settings. Choose resources and optionally the exact menu title. Leave the title blank to recognize the green button automatically. Enable Auto Sell, close other menus and collect full stacks.",
+    "limit": "Requires a chest-style /sell deposit menu with a named green Confirm/Sell glass button that the server closes after confirmation. Unknown menus and timeouts stop automation. Server prices and payment are not controlled by the client. Re-arm after reconnecting."
+  },
+  "auto_logout": {
+    "how": "Disconnects when a received non-spectator player comes within the configured distance of your body. Friends are included. Both Auto Sell and this module are turned off before disconnecting.",
+    "start": "World Tools → Utility → Nearby Player Logout. Set 8–256 blocks (32 default), optionally assign a key, then enable. Re-enable manually for a new session.",
+    "limit": "Only player entities actually sent to your client can be detected. Server-hidden or unloaded players remain unknown. This module never reconnects automatically."
+  },
   "item_finder": {
     "how": "Finds selected dropped item entities in received chunks, with names, stack counts, distance and gold chunk outlines. Includes 50 item types; colored shulker boxes share one filter.",
     "start": "Open World Tools > Item Finder, choose item types and range, then enable it. ALL and NONE set the whole list. Pickups and despawns remove markers.",

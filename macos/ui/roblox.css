@@ -20,3 +20,6 @@
 .sidebar .platform-game-icon{position:absolute;left:11px;top:2px;width:24px;height:24px;object-fit:contain;pointer-events:none}
 .sidebar .stream-platforms{position:absolute;left:10px;top:1px;width:26px;height:26px;display:grid;grid-template-columns:12px 12px;grid-template-rows:12px 12px;gap:2px;align-items:center;justify-items:center;pointer-events:none}
 .sidebar .stream-platforms img{display:block;width:12px;height:12px;object-fit:contain}
+
+/* Five platform rows; preserve space for nine Minecraft tools and status. */
+.sidebar .game-choice{height:25px}.sidebar .game-choice.chess-choice{top:193px;height:25px}.sidebar .game-choice.roblox-choice{top:221px}.sidebar .game-choice.stream-choice{top:249px}.sidebar .game-choice.counter-strike-choice{top:277px;height:25px}.sidebar .game-choice .game-name{top:4px}.sidebar .game-choice .platform-game-icon{top:3px;height:18px;width:18px}.sidebar .workspace-label{top:318px}.sidebar .category-label{top:579px}.sidebar .nav{height:25px}

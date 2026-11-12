@@ -45,12 +45,13 @@ public final class ClientModules {
     private String auraState = "";
     private int auraNextAttack;
     private int playerCount;
+    private final FarmAutomation farm;
 
-    public ClientModules(FinderConfig config) { this.config = config; }
+    public ClientModules(FinderConfig config) { this.config = config; this.farm = new FarmAutomation(config); }
 
     public static boolean capability(String id) {
         return switch (id) {
-            case "freecam", "freelook", "auto_totem", "killaura", "player_detection" -> true;
+            case "freecam", "freelook", "auto_totem", "killaura", "player_detection", "auto_sell", "auto_logout" -> true;
             default -> false;
         };
     }
@@ -69,6 +70,7 @@ public final class ClientModules {
     public boolean setEnabled(String id, boolean enabled) {
         if (!capability(id)) return false;
         config.setModuleEnabled(id, enabled);
+        if ("auto_sell".equals(id)) farm.reset();
         if ("auto_totem".equals(id)) {
             var client=Minecraft.getInstance();synchronizeSession(client);
             totemState = enabled ? totems.received(client,config) : "Disabled";
@@ -109,6 +111,7 @@ public final class ClientModules {
             totemState = auraState = "Paused: player unavailable";
             return;
         }
+        if (farm.tick(client)) return;
         boolean freecam = config.isModuleEnabled("freecam");
         boolean freelook = config.isModuleEnabled("freelook") && !freecam;
         if (freecam != freecamActive || freelook != freelookActive) {
@@ -132,6 +135,10 @@ public final class ClientModules {
     /** Call on disconnect; camera modes never carry a detached body into another world. */
     public void reset(Minecraft client) {
         disableCamera(client);
+        farm.reset();
+        config.setModuleEnabled("auto_sell",false);
+        config.setModuleEnabled("auto_logout",false);
+        config.save();
         sessionPlayer = null;
         sessionLevel = null;
         nearbyPlayers.clear();
@@ -305,12 +312,13 @@ public final class ClientModules {
 
     public String status(String id) {
         if (!capability(id)) return reason(id);
-        if (!config.isModuleEnabled(id)) return config.text("Выключено", "Disabled");
+        if (!config.isModuleEnabled(id)) return "auto_sell".equals(id)&&farm.status(id).startsWith("Stopped:")?farm.status(id):config.text("Выключено", "Disabled");
         if (sessionPlayer == null) return config.text("Ожидание подключения к миру", "Waiting for a world");
         return switch (id) {
             case "freecam" -> freecamActive() ? "Camera active · " + CameraSpeed.blocksPerSecond(config.freecamSpeed(), false)
                     + " blocks/s · Ctrl boost ×3 · WASD / Space / Shift" : config.text("Ожидание", "Waiting");
             case "freelook" -> freelookActive() ? config.text("Свободный обзор · направление тела сохранено", "Free view · body aim unchanged") : config.text("На паузе во время Freecam", "Paused while Freecam is active");
+            case "auto_sell", "auto_logout" -> farm.status(id);
             case "auto_totem" -> totemState;
             case "killaura" -> auraState;
             case "player_detection" -> config.text("Загруженных игроков рядом: ", "Loaded players nearby: ") + playerCount;

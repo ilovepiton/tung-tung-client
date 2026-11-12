@@ -13,8 +13,8 @@ using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.WinForms;
 using Newtonsoft.Json.Linq;
 
-[assembly: System.Reflection.AssemblyVersion("1.30.9.0")]
-[assembly: System.Reflection.AssemblyFileVersion("1.30.9.0")]
+[assembly: System.Reflection.AssemblyVersion("1.31.0.0")]
+[assembly: System.Reflection.AssemblyFileVersion("1.31.0.0")]
 [assembly: System.Reflection.AssemblyTitle("Tung Tung Client")]
 
 namespace TungTung.Windows
@@ -47,7 +47,7 @@ namespace TungTung.Windows
         private readonly NotifyIcon tray = new NotifyIcon();
         private readonly GameBridge bridge;
         private readonly RobloxBridge roblox = new RobloxBridge();
-        private string minecraft, launcher, installStatus = "Close Minecraft and its Launcher, then install Fabric Core 1.30.3.";
+        private string minecraft, launcher, installStatus = "Close Minecraft and its Launcher, then install Fabric Core 1.31.0.";
         private bool sounds = true, ready, polling, installing, exiting;
         private long? openSequence;
         private SoundPlayer sound;
@@ -63,7 +63,7 @@ namespace TungTung.Windows
             }
             catch { }
             bridge = new GameBridge(minecraft);
-            Text = "Tung Tung Client 1.30.9"; BackColor = Color.FromArgb(16, 12, 9);
+            Text = "Tung Tung Client 1.31.0"; BackColor = Color.FromArgb(16, 12, 9);
             StartPosition = FormStartPosition.CenterScreen; ClientSize = new Size(1180, 760); MinimumSize = new Size(1000, 700);
             web.Dock = DockStyle.Fill; web.DefaultBackgroundColor = BackColor; Controls.Add(web);
             tray.Icon = SystemIcons.Application; tray.Text = "Tung Tung Client";
@@ -140,7 +140,7 @@ namespace TungTung.Windows
         }
         private JObject Preferences()
         {
-            return new JObject { ["minecraftFolder"] = minecraft, ["soundsEnabled"] = sounds, ["simpleVoiceChat"] = true, ["installing"] = installing, ["installStatus"] = installStatus, ["optionalExtrasAvailable"] = true, ["launcherAvailable"] = true, ["version"] = "1.30.9" };
+            return new JObject { ["minecraftFolder"] = minecraft, ["soundsEnabled"] = sounds, ["simpleVoiceChat"] = true, ["installing"] = installing, ["installStatus"] = installStatus, ["optionalExtrasAvailable"] = true, ["launcherAvailable"] = true, ["version"] = "1.31.0" };
         }
         private JObject Presented(JObject state) { state["native"] = Preferences(); return state; }
         private void Post(object message) { if (!IsDisposed && web.CoreWebView2 != null) web.CoreWebView2.PostWebMessageAsJson(Newtonsoft.Json.JsonConvert.SerializeObject(message)); }
@@ -221,7 +221,7 @@ namespace TungTung.Windows
                             if (dialog.ShowDialog(this) == DialogResult.OK) File.WriteAllText(dialog.FileName, json); break;
                     case "sounds": sounds = (bool?)payload["enabled"] == true; SavePreferences(); result = Preferences(); break;
                     case "playSound": PlaySound((string)payload["name"]); break;
-                    case "about": MessageBox.Show("Tung Tung Client 1.30.9\nMinecraft Java 26.3 / Fabric Core 1.30.3\nSimple Voice Chat 2.6.27\nRoblox compatible-runtime tools", Text); break;
+                    case "about": MessageBox.Show("Tung Tung Client 1.31.0\nMinecraft Java 26.3 / Fabric Core 1.31.0\nSimple Voice Chat 2.6.27\nRoblox compatible-runtime tools", Text); break;
                     case "quit": exiting = true; Close(); return;
                     default: throw new IOException("Unknown client action.");
                 }

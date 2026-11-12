@@ -1,5 +1,13 @@
 # Changelog
 
+## Desktop and Core 1.31.0 — 2026-11-12
+
+- Auto Sell: 24 selectable farm resources; cobblestone only by default. Only plain full stacks are transferred. Named/enchanted items and partial stacks stay untouched.
+- Uses /sell → deposit menu → authoritative stack receipts → one named green Confirm/Sell glass click. No Sell-all command or blind confirmation clicks. Unknown menus, partial acceptance and timeouts stop it.
+- Nearby Player Logout: adjustable body distance (32 blocks default), includes friends, turns itself and Auto Sell off before disconnecting. Received player entities only; no automatic reconnect.
+- Added a locked Counter-Strike sidebar entry with a round CS mark.
+- Added settings, keybinds and tutorials for both modules. Automated policy/UI checks cover selections, receipts and sidebar layout. Live server-menu compatibility still needs an in-game check; payment is confirmed by the server.
+
 ## Desktop 1.30.9 — 2026-11-11
 
 - Windows core installation uses only bundled files: five core mods and 39 packs. The former 15 optional downloads no longer block setup.
