@@ -1,1 +1,3 @@
 Counter-Strike 2 logo: Valve. Original SVG from the official Counter-Strike website, https://cdn.fastly.steamstatic.com/apps/csgo/images/csgo_react/cs2/logo_cs2_header.svg . Counter-Strike and Counter-Strike 2 are Valve trademarks. No affiliation or endorsement.
+
+Counter-Strike 2 orange/blue app icon: Valve. Original JPEG from the official Steam community page https://steamcommunity.com/app/730 . Asset: https://shared.fastly.steamstatic.com/community_assets/images/apps/730/8dbc71957312bbd3baea65848b545be9eae2a355.jpg . Displayed without recoloring.
