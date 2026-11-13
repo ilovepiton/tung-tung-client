@@ -10,7 +10,7 @@ public final class ChunkVisualRules {
     private ChunkVisualRules() {}
     public static Set<ChunkSelection.Category> categories(ChunkAnalysis analysis,Set<ChunkSelection.Category> enabled,
                                                          boolean showHistory,boolean growthEnabled) {
-        return categories(analysis,enabled,showHistory,growthEnabled,4);
+        return categories(analysis,enabled,showHistory,growthEnabled,1);
     }
     public static Set<ChunkSelection.Category> categories(ChunkAnalysis analysis,Set<ChunkSelection.Category> enabled,
                                                          boolean showHistory,boolean growthEnabled,int matureMinimum) {

@@ -138,6 +138,26 @@ public final class ChunkScanner {
         refreshNeeded = true;
     }
     private void enqueue(long key) { if (queued.add(key)) queue.addLast(key); }
+    private int scanRadius() {
+        return Math.max(config.radiusChunks,config.isModuleEnabled("search_chunk")?(config.searchChunkRangeBlocks+15)/16:0);
+    }
+    public record SusStatus(int checked,int pending,int matureChunks,int matureClusters,int matching,int inRange,int minimum,int range) {
+        public String summary() {
+            return inRange+" in range / "+matching+" matching · "+checked+" checked · "+pending+" pending · "+matureChunks+" chunks with "+matureClusters+" mature clusters · minimum "+minimum+" · "+range+" blocks";
+        }
+    }
+    public SusStatus susStatus(Minecraft client) {
+        int chunks=0,clusters=0,matching=0,nearby=0;
+        for(var a:analyses) {
+            if(a.status()!=ChunkAnalysis.Status.LIVE||!hasCurrentChunk(a.key()))continue;
+            int count=a.count(Signal.CLUSTER);if(count>0) {chunks++;clusters+=count;}
+            if(count>=config.searchChunkMinClusters) {
+                matching++;
+                if(client.player!=null&&dev.amethyst.finder.core.SusChunkRules.within(a.chunkX(),a.chunkZ(),client.gameRenderer.mainCamera().position().x,client.gameRenderer.mainCamera().position().z,config.searchChunkRangeBlocks))nearby++;
+            }
+        }
+        return new SusStatus(verified.size(),pendingCount(),chunks,clusters,matching,nearby,config.searchChunkMinClusters,config.searchChunkRangeBlocks);
+    }
     public int loadedCount() { return loaded.size(); }
     public int pendingCount() { return queue.size() + dirtyDue.size() + (current == null ? 0 : 1); }
     public boolean isLoaded(Finding f) { return loaded.contains(f.key()) && hasCurrentChunk(f.key()); }
@@ -179,6 +199,7 @@ public final class ChunkScanner {
             lastPlayerChunkX = cx; lastPlayerChunkZ = cz; refreshNeeded = true;
         }
         reconcileLoaded(deadline);
+        trimCache();
         if (!config.requiresScan()) {
             if (current != null || !queue.isEmpty() || !verified.isEmpty()) {
                 current = null; queue.clear(); queued.clear(); verified.clear(); refreshNeeded = true;
@@ -203,7 +224,7 @@ public final class ChunkScanner {
                 if (key == null) break;
                 queued.remove(key);
                 int x = (int) (key >> 32), z = (int) (long) key;
-                if (Math.abs(x - cx) > config.radiusChunks || Math.abs(z - cz) > config.radiusChunks) continue;
+                if (Math.abs(x - cx) > scanRadius() || Math.abs(z - cz) > scanRadius()) continue;
                 LevelChunk chunk = world.getChunkSource().getChunk(x, z, ChunkStatus.FULL, false);
                 if (chunk == null || !loaded.contains(key) || dirtyDue.containsKey(key)) continue;
                 current = new ScanJob(chunk, key, generations.getOrDefault(key, 0L), config);
@@ -237,8 +258,8 @@ public final class ChunkScanner {
         refreshNeeded = true;
     }
     private void discover(int cx, int cz, long deadline) {
-        if (discoveryRadius != config.radiusChunks) {
-            discoveryRadius = config.radiusChunks;
+        if (discoveryRadius != scanRadius()) {
+            discoveryRadius = scanRadius();
             List<int[]> next = new ArrayList<>();
             for (int x = -discoveryRadius; x <= discoveryRadius; x++)
                 for (int z = -discoveryRadius; z <= discoveryRadius; z++) next.add(new int[]{x, z});
@@ -290,15 +311,7 @@ public final class ChunkScanner {
         baselinePositions += update.observation().budStages().size() - (prior == null ? 0 : prior.budStages().size());
         trimBaselines(job.key);
         verified.add(job.key); continuousBaseline.add(job.key); completedScans++; saveNeeded = true;
-        while (cache.size() > CACHE_LIMIT) {
-            long first = cache.keySet().iterator().next();
-            cache.remove(first);
-            ChunkObservation forgotten = history.remove(first);
-            if (forgotten != null) baselinePositions -= forgotten.budStages().size();
-            notified.remove(first);
-            // Retain the verified generation for unchanged loaded chunks: cache limits must not cause endless rescanning.
-            continuousBaseline.remove(first);
-        }
+        trimCache();
         Finding f = evaluate(e, removed, grown);
         if (config.notifications && f != null && f.kind() == Finding.Kind.ACTIVITY && f.score() >= 60
                 && !notified.contains(job.key) && tick - lastNotification >= 100) {
@@ -307,6 +320,14 @@ public final class ChunkScanner {
                     + f.x() + " Z " + f.z()), true);
         }
         refreshNeeded = true;
+    }
+    private void trimCache() {
+        for(long key:ObservationRetention.evictions(cache.keySet(),loaded,CACHE_LIMIT)) {
+            cache.remove(key);
+            ChunkObservation forgotten=history.remove(key);
+            if(forgotten!=null)baselinePositions-=forgotten.budStages().size();
+            notified.remove(key);continuousBaseline.remove(key);
+        }
     }
     private void trimBaselines(long newest) {
         if (baselinePositions <= ObservationMemory.MAX_TOTAL_STAGES) return;
@@ -410,8 +431,8 @@ public final class ChunkScanner {
     }
     private static int bounded(long value) { return (int)Math.min(Integer.MAX_VALUE, Math.max(0, value)); }
     private boolean inRadius(Minecraft client, int cx, int cz) {
-        return client.player != null && Math.abs(cx - client.player.chunkPosition().x()) <= config.radiusChunks
-                && Math.abs(cz - client.player.chunkPosition().z()) <= config.radiusChunks;
+        return client.player != null && Math.abs(cx - client.player.chunkPosition().x()) <= scanRadius()
+                && Math.abs(cz - client.player.chunkPosition().z()) <= scanRadius();
     }
     private record Observation(ChunkEvidence evidence, int removed, long changeAt, int grown, long growthAt) {}
     private static final class ScanJob {

@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.33.1
+
+- Fixed live chunk observations disappearing after the 2048-entry history limit. Currently loaded chunks now keep their evidence; only historical entries consume the history quota.
+
+- Sus Chunk now has its own 16–512-block range, independent of general chunk/model ESP. Scanning expands to cover that range without loading terrain.
+- New-profile mature-cluster minimum is 1. Existing custom thresholds are preserved.
+- Live Sus counters report checked/pending chunks, received mature crystals, matching chunks and matches in range. The gameplay HUD explains empty results.
+- Corrected the CS2 sidebar icon to the official orange/blue Steam icon.
+
 ## 1.33.0
 
 - Renamed Search Chunk to Sus Chunk; saved keybinds and settings stay intact.

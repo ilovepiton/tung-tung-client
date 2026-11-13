@@ -75,7 +75,8 @@ public final class WorldOverlay {
                 int color = s==Signal.CLUSTER&&searchKeys.contains(ChunkEvidence.key(mark.x()>>4,mark.z()>>4))?0xFFFF3434:HighlightPalette.color(s);
                 double distance = distanceSquared(mark.x() + .5, mark.y() + .5, mark.z() + .5, p.eye);
                 double dx=mark.x()+.5-p.eye.x,dz=mark.z()+.5-p.eye.z;
-                if (dx*dx+dz*dz > (double)c.espRange * c.espRange) continue;
+                int markerRange=s==Signal.CLUSTER&&searchKeys.contains(ChunkEvidence.key(mark.x()>>4,mark.z()>>4))?c.searchChunkRangeBlocks:c.espRange;
+                if (dx*dx+dz*dz > (double)markerRange * markerRange) continue;
                 // Ignore stale observations after a block change; never load a missing chunk to verify a marker.
                 if (!ChunkWorldRenderer.chunkLoaded(client,mark.x() >> 4,mark.z() >> 4)) continue;
                 if (BlockClassifier.classify(client.level.getBlockState(new BlockPos(mark.x(), mark.y(), mark.z()))) != s) continue;

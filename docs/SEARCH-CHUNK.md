@@ -1,6 +1,6 @@
 # Sus Chunk and Auto Relog
 
-Sus Chunk is an independent mature-amethyst heuristic. Its red full-height columns use current completed scans of chunks actually received from the server. The default is four mature clusters, configurable from 1 to 64. Natural geodes and the user's own simulation can produce the same clusters; a marker is not proof of another player or an unraided base.
+Sus Chunk is an independent mature-amethyst heuristic. Its red full-height columns use current completed scans of chunks actually received from the server. New profiles start at one mature cluster, configurable from 1 to 64. Existing thresholds are preserved. Sus Chunk has its own 16–512-block range (256 default), independent of other ESP limits. The status and HUD report received crystals, matching chunks and scan progress; zero received crystals is not converted into a finding. Natural geodes and the user's own simulation can produce the same clusters; a marker is not proof of another player or an unraided base.
 
 Auto Relog arms once. After the body stays at or below the configured Y for one second, it turns off, disconnects to a cancellable countdown and attempts the same server once. Default Y: 0. Delay: 5 seconds, adjustable 3–30. Escape or Cancel reconnect stops the countdown. Manual disconnect, Nearby Player Logout and failed connection attempts do not create a reconnect loop. There are no automatic camera, movement or trident actions.
 

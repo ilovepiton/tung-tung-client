@@ -36,6 +36,9 @@ public final class SearchChunkChecks {
             assert candidate==(status==ChunkAnalysis.Status.LIVE):"Search candidates require a current completed scan";
             assert !ChunkVisualRules.categories(a,Set.of(ChunkSelection.Category.SEARCH),true,false,5).contains(ChunkSelection.Category.SEARCH);
         }
+        var one=new ChunkAnalysis(0,0,1,ChunkAnalysis.Status.LIVE,Map.of(Signal.CLUSTER,1),0,1,0,ChunkAnalysis.StructureEvidence.NONE,"",0,0,0,0,0,0,List.of(),false);
+        assert ChunkVisualRules.categories(one,Set.of(ChunkSelection.Category.SEARCH),false,false).contains(ChunkSelection.Category.SEARCH):"Default threshold must show a single received mature crystal";
+        assert !ChunkVisualRules.categories(one,Set.of(ChunkSelection.Category.SEARCH),false,false,4).contains(ChunkSelection.Category.SEARCH):"Explicit higher thresholds remain respected";
         var texture=Identifier.fromNamespaceAndPath("minecraft","textures/block/stone.png");
         float[] uv={0,0,1,0,1,1,0,1};
         // A face at Y=0 must project from either side of the ground, not only from above.

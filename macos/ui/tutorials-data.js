@@ -6,7 +6,7 @@ const GUIDES = {
   },
   "search_chunk": {
     "how": "Marks current scanned chunks red when they contain the selected minimum of mature amethyst clusters. The red column spans the whole world height and mature crystals use red model highlights.",
-    "start": "World Tools → Finder → Sus Chunk. Choose the minimum cluster count (4 default), assign a key if desired, then enable. Newly received chunks are scanned automatically, including after a normal relog.",
+    "start": "World Tools → Finder → Sus Chunk. Choose the minimum cluster count (1 for new profiles) and the separate 16–512-block range, assign a key if desired, then enable. Newly received chunks are scanned automatically, including after a normal relog. The live status shows checked/pending chunks and received mature crystals.",
     "limit": "A heuristic, not proof of a base or another player. Clusters grow naturally under simulation, including your own presence. Historical and still-verifying chunks do not create current red Sus Chunk signals."
   },
   "auto_relog": {

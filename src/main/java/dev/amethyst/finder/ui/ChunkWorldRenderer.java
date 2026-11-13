@@ -50,7 +50,7 @@ public final class ChunkWorldRenderer {
         long now=System.nanoTime()/1_000_000L;
         Vec3 eye=camera.position();
         int cellX=(int)Math.floor(eye.x/16),cellZ=(int)Math.floor(eye.z/16);
-        int flags=flags(config),range=config.chunkRangeBlocks,limit=Math.min(MAX_CHUNKS,config.chunkLimit);
+        int flags=flags(config),range=Math.max(config.chunkRangeBlocks,config.isModuleEnabled("search_chunk")?config.searchChunkRangeBlocks:0),limit=Math.min(MAX_CHUNKS,config.chunkLimit);
         long currentRevision=ChunkFinderClient.SCANNER.revision();
         Long pin=ChunkSelection.overrideKey();
         if(!Objects.equals(lastOverride,pin)||currentRevision!=revision||flags!=lastFlags||cellX!=lastCellX||cellZ!=lastCellZ||range!=lastRange||limit!=lastLimit||now-nearestAt>250) {
@@ -60,7 +60,7 @@ public final class ChunkWorldRenderer {
         Map<Long,Candidate> candidates=new LinkedHashMap<>();
         for(Candidate candidate:nearest) candidates.put(candidate.key(),candidate.copy());
         if(config.chunkModuleEnabled("player_chunks")) {
-            var currentPlayers=currentPlayers(client,range);
+            var currentPlayers=currentPlayers(client,config.chunkRangeBlocks);
             for(var entry:currentPlayers.entrySet()) {
                 long key=entry.getKey();int x=(int)(key>>32),z=(int)key;
                 Candidate candidate=candidates.computeIfAbsent(key,k->new Candidate(x,z,null));
@@ -146,13 +146,14 @@ public final class ChunkWorldRenderer {
     }
     private static List<Candidate> findNearest(FinderConfig config,Vec3 eye,int limit,Long pin) {
         PriorityQueue<Candidate> queue=new PriorityQueue<>(Comparator.comparingDouble((Candidate c)->priorityDistance(c,eye,pin)).reversed());
-        double range2=config.chunkRangeBlocks*(double)config.chunkRangeBlocks;
+        double range2=Math.pow(Math.max(config.chunkRangeBlocks,config.isModuleEnabled("search_chunk")?config.searchChunkRangeBlocks:0),2);
         var enabled=EnumSet.noneOf(ChunkSelection.Category.class);
         for(var category:ChunkSelection.Category.values())if(config.chunkModuleEnabled(category.moduleId))enabled.add(category);
         for(ChunkAnalysis analysis:ChunkFinderClient.SCANNER.chunkObservations()) {
             Candidate candidate=new Candidate(analysis.chunkX(),analysis.chunkZ(),analysis);
             if(distanceSquared(candidate,eye)>range2) continue;
             candidate.categories.addAll(ChunkVisualRules.categories(analysis,enabled,config.showHistoricalChunks,config.chunkModuleEnabled("amethyst_growth"),config.searchChunkMinClusters));
+            candidate.categories.removeIf(category->!dev.amethyst.finder.core.SusChunkRules.within(candidate.x,candidate.z,eye.x,eye.z,category==ChunkSelection.Category.SEARCH?config.searchChunkRangeBlocks:config.chunkRangeBlocks));
             if(candidate.categories.isEmpty()) continue;
             queue.add(candidate);if(queue.size()>limit)queue.poll();
         }

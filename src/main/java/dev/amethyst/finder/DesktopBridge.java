@@ -87,7 +87,7 @@ public final class DesktopBridge {
                     :dev.amethyst.finder.modules.ClientModules.capability(e.id())?ChunkFinderClient.MODULES.status(e.id()):"";
             if (e.id().equals("cave_detector")) live=ChunkFinderClient.CAVES.status();
             if (e.id().equals("auto_relog")) live=ChunkFinderClient.RELOG.status();
-            if (e.id().equals("search_chunk")) live="Red mature-cluster candidates · minimum "+c.searchChunkMinClusters+" · received chunks only";
+            if (e.id().equals("search_chunk")) live=connected?ChunkFinderClient.SCANNER.susStatus(client).summary():"Join a world to scan received chunks";
             if (e.id().equals("xray")) live=dev.amethyst.finder.modules.XrayModule.status();
             if (e.id().equals("night_vision")) live=dev.amethyst.finder.modules.NightVisionModule.status();
             if (e.id().equals("invis_mode")) live=dev.amethyst.finder.modules.InvisMode.status();
@@ -125,6 +125,8 @@ public final class DesktopBridge {
         settings.put("playerInfoScale",c.playerInfoScale);
         settings.put("aimCursorRange",c.aimCursorRange);settings.put("streamTarget",c.streamTarget);settings.put("streamTemplates",c.streamTemplates);settings.put("streamInterval",c.streamInterval);
         settings.put("freecamSpeed",c.freecamSpeed());
+        snapshot.put("susChunk",ChunkFinderClient.SCANNER.susStatus(client));
+        settings.put("searchChunkRangeBlocks",c.searchChunkRangeBlocks);
         settings.put("searchChunkMinClusters",c.searchChunkMinClusters);settings.put("autoRelogY",c.autoRelogY);settings.put("autoRelogDelaySeconds",c.autoRelogDelaySeconds);settings.put("espLimit",c.espLimit);
         settings.put("autoSellItems",c.autoSellItems);settings.put("autoSellCommand",c.autoSellCommand);settings.put("autoSellMenuTitle",c.autoSellMenuTitle);
         settings.put("autoSellIntervalSeconds",c.autoSellIntervalSeconds);settings.put("autoLogoutRange",c.autoLogoutRange);
@@ -309,6 +311,7 @@ public final class DesktopBridge {
             }
             if(data.has("autoSellIntervalSeconds"))c.autoSellIntervalSeconds=data.get("autoSellIntervalSeconds").getAsInt();
             if(data.has("autoLogoutRange"))c.autoLogoutRange=data.get("autoLogoutRange").getAsInt();
+            if(data.has("searchChunkRangeBlocks"))c.searchChunkRangeBlocks=data.get("searchChunkRangeBlocks").getAsInt();
             if(data.has("searchChunkMinClusters")) { c.searchChunkMinClusters=data.get("searchChunkMinClusters").getAsInt(); }
             if(data.has("autoRelogY"))c.autoRelogY=data.get("autoRelogY").getAsInt();
             if(data.has("autoRelogDelaySeconds"))c.autoRelogDelaySeconds=data.get("autoRelogDelaySeconds").getAsInt();

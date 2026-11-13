@@ -2,7 +2,7 @@
 
 ## Current release
 
-Desktop **1.33.0**, game core **1.33.0**, Minecraft Java **26.3**, Fabric Loader **0.19.5**, Java **25**.
+Desktop **1.33.1**, game core **1.33.1**, Minecraft Java **26.3**, Fabric Loader **0.19.5**, Java **25**.
 Desktop app and game core are separate components. Updating the app alone does
 not update code already running inside Minecraft.
 

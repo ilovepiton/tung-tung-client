@@ -15,7 +15,13 @@ public final class ChunkHud {
         int accent=0xFFB66CFF;
         String title="TUNTUN / CHUNKS",key=analysisKeyName();
         if(selected==null) {
-            rows.add(rendered+" nearby · limit "+limit);
+            if(ChunkFinderClient.CONFIG.isModuleEnabled("search_chunk")) {
+                var sus=ChunkFinderClient.SCANNER.susStatus(client);
+                title="TUNTUN / SUS CHUNK";accent=0xFFFF3434;
+                rows.add(sus.inRange()+" matching / "+sus.checked()+" checked");
+                rows.add(sus.matureClusters()+" mature crystals · min "+sus.minimum());
+                rows.add(sus.pending()>0?sus.pending()+" pending scans":sus.matureClusters()==0?"No mature crystals received":sus.matching()==0?"Below your cluster threshold":sus.inRange()==0?"Matches outside selected range":rendered+" chunk columns drawn");
+            } else rows.add(rendered+" nearby · limit "+limit);
             rows.add(key+": findings and controls");
         } else {
             var category=selected.categories().isEmpty()?null:selected.categories().getFirst();
@@ -36,6 +42,7 @@ public final class ChunkHud {
                 rows.add("No underground cavities detected");
                 rows.add("Received blocks · full scan");
             } else if(category==ChunkSelection.Category.PLAYER||a==null) rows.add("Players observed: "+selected.players());
+            else if(category==ChunkSelection.Category.SEARCH) rows.add("Mature clusters: "+a.count(dev.amethyst.finder.core.Signal.CLUSTER));
             else if(category==ChunkSelection.Category.CHEST)rows.add("Storage blocks: "+a.storageCount());
             else if(category==ChunkSelection.Category.SPAWNER)rows.add("Spawners: "+a.spawnerCount());
             else if(category==ChunkSelection.Category.BASE) {

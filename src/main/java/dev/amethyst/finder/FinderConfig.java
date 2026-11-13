@@ -25,7 +25,8 @@ public final class FinderConfig {
     public Map<String,Integer> moduleKeybinds = new HashMap<>(Map.of("aim_cursor",com.mojang.blaze3d.platform.InputConstants.KEY_R,"combat_bot",com.mojang.blaze3d.platform.InputConstants.KEY_P));
     public Map<String, Boolean> finderTargets = FinderTargets.defaults();
     public int espRange = 128, espLimit = 512;
-    public int searchChunkMinClusters=4, autoRelogY=0, autoRelogDelaySeconds=5;
+    public int searchChunkRangeBlocks=256;
+    public int searchChunkMinClusters=1, autoRelogY=0, autoRelogDelaySeconds=5;
     public int elytraRange=256,elytraPlayerRange=256;
     public boolean elytraWarnPlayers=true;
     public int itemFinderRange=128,itemFinderLimit=96;
@@ -202,6 +203,7 @@ public final class FinderConfig {
         finderTargets = FinderTargets.sanitize(finderTargets);
         espRange = Math.clamp(espRange, 16, 256);
         espLimit = Math.clamp(espLimit, 32, 1024);
+        searchChunkRangeBlocks=Math.clamp(searchChunkRangeBlocks,16,512);
         searchChunkMinClusters=Math.clamp(searchChunkMinClusters,1,64);autoRelogY=Math.clamp(autoRelogY,-64,64);autoRelogDelaySeconds=Math.clamp(autoRelogDelaySeconds,3,30);
         resourceRange = Math.clamp(resourceRange, 16, 128);
         resourceLimit = Math.clamp(resourceLimit, 32, 192);
