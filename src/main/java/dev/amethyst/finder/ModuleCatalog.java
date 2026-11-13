@@ -11,6 +11,8 @@ public final class ModuleCatalog {
     private static final Set<String> VISUALS = Set.of("invis_mode", "client_maps", "map_in_slot", "chunk_finder", "storage_esp", "player_esp", "player_info", "amethyst_esp", "player_chunks", "base_chunks", "spawner_chunks", "xray", "night_vision", "diamond_esp", "ore_esp", "lava_esp");
     private static final Set<String> MOVEMENT = Set.of("flight", "noclip", "boat_fly", "fast_swim", "super_trident", "donut_flight_bypass");
     public static final List<Entry> ENTRIES = List.of(
+            new Entry("search_chunk", "Search Chunk", "Finder", "Red full-height columns for currently scanned chunks with enough mature amethyst clusters. A search hint, not proof of a base or another player. Natural growth and your own simulation can produce clusters."),
+            new Entry("auto_relog", "Auto Relog", "Utility", "Arms one reconnect to the same server after one second at or below the chosen body Y level. Shows a cancellable countdown. No camera, item use, movement or retry loop."),
             new Entry("auto_sell", "Auto Sell", "Utility", "Sends /sell when selected plain farm resources form full stacks. Deposits one acknowledged stack at a time into a recognized Sell menu, then clicks its named green Confirm/Sell glass button. Partial, named and enchanted stacks stay untouched. Re-arm after reconnecting."),
             new Entry("auto_logout", "Nearby Player Logout", "Utility", "Disconnects if any received non-spectator player, including a friend, comes within the chosen body distance. Turns itself and Auto Sell off; never reconnects automatically."),
             new Entry("client_maps", "Client Maps", "Visuals", "Stores map pixels received from each server and restores them when that map is no longer being held. Data stays in this Minecraft profile."),
@@ -58,7 +60,7 @@ public final class ModuleCatalog {
             new Entry("auction_sniper", "Auction Sniper", "Server", "Requires an adapter for the auction plugin and its price format. Not implemented.")
     );
     private ModuleCatalog() {}
-    public static boolean available(String id) { return "item_finder".equals(id) || "elytra_finder".equals(id) || "auto_vault".equals(id) || MapArtModules.available(id) || VISUALS.contains(id) && !Set.of("client_maps","map_in_slot").contains(id) || ClientModules.capability(id) || PvpModules.capability(id) || MovementModules.capability(id); }
+    public static boolean available(String id) { return "search_chunk".equals(id)||"auto_relog".equals(id)||"item_finder".equals(id) || "elytra_finder".equals(id) || "auto_vault".equals(id) || MapArtModules.available(id) || VISUALS.contains(id) && !Set.of("client_maps","map_in_slot").contains(id) || ClientModules.capability(id) || PvpModules.capability(id) || MovementModules.capability(id); }
     public static Entry find(String id) { return ENTRIES.stream().filter(e -> e.id.equals(id)).findFirst().orElse(null); }
 
     /** Technical observability labels; these do not promise any particular anti-cheat outcome. */

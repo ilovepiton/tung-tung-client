@@ -31,6 +31,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
     public static dev.amethyst.finder.modules.pvp.ArsenalBot BOT;
     public static MovementModules MOVEMENT;
     public static DesktopBridge BRIDGE;
+    public static dev.amethyst.finder.modules.AutoRelog RELOG;
     public static PlayerLocator PLAYERS;
     public static ElytraFinder ELYTRA;
     public static ItemFinder ITEMS;
@@ -44,6 +45,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
         MediaPack.prepare();
         SCANNER = new ChunkScanner(CONFIG);
         MODULES = new ClientModules(CONFIG);
+        RELOG = new dev.amethyst.finder.modules.AutoRelog(CONFIG);
         PVP = new PvpModules(CONFIG);
         BOT = new dev.amethyst.finder.modules.pvp.ArsenalBot(CONFIG);
         MOVEMENT = new MovementModules(CONFIG);
@@ -78,6 +80,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
         });
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
             MapArtModules.apply();
+            RELOG.tick(client);
             WhiteGlint.tick(client);
             BOT.beginClientTick();MACE.beginClientTick();
             MODULES.earlyInventoryTick(client);

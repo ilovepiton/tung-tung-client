@@ -11,7 +11,8 @@ public final class ChunkSelection {
         AMETHYST("AMETHYST CHUNK",0xFFB66CFF,"amethyst_chunks"),
         BASE("STRUCTURE FINDING",0xFFFFB020,"base_chunks"),
         PLAYER("PLAYER CHUNK",0xFFFF55CC,"player_chunks"),
-        SPAWNER("SPAWNER CHUNK",0xFF35C9FF,"spawner_chunks");
+        SPAWNER("SPAWNER CHUNK",0xFF35C9FF,"spawner_chunks"),
+        SEARCH("SEARCH CHUNK",0xFFFF3434,"search_chunk");
         public final String label,moduleId;public final int color;
         Category(String label,int color,String moduleId) { this.label=label;this.color=color;this.moduleId=moduleId; }
     }

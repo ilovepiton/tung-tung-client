@@ -46,13 +46,12 @@ final class ModelHighlightMesh {
     }
     boolean hasIssue() { return !issue.isEmpty() || unsupported > 0 || truncated; }
 
-    void add(ModelGeometryCapture.Capture capture, int color) {
+    boolean add(ModelGeometryCapture.Capture capture, int color) {
+        int before=surfaces.size();
         unsupported += capture.unsupported();
         truncated |= capture.truncated();
         if (!capture.issue().isEmpty() && issue.isEmpty()) issue = capture.issue();
         for (ModelGeometryCapture.Face face : capture.faces()) {
-            if (faces >= FACE_BUDGET) { truncated = true; break; }
-            faces++;
             double[] xyz = face.xyz(); float[] uv = face.uv();
             if (xyz.length != 12 || uv.length != 8 || face.texture() == null) {
                 unsupported++; continue;
@@ -76,9 +75,12 @@ final class ModelHighlightMesh {
                 area += a.x*b.y-b.x*a.y;
             }
             if (Math.abs(area)<.15) continue;
+            if (faces >= FACE_BUDGET) { truncated = true; break; }
+            faces++;
             // Keep both sides: cutout planes and resource-pack geometry can be double sided.
             surfaces.add(new Surface(screen, face.texture(), shade(color, xyz), depth/4));
         }
+        return surfaces.size()>before;
     }
 
     void draw(GuiGraphicsExtractor graphics, Minecraft client) {

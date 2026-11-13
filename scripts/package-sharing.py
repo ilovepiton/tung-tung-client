@@ -7,8 +7,8 @@ import shutil
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1.31.0'
-CORE_VERSION = '1.31.0'
+VERSION = '1.32.0'
+CORE_VERSION = '1.32.0'
 DEST = ROOT / 'dist' / f'Tung-Tung-Client-{VERSION}-Share'
 
 

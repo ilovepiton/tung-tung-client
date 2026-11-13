@@ -362,9 +362,9 @@ public final class ChunkScanner {
             }
             ChunkObservation remembered = history.get(key);
             if (remembered != null) nextAnalyses.add(analysis(remembered, o.evidence));
-            if (!inRadius(client, o.evidence.chunkX, o.evidence.chunkZ)) continue;
             boolean currentVerified = verified.contains(key) && accessible;
             if (currentVerified) nextMarks.addAll(o.evidence.marks());
+            if (!inRadius(client, o.evidence.chunkX, o.evidence.chunkZ)) continue;
             ChunkEvidence evidence = currentVerified
                     ? o.evidence.withArmorStands(stands.getOrDefault(key, List.of())) : o.evidence;
             if (currentVerified) stands.remove(key);
@@ -426,7 +426,8 @@ public final class ChunkScanner {
                 if (config.enabled && config.finderTargetEnabled(signal)
                         || config.isModuleEnabled("storage_esp") && signal.isStorage()
                         || config.isModuleEnabled("spawner_chunks") && signal == Signal.SPAWNER
-                        || config.isModuleEnabled("amethyst_esp") && signal.isAmethyst()) markers.add(signal);
+                        || config.isModuleEnabled("amethyst_esp") && signal.isAmethyst()
+                        || config.isModuleEnabled("search_chunk") && signal==Signal.CLUSTER) markers.add(signal);
             }
             builder = new ChunkEvidence.Builder(chunk.getPos().x(), chunk.getPos().z(), markers);
         }

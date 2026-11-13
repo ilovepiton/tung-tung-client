@@ -26,7 +26,7 @@ public final class ChunkEvidence {
         this.clusters = Set.copyOf(b.clusters);
         this.representativeY = b.representativeY.clone();
         this.observedAt = observedAt;
-        this.marks = List.copyOf(b.marks);
+        this.marks = b.marks.snapshot();
         this.growthStages = Map.copyOf(b.growthStages);
         this.patterns = Map.of("construction_blocks", count(Signal.CONSTRUCTION),
                 "repeated_rows", b.rowCount(b.constructionX, 4) + b.rowCount(b.constructionZ, 4),
@@ -45,7 +45,7 @@ public final class ChunkEvidence {
             counts[Signal.ARMOR_STAND.ordinal()]++;
             if (representativeY[Signal.ARMOR_STAND.ordinal()] == Integer.MIN_VALUE)
                 representativeY[Signal.ARMOR_STAND.ordinal()] = mark.y();
-            if (combined.size() < 640) combined.add(mark);
+            if (combined.size() < MarkerReservoir.LIMIT + 128) combined.add(mark);
         }
         marks = List.copyOf(combined);
     }
@@ -133,7 +133,7 @@ public final class ChunkEvidence {
         private final int[] counts = new int[Signal.values().length];
         private final int[] representativeY = new int[Signal.values().length];
         private final Set<Long> clusters = new HashSet<>();
-        private final List<BlockMark> marks = new ArrayList<>();
+        private final MarkerReservoir marks = new MarkerReservoir();
         private final Map<Long, Integer> growthStages = new HashMap<>();
         private final Set<Signal> markerTargets;
         private final Map<Long, Integer> constructionX = new HashMap<>(), constructionZ = new HashMap<>();
@@ -158,7 +158,7 @@ public final class ChunkEvidence {
             if (s.isInfrastructure()) {
                 row(infrastructureX, y, z, x); row(infrastructureZ, y, x, z);
             }
-            if (marks.size() < 512 && (FinderTargets.key(s) != null || s.isAmethyst() || s.isStorage())
+            if ((FinderTargets.key(s) != null || s.isAmethyst() || s.isStorage())
                     && (markerTargets == null || markerTargets.contains(s)))
                 marks.add(new BlockMark(s, x, y, z));
         }

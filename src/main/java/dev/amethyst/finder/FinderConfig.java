@@ -24,7 +24,8 @@ public final class FinderConfig {
     public Map<String, Boolean> modules = new HashMap<>();
     public Map<String,Integer> moduleKeybinds = new HashMap<>(Map.of("aim_cursor",com.mojang.blaze3d.platform.InputConstants.KEY_R,"combat_bot",com.mojang.blaze3d.platform.InputConstants.KEY_P));
     public Map<String, Boolean> finderTargets = FinderTargets.defaults();
-    public int espRange = 128, espLimit = 192;
+    public int espRange = 128, espLimit = 512;
+    public int searchChunkMinClusters=4, autoRelogY=0, autoRelogDelaySeconds=5;
     public int elytraRange=256,elytraPlayerRange=256;
     public boolean elytraWarnPlayers=true;
     public int itemFinderRange=128,itemFinderLimit=96;
@@ -133,7 +134,7 @@ public final class FinderConfig {
         return isModuleEnabled(id);
     }
     public boolean requiresScan() {
-        return enabled || isModuleEnabled("storage_esp") || isModuleEnabled("amethyst_esp")
+        return enabled || isModuleEnabled("search_chunk") || isModuleEnabled("storage_esp") || isModuleEnabled("amethyst_esp")
                 || isModuleEnabled("base_chunks") || isModuleEnabled("spawner_chunks")
                 || chunkModuleEnabled("chest_chunks") || chunkModuleEnabled("amethyst_chunks")
                 || chunkModuleEnabled("amethyst_growth");
@@ -153,7 +154,8 @@ public final class FinderConfig {
                 c.chunkLimit = 64;
                 c.chunkMemoryVersion = 1;
             }
-            c.migrateBotKeybind();if(c.botCombatVersion<1){if(c.botRange==24)c.botRange=48;c.botCombatVersion=1;}c.sanitize();c.setModuleEnabled("auto_sell",false);c.setModuleEnabled("auto_logout",false);
+            c.migrateBotKeybind();if(c.botCombatVersion<1){if(c.botRange==24)c.botRange=48;c.botCombatVersion=1;}c.sanitize();c.setModuleEnabled("auto_sell",false);c.setModuleEnabled("auto_logout",false);c.setModuleEnabled("auto_relog",false);
+            if(c.espLimit==192)c.espLimit=512;
             if (migrateLanguage || migrateChunkMemory) c.save();
             return c;
         } catch (IOException | RuntimeException ex) {
@@ -199,7 +201,8 @@ public final class FinderConfig {
         moduleKeybinds=cleanBinds;
         finderTargets = FinderTargets.sanitize(finderTargets);
         espRange = Math.clamp(espRange, 16, 256);
-        espLimit = Math.clamp(espLimit, 32, 384);
+        espLimit = Math.clamp(espLimit, 32, 1024);
+        searchChunkMinClusters=Math.clamp(searchChunkMinClusters,1,64);autoRelogY=Math.clamp(autoRelogY,-64,64);autoRelogDelaySeconds=Math.clamp(autoRelogDelaySeconds,3,30);
         resourceRange = Math.clamp(resourceRange, 16, 128);
         resourceLimit = Math.clamp(resourceLimit, 32, 192);
         resourceTargets = MineralType.sanitize(resourceTargets);

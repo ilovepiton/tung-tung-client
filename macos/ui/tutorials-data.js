@@ -1,4 +1,14 @@
 const GUIDES = {
+  "search_chunk": {
+    "how": "Marks current scanned chunks red when they contain the selected minimum of mature amethyst clusters. The red column spans the whole world height and mature crystals use red model highlights.",
+    "start": "World Tools → Finder → Search Chunk. Choose the minimum cluster count (4 default), assign a key if desired, then enable. Newly received chunks are scanned automatically, including after a normal relog.",
+    "limit": "A heuristic, not proof of a base or another player. Clusters grow naturally under simulation, including your own presence. Historical and still-verifying chunks do not create current red Search Chunk signals."
+  },
+  "auto_relog": {
+    "how": "One reconnect to the same multiplayer server after your body stays at or below the chosen Y for one second. The default is Y 0 with a 5-second cancellable countdown.",
+    "start": "World Tools → Utility → Auto Relog. Set Y and delay, assign a key if desired, then arm once. Minecraft shows Cancel reconnect; Escape cancels too. Arm again for another relog.",
+    "limit": "No automatic movement, item use or camera changes. Unexpected disconnects do not start reconnects. No retry loop if connecting fails, and manual navigation cancels the countdown."
+  },
   "auto_sell": {
     "how": "Sends /sell when selected plain farm items form full stacks. Deposits one stack at a time, checks authoritative inventory updates, then clicks the named green Confirm/Sell glass button once.",
     "start": "World Tools → Utility → Auto Sell settings. Choose resources and optionally the exact menu title. Leave the title blank to recognize the green button automatically. Enable Auto Sell, close other menus and collect full stacks.",

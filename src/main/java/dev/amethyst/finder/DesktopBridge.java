@@ -85,6 +85,8 @@ public final class DesktopBridge {
             String live=dev.amethyst.finder.modules.MovementModules.capability(e.id())?ChunkFinderClient.MOVEMENT.status(e.id())
                     :dev.amethyst.finder.modules.PvpModules.capability(e.id())?ChunkFinderClient.PVP.status(e.id())
                     :dev.amethyst.finder.modules.ClientModules.capability(e.id())?ChunkFinderClient.MODULES.status(e.id()):"";
+            if (e.id().equals("auto_relog")) live=ChunkFinderClient.RELOG.status();
+            if (e.id().equals("search_chunk")) live="Red mature-cluster candidates · minimum "+c.searchChunkMinClusters+" · received chunks only";
             if (e.id().equals("xray")) live=dev.amethyst.finder.modules.XrayModule.status();
             if (e.id().equals("night_vision")) live=dev.amethyst.finder.modules.NightVisionModule.status();
             if (e.id().equals("invis_mode")) live=dev.amethyst.finder.modules.InvisMode.status();
@@ -122,6 +124,7 @@ public final class DesktopBridge {
         settings.put("playerInfoScale",c.playerInfoScale);
         settings.put("aimCursorRange",c.aimCursorRange);settings.put("streamTarget",c.streamTarget);settings.put("streamTemplates",c.streamTemplates);settings.put("streamInterval",c.streamInterval);
         settings.put("freecamSpeed",c.freecamSpeed());
+        settings.put("searchChunkMinClusters",c.searchChunkMinClusters);settings.put("autoRelogY",c.autoRelogY);settings.put("autoRelogDelaySeconds",c.autoRelogDelaySeconds);settings.put("espLimit",c.espLimit);
         settings.put("autoSellItems",c.autoSellItems);settings.put("autoSellCommand",c.autoSellCommand);settings.put("autoSellMenuTitle",c.autoSellMenuTitle);
         settings.put("autoSellIntervalSeconds",c.autoSellIntervalSeconds);settings.put("autoLogoutRange",c.autoLogoutRange);
         settings.put("pvpRange",c.pvpRange);settings.put("pvpDelayTicks",c.pvpDelayTicks);
@@ -305,6 +308,10 @@ public final class DesktopBridge {
             }
             if(data.has("autoSellIntervalSeconds"))c.autoSellIntervalSeconds=data.get("autoSellIntervalSeconds").getAsInt();
             if(data.has("autoLogoutRange"))c.autoLogoutRange=data.get("autoLogoutRange").getAsInt();
+            if(data.has("searchChunkMinClusters")) { c.searchChunkMinClusters=data.get("searchChunkMinClusters").getAsInt(); }
+            if(data.has("autoRelogY"))c.autoRelogY=data.get("autoRelogY").getAsInt();
+            if(data.has("autoRelogDelaySeconds"))c.autoRelogDelaySeconds=data.get("autoRelogDelaySeconds").getAsInt();
+            if(data.has("espLimit"))c.espLimit=data.get("espLimit").getAsInt();
             if(data.has("pvpRange"))c.pvpRange=data.get("pvpRange").getAsDouble();
             if(data.has("pvpDelayTicks"))c.pvpDelayTicks=data.get("pvpDelayTicks").getAsInt();
             if(data.has("pvpMaxSelfDamage"))c.pvpMaxSelfDamage=data.get("pvpMaxSelfDamage").getAsDouble();

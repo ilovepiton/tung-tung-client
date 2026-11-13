@@ -23,3 +23,5 @@
 
 /* Five platform rows; preserve space for nine Minecraft tools and status. */
 .sidebar .game-choice{height:25px}.sidebar .game-choice.chess-choice{top:193px;height:25px}.sidebar .game-choice.roblox-choice{top:221px}.sidebar .game-choice.stream-choice{top:249px}.sidebar .game-choice.counter-strike-choice{top:277px;height:25px}.sidebar .game-choice .game-name{top:4px}.sidebar .game-choice .platform-game-icon{top:3px;height:18px;width:18px}.sidebar .workspace-label{top:318px}.sidebar .category-label{top:579px}.sidebar .nav{height:25px}
+
+.sidebar .game-choice.counter-strike-choice .platform-game-icon{left:8px;top:5px;width:32px;height:15px;border-radius:0;object-fit:contain;filter:brightness(0) invert(1)}

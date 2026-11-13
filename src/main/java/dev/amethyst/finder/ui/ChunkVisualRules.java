@@ -10,12 +10,18 @@ public final class ChunkVisualRules {
     private ChunkVisualRules() {}
     public static Set<ChunkSelection.Category> categories(ChunkAnalysis analysis,Set<ChunkSelection.Category> enabled,
                                                          boolean showHistory,boolean growthEnabled) {
+        return categories(analysis,enabled,showHistory,growthEnabled,4);
+    }
+    public static Set<ChunkSelection.Category> categories(ChunkAnalysis analysis,Set<ChunkSelection.Category> enabled,
+                                                         boolean showHistory,boolean growthEnabled,int matureMinimum) {
         if(analysis.status()==ChunkAnalysis.Status.HISTORICAL&&!showHistory)return Set.of();
         var result=EnumSet.noneOf(ChunkSelection.Category.class);
         if(enabled.contains(ChunkSelection.Category.CHEST)&&analysis.storageCount()>0)result.add(ChunkSelection.Category.CHEST);
         if((enabled.contains(ChunkSelection.Category.AMETHYST)||growthEnabled)&&analysis.amethystCount()>0)result.add(ChunkSelection.Category.AMETHYST);
         if(enabled.contains(ChunkSelection.Category.BASE)&&analysis.evidence()!=ChunkAnalysis.StructureEvidence.NONE)result.add(ChunkSelection.Category.BASE);
         if(enabled.contains(ChunkSelection.Category.SPAWNER)&&analysis.spawnerCount()>0)result.add(ChunkSelection.Category.SPAWNER);
+        if(enabled.contains(ChunkSelection.Category.SEARCH)&&analysis.status()==ChunkAnalysis.Status.LIVE
+                &&analysis.count(dev.amethyst.finder.core.Signal.CLUSTER)>=Math.max(1,matureMinimum))result.add(ChunkSelection.Category.SEARCH);
         // Player information deliberately never comes from persistent block observations.
         return Set.copyOf(result);
     }

@@ -120,7 +120,7 @@ public final class ChunkWorldRenderer {
 
     }
     public static void drawHud(GuiGraphicsExtractor graphics,Minecraft client) {
-        if(ChunkFinderClient.CONFIG.chunkHud&&(flags(ChunkFinderClient.CONFIG)&95)!=0)ChunkHud.draw(graphics,client,ChunkSelection.selected(),renderedCount,Math.min(MAX_CHUNKS,ChunkFinderClient.CONFIG.chunkLimit));
+        if(ChunkFinderClient.CONFIG.chunkHud&&(flags(ChunkFinderClient.CONFIG)&127)!=0)ChunkHud.draw(graphics,client,ChunkSelection.selected(),renderedCount,Math.min(MAX_CHUNKS,ChunkFinderClient.CONFIG.chunkLimit));
     }
     /** ClientLevel.hasChunk() is not an availability test in 26.3; false prevents creating/loading a chunk. */
     public static boolean chunkLoaded(Minecraft client,int x,int z) {
@@ -145,14 +145,14 @@ public final class ChunkWorldRenderer {
         for(ChunkAnalysis analysis:ChunkFinderClient.SCANNER.chunkObservations()) {
             Candidate candidate=new Candidate(analysis.chunkX(),analysis.chunkZ(),analysis);
             if(distanceSquared(candidate,eye)>range2) continue;
-            candidate.categories.addAll(ChunkVisualRules.categories(analysis,enabled,config.showHistoricalChunks,config.chunkModuleEnabled("amethyst_growth")));
+            candidate.categories.addAll(ChunkVisualRules.categories(analysis,enabled,config.showHistoricalChunks,config.chunkModuleEnabled("amethyst_growth"),config.searchChunkMinClusters));
             if(candidate.categories.isEmpty()) continue;
             queue.add(candidate);if(queue.size()>limit)queue.poll();
         }
         List<Candidate> list=new ArrayList<>(queue);list.sort(Comparator.comparingDouble(c->priorityDistance(c,eye,pin)));return List.copyOf(list);
     }
     private static int flags(FinderConfig config) {
-        int mask=config.showHistoricalChunks?32:0;
+        int mask=config.showHistoricalChunks?128:0;
         for(var category:ChunkSelection.Category.values()) if(config.chunkModuleEnabled(category.moduleId))mask|=1<<category.ordinal();
         return config.chunkModuleEnabled("amethyst_growth")?mask|64:mask;
     }

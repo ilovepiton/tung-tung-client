@@ -1,5 +1,14 @@
 # Changelog
 
+## Desktop and Core 1.32.0 — 2026-11-13
+
+- Search Chunk: red full-height columns and mature-cluster models for current completed scans, adjustable mature-cluster threshold (4 default). Natural growth is not proof of a player base.
+- Auto Relog: one reconnect to the same server after one second at Y <= 0 by default; 5-second cancellable countdown, adjustable Y/delay and independent keybind. No auto-Freecam, movement, trident use or retry loop. Manual/nearby-player departures do not trigger reconnects.
+- Fixed model budgets being consumed by off-screen geometry; storage range is horizontal so depth does not hide otherwise received containers. Increased and position-sampled bounded markers avoid the old first-512/low-Y bias.
+- Added Storage ESP model-limit controls; default visible limit is 512. Rendering and marker storage stay bounded for performance.
+- Replaced the round homemade CS icon with Valve's original CS2 SVG wordmark.
+- Validation: 123 JUnit tests, explicit relog/marker/above-below geometry checks, farm regression checks and UI interaction/keybind checks. Live multiplayer reconnect still needs an in-game check.
+
 ## Desktop and Core 1.31.0 — 2026-11-12
 
 - Auto Sell: 24 selectable farm resources; cobblestone only by default. Only plain full stacks are transferred. Named/enchanted items and partial stacks stay untouched.

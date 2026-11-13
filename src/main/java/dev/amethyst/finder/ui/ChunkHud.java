@@ -23,7 +23,7 @@ public final class ChunkHud {
                 accent=category.color;
                 title="TUNTUN / "+switch(category) {
                     case CHEST -> "STORAGE";case AMETHYST -> "AMETHYST";case BASE -> "STRUCTURES";
-                    case PLAYER -> "PLAYERS";case SPAWNER -> "SPAWNERS";
+                    case PLAYER -> "PLAYERS";case SPAWNER -> "SPAWNERS";case SEARCH -> "SEARCH";
                 };
             }
             var a=selected.analysis();

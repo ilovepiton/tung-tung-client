@@ -52,8 +52,11 @@ public final class WorldOverlay {
         List<PlayerTag> playerTags = new ArrayList<>();
         float partial = delta.getGameTimeDeltaPartialTick(false);
         int drawn = 0;
+        java.util.Set<Long> searchKeys=new java.util.HashSet<>();
+        if(c.isModuleEnabled("search_chunk"))for(var observed:ChunkFinderClient.SCANNER.chunkObservations())
+            if(observed.status()==ChunkAnalysis.Status.LIVE&&observed.count(Signal.CLUSTER)>=c.searchChunkMinClusters)searchKeys.add(observed.key());
         if(captureLevel!=client.level) { blockCaptures.clear();orderedMarks.clear();captureLevel=client.level; }
-        if (c.enabled || c.isModuleEnabled("storage_esp") || c.isModuleEnabled("amethyst_esp") || c.isModuleEnabled("spawner_chunks")) {
+        if (c.enabled || c.isModuleEnabled("search_chunk") || c.isModuleEnabled("storage_esp") || c.isModuleEnabled("amethyst_esp") || c.isModuleEnabled("spawner_chunks")) {
             List<BlockMark> source=ChunkFinderClient.SCANNER.marks();
             List<BlockMark> marks=orderedMarks.get(new MarkOrder(source,p.eye),()->{
                 var sorted=new ArrayList<>(source);
@@ -66,18 +69,23 @@ public final class WorldOverlay {
                 boolean visible = s.isStorage() && c.isModuleEnabled("storage_esp")
                         || s.isAmethyst() && c.isModuleEnabled("amethyst_esp")
                         || s == Signal.SPAWNER && c.isModuleEnabled("spawner_chunks")
-                        || c.enabled && c.finderTargetEnabled(s);
+                        || c.enabled && c.finderTargetEnabled(s)
+                        || s==Signal.CLUSTER&&searchKeys.contains(ChunkEvidence.key(mark.x()>>4,mark.z()>>4));
                 if (!visible) continue;
-                int color = HighlightPalette.color(s);
+                int color = s==Signal.CLUSTER&&searchKeys.contains(ChunkEvidence.key(mark.x()>>4,mark.z()>>4))?0xFFFF3434:HighlightPalette.color(s);
                 double distance = distanceSquared(mark.x() + .5, mark.y() + .5, mark.z() + .5, p.eye);
-                if (distance > c.espRange * c.espRange) continue;
+                double dx=mark.x()+.5-p.eye.x,dz=mark.z()+.5-p.eye.z;
+                if (dx*dx+dz*dz > (double)c.espRange * c.espRange) continue;
                 // Ignore stale observations after a block change; never load a missing chunk to verify a marker.
                 if (!ChunkWorldRenderer.chunkLoaded(client,mark.x() >> 4,mark.z() >> 4)) continue;
                 if (BlockClassifier.classify(client.level.getBlockState(new BlockPos(mark.x(), mark.y(), mark.z()))) != s) continue;
+                boolean rendered=false;
                 if (mesh.remaining() > 0) {
                     BlockPos pos = new BlockPos(mark.x(), mark.y(), mark.z());
-                    mesh.add(blockCapture(client,pos,partial),color);
+                    rendered=mesh.add(blockCapture(client,pos,partial),color);
                 } else mesh.budgetReached();
+                // Off-screen models must not consume the visible-object budget.
+                if(!rendered)continue;
                 trace(tracers, p, mark.x() + .5, mark.y() + .5, mark.z() + .5, color, c.espTracers);
                 if (c.enabled && c.finderTargetEnabled(s)) {
                     Point label = p.point(mark.x() + .5, mark.y() + 1.2, mark.z() + .5);
