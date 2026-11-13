@@ -12,7 +12,8 @@ public final class ChunkSelection {
         BASE("STRUCTURE FINDING",0xFFFFB020,"base_chunks"),
         PLAYER("PLAYER CHUNK",0xFFFF55CC,"player_chunks"),
         SPAWNER("SPAWNER CHUNK",0xFF35C9FF,"spawner_chunks"),
-        SEARCH("SEARCH CHUNK",0xFFFF3434,"search_chunk");
+        SEARCH("SUS CHUNK",0xFFFF3434,"search_chunk"),
+        CAVE_FREE("NO CAVES DETECTED",0xFF57E69B,"cave_detector");
         public final String label,moduleId;public final int color;
         Category(String label,int color,String moduleId) { this.label=label;this.color=color;this.moduleId=moduleId; }
     }

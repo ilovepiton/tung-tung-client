@@ -6,7 +6,7 @@ import json
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = '1.32.0'
+VERSION = '1.33.0'
 VOICE = 'voicechat-fabric-2.6.27+26.3.jar'
 VOICE_SHA512 = 'f2de66761c0f249bb0f9a4b348f98b97ab4e89d3ed3fd37638420364b7431b757933aa08c0cc3e7ba3dd85a602d6c2de313c2309fc587e93cabf31fc5f6df27e'
 

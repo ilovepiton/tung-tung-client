@@ -23,7 +23,7 @@ public final class ChunkHud {
                 accent=category.color;
                 title="TUNTUN / "+switch(category) {
                     case CHEST -> "STORAGE";case AMETHYST -> "AMETHYST";case BASE -> "STRUCTURES";
-                    case PLAYER -> "PLAYERS";case SPAWNER -> "SPAWNERS";case SEARCH -> "SEARCH";
+                    case PLAYER -> "PLAYERS";case SPAWNER -> "SPAWNERS";case SEARCH -> "SUS";case CAVE_FREE -> "CAVE SCAN";
                 };
             }
             var a=selected.analysis();
@@ -32,7 +32,10 @@ public final class ChunkHud {
             };
             String age=a==null||category==ChunkSelection.Category.PLAYER?"": " · "+age(a.observedAtMillis()).replace(" ago","");
             rows.add(selected.chunkX()+", "+selected.chunkZ()+" · "+status+age);
-            if(category==ChunkSelection.Category.PLAYER||a==null) rows.add("Players observed: "+selected.players());
+            if(category==ChunkSelection.Category.CAVE_FREE) {
+                rows.add("No underground cavities detected");
+                rows.add("Received blocks · full scan");
+            } else if(category==ChunkSelection.Category.PLAYER||a==null) rows.add("Players observed: "+selected.players());
             else if(category==ChunkSelection.Category.CHEST)rows.add("Storage blocks: "+a.storageCount());
             else if(category==ChunkSelection.Category.SPAWNER)rows.add("Spawners: "+a.spawnerCount());
             else if(category==ChunkSelection.Category.BASE) {
@@ -47,7 +50,7 @@ public final class ChunkHud {
                 String also=selected.categories().stream().skip(1).map(c->c.name()).collect(java.util.stream.Collectors.joining(" / "));
                 rows.add("Also: "+also);
             }
-            rows.add(key+": full details"+(selected.explicit()?" · pinned":""));
+            rows.add(category==ChunkSelection.Category.CAVE_FREE?"Hidden terrain stays unknown":key+": full details"+(selected.explicit()?" · pinned":""));
         }
         int width=Math.min(198,g.guiWidth()-16),height=18+rows.size()*11;
         int x=8,y=Math.max(32,g.guiHeight()-height-46);

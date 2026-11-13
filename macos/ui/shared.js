@@ -23,7 +23,7 @@ function icon(name, cls = '') {
 }
 function moduleImage(id,cls='module-icon'){
  const known=MODULES.find(m=>m.id===id);
- const paths={search_chunk:'items/search_chunk',auto_relog:'items/auto_relog',auto_sell:'items/auto_sell',auto_logout:'items/auto_logout',mace_bot:'mace/mace',auto_vault:'vault/ominous_trial_key'};
+ const paths={cave_detector:'items/cave_detector',search_chunk:'items/search_chunk',auto_relog:'items/auto_relog',auto_sell:'items/auto_sell',auto_logout:'items/auto_logout',mace_bot:'mace/mace',auto_vault:'vault/ominous_trial_key'};
  return `<img class="${cls}" src="assets/${paths[id]||'items/'+(known?id:'chunk_finder')}.png" alt="${escapeHTML(known?.name||'Minecraft item')}" draggable="false">`;
 }
 function moduleIcon(id) {

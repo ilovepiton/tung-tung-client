@@ -17,7 +17,9 @@ public abstract class ChunkDirtyMixin {
             at = @At("RETURN"))
     private void tung$changed(BlockPos pos, BlockState state, int flags, CallbackInfoReturnable<BlockState> cir) {
         LevelChunk chunk = (LevelChunk)(Object)this;
-        if (chunk.getLevel() instanceof ClientLevel && cir.getReturnValue() != null)
+        if (chunk.getLevel() instanceof ClientLevel && cir.getReturnValue() != null) {
             ChunkFinderClient.SCANNER.onBlockChanged(chunk, cir.getReturnValue(), state);
+            if (ChunkFinderClient.CAVES != null) ChunkFinderClient.CAVES.invalidate(chunk);
+        }
     }
 }

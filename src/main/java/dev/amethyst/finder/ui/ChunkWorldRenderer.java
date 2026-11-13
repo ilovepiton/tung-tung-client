@@ -67,6 +67,13 @@ public final class ChunkWorldRenderer {
                 candidate.players=entry.getValue();candidate.categories.add(ChunkSelection.Category.PLAYER);
             }
         }
+        if(config.chunkModuleEnabled("cave_detector") && ChunkFinderClient.CAVES!=null) {
+            for(var result:ChunkFinderClient.CAVES.clearChunks(client)) {
+                Candidate candidate=candidates.computeIfAbsent(result.key(),k->new Candidate(result.x(),result.z(),null));
+                if(distanceSquared(candidate,eye)<=range*(double)range) candidate.categories.add(ChunkSelection.Category.CAVE_FREE);
+                else if(candidate.categories.isEmpty()) candidates.remove(result.key());
+            }
+        }
         List<Candidate> ordered=new ArrayList<>(candidates.values());
         ordered.sort(Comparator.comparingDouble(c->priorityDistance(c,eye,pin)));
         if(ordered.size()>limit) ordered=new ArrayList<>(ordered.subList(0,limit));
@@ -88,7 +95,7 @@ public final class ChunkWorldRenderer {
                 FadeState fade=fades.computeIfAbsent(key,k->new FadeState(candidate,category,now));
                 fade.candidate=candidate;fade.lastSeen=now;
                 double opacity=ChunkSelectionMath.fade(now-fade.appeared,220);
-                boolean historical=category!=ChunkSelection.Category.PLAYER && candidate.analysis!=null&&candidate.analysis.status()!=ChunkAnalysis.Status.LIVE;
+                boolean historical=category!=ChunkSelection.Category.PLAYER && category!=ChunkSelection.Category.CAVE_FREE && candidate.analysis!=null&&candidate.analysis.status()!=ChunkAnalysis.Status.LIVE;
                 double pulse=1;
                 if(category==ChunkSelection.Category.CHEST&&candidate.analysis!=null)pulse+=Math.min(.22,Math.log1p(candidate.analysis.storageCount())/16);
                 if(category==ChunkSelection.Category.AMETHYST&&config.chunkModuleEnabled("amethyst_growth")&&candidate.analysis!=null&&candidate.analysis.growthEvents()>0) {
@@ -106,7 +113,7 @@ public final class ChunkWorldRenderer {
             FadeState fade=entry.getValue();
             long elapsed=now-fade.lastSeen;
             // Player locations cease to be current immediately; there is no stale-position fade or history trail.
-            if(entry.getKey().category==ChunkSelection.Category.PLAYER||elapsed>=180||fades.size()>MAX_FADE_KEYS) { iterator.remove();continue; }
+            if(entry.getKey().category==ChunkSelection.Category.PLAYER||entry.getKey().category==ChunkSelection.Category.CAVE_FREE||elapsed>=180||fades.size()>MAX_FADE_KEYS) { iterator.remove();continue; }
             double opacity=(1-ChunkSelectionMath.fade(elapsed,180))*.5;
             mesh.chunk(ChunkSelectionMath.Bounds.chunk(fade.candidate.x,fade.candidate.z,minY,maxY),fade.category.color,opacity,1,false,true,0,0);
         }
@@ -152,9 +159,9 @@ public final class ChunkWorldRenderer {
         List<Candidate> list=new ArrayList<>(queue);list.sort(Comparator.comparingDouble(c->priorityDistance(c,eye,pin)));return List.copyOf(list);
     }
     private static int flags(FinderConfig config) {
-        int mask=config.showHistoricalChunks?128:0;
+        int mask=config.showHistoricalChunks?512:0;
         for(var category:ChunkSelection.Category.values()) if(config.chunkModuleEnabled(category.moduleId))mask|=1<<category.ordinal();
-        return config.chunkModuleEnabled("amethyst_growth")?mask|64:mask;
+        return config.chunkModuleEnabled("amethyst_growth")?mask|256:mask;
     }
     private static double priorityDistance(Candidate c,Vec3 eye,Long pin) { return pin!=null&&pin==c.key() ? -1 : distanceSquared(c,eye); }
     private static double distanceSquared(Candidate c,Vec3 eye) {

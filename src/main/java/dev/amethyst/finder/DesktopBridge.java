@@ -85,6 +85,7 @@ public final class DesktopBridge {
             String live=dev.amethyst.finder.modules.MovementModules.capability(e.id())?ChunkFinderClient.MOVEMENT.status(e.id())
                     :dev.amethyst.finder.modules.PvpModules.capability(e.id())?ChunkFinderClient.PVP.status(e.id())
                     :dev.amethyst.finder.modules.ClientModules.capability(e.id())?ChunkFinderClient.MODULES.status(e.id()):"";
+            if (e.id().equals("cave_detector")) live=ChunkFinderClient.CAVES.status();
             if (e.id().equals("auto_relog")) live=ChunkFinderClient.RELOG.status();
             if (e.id().equals("search_chunk")) live="Red mature-cluster candidates · minimum "+c.searchChunkMinClusters+" · received chunks only";
             if (e.id().equals("xray")) live=dev.amethyst.finder.modules.XrayModule.status();

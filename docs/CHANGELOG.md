@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.33.0
+
+- Renamed Search Chunk to Sus Chunk; saved keybinds and settings stay intact.
+- Auto Cave Detector marks received chunks green only after all 256 underground columns finish with no air, water or lava cavities. Changed/unloaded chunks lose their marks immediately.
+- Cave scans run incrementally with a 1 ms tick budget and have a separate keybind. Void and incomplete chunks are excluded; server-hidden terrain stays unknown.
+
 ## Desktop and Core 1.32.0 — 2026-11-13
 
 - Search Chunk: red full-height columns and mature-cluster models for current completed scans, adjustable mature-cluster threshold (4 default). Natural growth is not proof of a player base.

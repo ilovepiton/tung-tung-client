@@ -26,6 +26,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(ID);
     public static FinderConfig CONFIG;
     public static ChunkScanner SCANNER;
+    public static CaveDetector CAVES;
     public static ClientModules MODULES;
     public static PvpModules PVP;
     public static dev.amethyst.finder.modules.pvp.ArsenalBot BOT;
@@ -44,6 +45,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
         CONFIG = FinderConfig.load();
         MediaPack.prepare();
         SCANNER = new ChunkScanner(CONFIG);
+        CAVES = new CaveDetector(CONFIG);
         MODULES = new ClientModules(CONFIG);
         RELOG = new dev.amethyst.finder.modules.AutoRelog(CONFIG);
         PVP = new PvpModules(CONFIG);
@@ -73,10 +75,12 @@ public final class ChunkFinderClient implements ClientModInitializer {
             SCANNER.setScope(HistoryContext.resolve(net.minecraft.client.Minecraft.getInstance(),level,CONFIG));
             SCANNER.onLoad(level,chunk);
             RESOURCES.invalidateChunk(chunk);
+            CAVES.invalidate(chunk);
         });
         ClientChunkEvents.CHUNK_UNLOAD.register((level,chunk)->{
             SCANNER.onUnload(level,chunk);
             RESOURCES.invalidateChunk(chunk);
+            CAVES.invalidate(chunk);
         });
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
             MapArtModules.apply();
@@ -101,6 +105,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
             if(client.level!=null)SCANNER.setScope(HistoryContext.resolve(client,client.level,CONFIG));
             else HistoryContext.invalidate();
             SCANNER.tick(client);
+            CAVES.tick(client);
             boolean botHandled=BOT.handledThisTick()||MACE.handledThisTick();
             if(!botHandled){if(MACE.enabled())MACE.tick(client);else {BOT.tick(client);MODULES.tick(client);}}
             MOVEMENT.tick(client);

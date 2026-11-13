@@ -32,7 +32,7 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
     private var ready = false
     private var installing = false
     private var installProgress = 0
-    private var installStatus = "Close Minecraft and its Launcher, then install Fabric Core 1.32.0."
+    private var installStatus = "Close Minecraft and its Launcher, then install Fabric Core 1.33.0."
     private var lastError = ""
     private var bridgeError = ""
     private var pendingReplies: [(String, Any)] = []
@@ -195,7 +195,7 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
     @objc func quit() { NSApp.terminate(nil) }
     @objc func about() {
         NSApp.orderFrontStandardAboutPanel(options: [.applicationName: "Tung Tung Client",
-            .applicationVersion: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.32.0",
+            .applicationVersion: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.33.0",
             .credits: NSAttributedString(string: "Native macOS client · Minecraft Java 26.3 / Fabric\nGame functions use the authenticated localhost bridge.")])
     }
     private func launcherURL() -> URL? {
@@ -299,13 +299,13 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
          "installProgress": installProgress, "installStatus": currentCoreStatus(), "launcherAvailable": launcherURL() != nil, "voiceRuntime": VoiceRuntime.status(),
          "simpleVoiceChat": simpleVoiceChat,
          "lastError": lastError.isEmpty ? bridgeError : lastError,
-         "version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.32.0"]
+         "version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.33.0"]
     }
     private func currentCoreStatus() -> String {
         guard !installing, bridge.latestState["transportConnected"] as? Bool == true else { return installStatus }
         guard let version = bridge.latestState["gameVersion"] as? String,
-              version.compare("1.32.0", options: .numeric) != .orderedAscending else {
-            return "Core update required. Close Minecraft and its Launcher, install Fabric Core 1.32.0, then restart Tung Tung Client 26.3."
+              version.compare("1.33.0", options: .numeric) != .orderedAscending else {
+            return "Core update required. Close Minecraft and its Launcher, install Fabric Core 1.33.0, then restart Tung Tung Client 26.3."
         }
         return "Game core \(version) is connected. Enable a module, then click Return to Minecraft."
     }

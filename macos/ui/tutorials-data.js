@@ -1,8 +1,13 @@
 const GUIDES = {
+  "cave_detector": {
+    "how": "Automatically scans all received underground blocks in each nearby chunk. Green full-height columns mean no air, water or lava cavities were detected in the scanned band.",
+    "start": "World Tools → Finder → Auto Cave Detector. Enable and wait for complete scans. Range and visible chunk limit use the chunk highlight controls. Assign its own key in the gear menu.",
+    "limit": "All 256 columns must contain a valid underground band, from world floor + 5 to five blocks below the opaque surface. Void, unloaded, incomplete and changed chunks are excluded. Cavities hidden by the server cannot be checked. Green does not prove a base."
+  },
   "search_chunk": {
     "how": "Marks current scanned chunks red when they contain the selected minimum of mature amethyst clusters. The red column spans the whole world height and mature crystals use red model highlights.",
-    "start": "World Tools → Finder → Search Chunk. Choose the minimum cluster count (4 default), assign a key if desired, then enable. Newly received chunks are scanned automatically, including after a normal relog.",
-    "limit": "A heuristic, not proof of a base or another player. Clusters grow naturally under simulation, including your own presence. Historical and still-verifying chunks do not create current red Search Chunk signals."
+    "start": "World Tools → Finder → Sus Chunk. Choose the minimum cluster count (4 default), assign a key if desired, then enable. Newly received chunks are scanned automatically, including after a normal relog.",
+    "limit": "A heuristic, not proof of a base or another player. Clusters grow naturally under simulation, including your own presence. Historical and still-verifying chunks do not create current red Sus Chunk signals."
   },
   "auto_relog": {
     "how": "One reconnect to the same multiplayer server after your body stays at or below the chosen Y for one second. The default is Y 0 with a 5-second cancellable countdown.",
