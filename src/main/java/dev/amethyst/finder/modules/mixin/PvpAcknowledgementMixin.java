@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPacketListener.class)
 public abstract class PvpAcknowledgementMixin {
     private void tuntung$receipt() {
+        if(ChunkFinderClient.HARD_CRYSTAL!=null)ChunkFinderClient.HARD_CRYSTAL.received(Minecraft.getInstance());
         if(ChunkFinderClient.PVP!=null)ChunkFinderClient.PVP.onServerCombatUpdate(Minecraft.getInstance());
     }
     private void tuntung$inventoryReceipt() {

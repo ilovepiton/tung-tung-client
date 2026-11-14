@@ -25,8 +25,9 @@ and a reachable voice connection. This fix does not add server voice support.
 The desktop companion does not record microphone audio. The game uses
 Simple Voice Chat's own device selection, mute and microphone test controls.
 
-The optional Prism import profile remains available as an alternative:
-Tung-Tung-Client-1.14.0-Voice-Chat-Prism.zip
+The optional Prism import profile is a separate release download:
+https://github.com/ilovepiton/tung-tung-client/releases/latest
+Choose the Voice-Chat-Prism ZIP matching your update.
 The ordinary Launch Minecraft button continues to open Minecraft Launcher.
 
 Upstream microphone background:

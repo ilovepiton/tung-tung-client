@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.34.0
+
+- Hard Crystal: a separate Arsenal module with one physical use click per placement, one attack on the matching received spawn, no held repeat or attack retries. Existing crystal icon reused intentionally. Auto Crystal and Hard Crystal are mutually exclusive.
+- Clean chat: suppress only the exact MCPVP interpolation-version system notice on mcpvp.club and its subdomains. Other system messages and player chat stay visible. This is cosmetic and does not change movement physics or the network version.
+- Smaller Mac download: removed the unused duplicate Prism instance ZIP from inside the app. The ordinary Mac installer still includes its mods, Voice Chat and texture packs; Prism remains a separate release download.
+
 ## 1.33.1
 
 - Fixed live chunk observations disappearing after the 2048-entry history limit. Currently loaded chunks now keep their evidence; only historical entries consume the history quota.

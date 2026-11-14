@@ -9,7 +9,8 @@ public final class ModuleControls {
         if(ModuleCatalog.find(id)==null||!ModuleCatalog.available(id))throw new IllegalArgumentException("Module is not available: "+id);
         if(enabled&&ChunkFinderClient.CONFIG.streamerMode&&!StreamerMode.allowsModule(id))
             throw new IllegalStateException("Streamer Mode keeps gameplay modules off. Turn Streamer Mode off first.");
-        if("auto_relog".equals(id))ChunkFinderClient.RELOG.setEnabled(enabled);
+        if("hard_crystal".equals(id))ChunkFinderClient.HARD_CRYSTAL.setEnabled(client,enabled);
+        else if("auto_relog".equals(id))ChunkFinderClient.RELOG.setEnabled(enabled);
         else if("elytra_finder".equals(id))ChunkFinderClient.ELYTRA.setEnabled(client,enabled);
         else if("auto_vault".equals(id))ChunkFinderClient.VAULTS.setEnabled(client,enabled);
         else if(!ChunkFinderClient.MOVEMENT.setEnabled(id,enabled)&&!ChunkFinderClient.PVP.setEnabled(id,enabled)&&!ChunkFinderClient.MODULES.setEnabled(id,enabled))

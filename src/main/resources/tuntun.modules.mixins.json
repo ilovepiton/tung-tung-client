@@ -32,7 +32,8 @@
     "ChunkDirtyMixin",
     "RiptideReleaseMixin",
     "MaceDamageMixin",
-    "ElytraAlertMixin"
+    "ElytraAlertMixin",
+    "HardCrystalUseMixin"
   ],
   "injectors": {
     "defaultRequire": 1

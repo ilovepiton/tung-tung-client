@@ -2,33 +2,33 @@
 
 Desktop companion for Minecraft Java, with separate Mac and Windows packages.
 
-**Current desktop: 1.33.1 · Game core: 1.33.1 · Minecraft 26.3 · Fabric Loader 0.19.5 · Java 25**
+**Current desktop: 1.34.0 · Game core: 1.34.0 · Minecraft 26.3 · Fabric Loader 0.19.5 · Java 25**
 
 ## Download
 
 [Download the latest release](https://github.com/ilovepiton/tung-tung-client/releases/latest)
 
-[Mac download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.33.1/Tung-Tung-Client-Mac-1.33.1-Voice-Chat.zip) · [Windows download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.33.1/Tung-Tung-Client-Windows-1.33.1-Voice-Chat.zip) · [All files](https://github.com/ilovepiton/tung-tung-client/releases/tag/v1.33.1)
+[Mac download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.34.0/Tung-Tung-Client-Mac-1.34.0-Voice-Chat.zip) · [Windows download](https://github.com/ilovepiton/tung-tung-client/releases/download/v1.34.0/Tung-Tung-Client-Windows-1.34.0-Voice-Chat.zip) · [All files](https://github.com/ilovepiton/tung-tung-client/releases/tag/v1.34.0)
 
 Choose your package:
 
 | File | Use |
 | --- | --- |
-| `Tung-Tung-Client-Mac-1.33.1-Voice-Chat.zip` | macOS 13+, Apple Silicon and Intel, Simple Voice Chat |
-| `Tung-Tung-Client-Windows-1.33.1-Voice-Chat.zip` | Windows 10/11 x64, Simple Voice Chat |
-| `Tung-Tung-Client-1.33.1-Voice-Chat-Prism.zip` | Importable Prism Launcher instance |
+| `Tung-Tung-Client-Mac-1.34.0-Voice-Chat.zip` | macOS 13+, Apple Silicon and Intel, Simple Voice Chat |
+| `Tung-Tung-Client-Windows-1.34.0-Voice-Chat.zip` | Windows 10/11 x64, Simple Voice Chat |
+| `Tung-Tung-Client-1.34.0-Voice-Chat-Prism.zip` | Importable Prism Launcher instance |
 
 Extract the whole archive. Close Minecraft and Launcher, install the Fabric core
 from **Control center**, then launch **Tung Tung Client 26.3** and join a world.
 Updating the desktop app alone does not replace the loaded game core.
 
-## New in 1.33.1
+## New in 1.34.0
 
-Sus Chunk preserves live findings beyond the old 2048-history-entry limit. Its own 16–512-block range works independently of other ESP. New profiles start at one mature crystal; live counters explain empty results.
+**Arsenal → Hard Crystal**: one fresh mouse use click, one placement, one attack on the matching server-confirmed crystal. No held repetition or attack retries. Its toggle key is configurable; Auto Crystal is mutually exclusive. [How to use it](docs/HARD-CRYSTAL.md).
 
-## Chunk tools
+Clean MCPVP chat hides the exact interpolation-version system notice on the mcpvp.club server family. This changes the display only, not movement physics or the network version.
 
-**World Tools → Finder**: Sus Chunk keeps red mature-amethyst candidates. Auto Cave Detector adds green full-height chunks after complete scans find no underground cavities in received terrain. Both have their own gear-menu keybind. [How Cave Detector works](docs/CAVE-DETECTOR.md).
+The Mac download no longer duplicates a complete Prism ZIP inside the app. Voice Chat, map-art mods and texture packs remain included. Prism is a separate download.
 
 ## Quick help / установка
 
@@ -52,7 +52,7 @@ Server permissions, protocol compatibility and the data received by the game
 determine which modules can work. A private server alone does not add a Roblox
 runtime; this package does not include an executor or injector.
 
-## New in desktop 1.33.1
+## New in desktop 1.34.0
 
 Windows **Install Fabric Core** now installs the five bundled core mods and
 39 bundled texture packs locally. The former 15 optional network downloads
@@ -70,7 +70,7 @@ cross-compiles successfully; physical Windows GUI/runtime testing is pending.
 
 For an existing 1.30.7/1.30.8 Windows folder, download `Install-Core.ps1` from
 this release and replace `desktop/Install-Core.ps1` to get the local core
-installation. Use the complete 1.33.1 ZIP for progress, logging and Extras UI.
+installation. Use the complete 1.34.0 ZIP for progress, logging and Extras UI.
 
 Core 1.30.3 and Voice Chat 2.6.27 are unchanged. DonutSMP voice negotiation
 remains unresolved; this release fixes Windows installation behavior.

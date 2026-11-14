@@ -12,6 +12,7 @@ public final class ModuleCatalog {
     private static final Set<String> MOVEMENT = Set.of("flight", "noclip", "boat_fly", "fast_swim", "super_trident", "donut_flight_bypass");
     public static final List<Entry> ENTRIES = List.of(
             new Entry("cave_detector", "Auto Cave Detector", "Finder", "Green full-height chunks with no detected underground air, water or lava cavities. Checks all 256 columns, from the world floor + 5 to five blocks below the received opaque surface. Only completed current scans count; hidden server terrain remains unknown."),
+            new Entry("hard_crystal", "Hard Crystal", "PvP", "One physical right-click places a crystal; attacks only its matching received spawn once. No held repeat or attack retries. Normal reach and visibility apply; anti-cheat acceptance is not guaranteed."),
             new Entry("search_chunk", "Sus Chunk", "Finder", "Red full-height columns for currently scanned chunks with enough mature amethyst clusters. A search hint, not proof of a base or another player. Natural growth and your own simulation can produce clusters."),
             new Entry("auto_relog", "Auto Relog", "Utility", "Arms one reconnect to the same server after one second at or below the chosen body Y level. Shows a cancellable countdown. No camera, item use, movement or retry loop."),
             new Entry("auto_sell", "Auto Sell", "Utility", "Sends /sell when selected plain farm resources form full stacks. Deposits one acknowledged stack at a time into a recognized Sell menu, then clicks its named green Confirm/Sell glass button. Partial, named and enchanted stacks stay untouched. Re-arm after reconnecting."),
@@ -61,7 +62,7 @@ public final class ModuleCatalog {
             new Entry("auction_sniper", "Auction Sniper", "Server", "Requires an adapter for the auction plugin and its price format. Not implemented.")
     );
     private ModuleCatalog() {}
-    public static boolean available(String id) { return "cave_detector".equals(id)||"search_chunk".equals(id)||"auto_relog".equals(id)||"item_finder".equals(id) || "elytra_finder".equals(id) || "auto_vault".equals(id) || MapArtModules.available(id) || VISUALS.contains(id) && !Set.of("client_maps","map_in_slot").contains(id) || ClientModules.capability(id) || PvpModules.capability(id) || MovementModules.capability(id); }
+    public static boolean available(String id) { return "hard_crystal".equals(id)||"cave_detector".equals(id)||"search_chunk".equals(id)||"auto_relog".equals(id)||"item_finder".equals(id) || "elytra_finder".equals(id) || "auto_vault".equals(id) || MapArtModules.available(id) || VISUALS.contains(id) && !Set.of("client_maps","map_in_slot").contains(id) || ClientModules.capability(id) || PvpModules.capability(id) || MovementModules.capability(id); }
     public static Entry find(String id) { return ENTRIES.stream().filter(e -> e.id.equals(id)).findFirst().orElse(null); }
 
     /** Technical observability labels; these do not promise any particular anti-cheat outcome. */

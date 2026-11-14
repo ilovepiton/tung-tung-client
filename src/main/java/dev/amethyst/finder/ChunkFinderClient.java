@@ -29,6 +29,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
     public static CaveDetector CAVES;
     public static ClientModules MODULES;
     public static PvpModules PVP;
+    public static dev.amethyst.finder.modules.pvp.HardCrystal HARD_CRYSTAL;
     public static dev.amethyst.finder.modules.pvp.ArsenalBot BOT;
     public static MovementModules MOVEMENT;
     public static DesktopBridge BRIDGE;
@@ -49,6 +50,11 @@ public final class ChunkFinderClient implements ClientModInitializer {
         MODULES = new ClientModules(CONFIG);
         RELOG = new dev.amethyst.finder.modules.AutoRelog(CONFIG);
         PVP = new PvpModules(CONFIG);
+        HARD_CRYSTAL = new dev.amethyst.finder.modules.pvp.HardCrystal(CONFIG);
+        net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents.ALLOW_GAME.register((message,overlay)-> {
+            var server=net.minecraft.client.Minecraft.getInstance().getCurrentServer();
+            return !dev.amethyst.finder.core.CleanChatRules.hide(server==null?null:server.ip,message.getString(),overlay);
+        });
         BOT = new dev.amethyst.finder.modules.pvp.ArsenalBot(CONFIG);
         MOVEMENT = new MovementModules(CONFIG);
         PLAYERS = new PlayerLocator();
@@ -106,6 +112,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
             else HistoryContext.invalidate();
             SCANNER.tick(client);
             CAVES.tick(client);
+            HARD_CRYSTAL.tick(client);
             boolean botHandled=BOT.handledThisTick()||MACE.handledThisTick();
             if(!botHandled){if(MACE.enabled())MACE.tick(client);else {BOT.tick(client);MODULES.tick(client);}}
             MOVEMENT.tick(client);

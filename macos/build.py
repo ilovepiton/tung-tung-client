@@ -12,9 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 MAC = ROOT / "macos"
 OUT = ROOT / "build" / "macos"
 DIST = ROOT / "dist"
-APP = DIST / "Tung-Tung-Client-Mac-1.33.1" / "Tung Tung Client.app"
-VERSION = "1.33.1"
-PAYLOAD_VERSION = "1.33.1"
+APP = DIST / "Tung-Tung-Client-Mac-1.34.0" / "Tung Tung Client.app"
+VERSION = "1.34.0"
+PAYLOAD_VERSION = "1.34.0"
 VOICE_RUNTIME_VERSION = "1.12.0"
 VOICE_RUNTIME_BUILD = "1120"
 VOICE_FILE = "voicechat-fabric-2.6.27+26.3.jar"
@@ -89,10 +89,7 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
     if voice_chat:
         for name in ("VOICE-CHAT-SETUP.txt", "SIMPLE-VOICE-CHAT-NOTICE.txt"):
             shutil.copy2(MAC / name, resources / name)
-        pack = DIST / f"Tung-Tung-Client-{VERSION}-Voice-Chat-Prism.zip"
-        if not pack.is_file():
-            raise RuntimeError("Build the combined Prism import profile before the Voice Chat app")
-        shutil.copy2(pack, resources / pack.name)
+        # Prism is a separate release download; do not duplicate its full instance inside the Mac app.
         readme = resources / "README.txt"
         readme.write_text((MAC / "VOICE-CHAT-SETUP.txt").read_text() + "\n\n" + readme.read_text())
     if (MAC / "AppIcon.icns").is_file():
@@ -101,7 +98,7 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
         "CFBundleName": "Tung Tung Client", "CFBundleDisplayName": "Tung Tung Client",
         "CFBundleIdentifier": "dev.tungtung.client", "CFBundleExecutable": "TungTungClient",
         "CFBundlePackageType": "APPL", "CFBundleShortVersionString": VERSION,
-        "CFBundleVersion": "1331", "LSMinimumSystemVersion": "13.0",
+        "CFBundleVersion": "1340", "LSMinimumSystemVersion": "13.0",
         "NSHighResolutionCapable": True, "NSPrincipalClass": "NSApplication",
         "NSMicrophoneUsageDescription": "Simple Voice Chat in Tung Tung Minecraft needs your microphone so other players can hear you.",
         "NSAppTransportSecurity": {"NSAllowsLocalNetworking": True},

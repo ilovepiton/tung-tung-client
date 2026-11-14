@@ -1,4 +1,5 @@
 const MODULES = [
+ {id:'hard_crystal',name:'Hard Crystal',category:'PvP',available:true,note:'One physical right-click places a crystal; its matching server spawn is attacked once. Holding does not repeat. Normal reach and visibility apply; anti-cheat acceptance is not guaranteed.',status:'One click · one placement · one attack'},
  {id:'cave_detector',name:'Auto Cave Detector',category:'Finder',available:true,note:'Green chunks with no underground air, water or lava cavities detected after all 256 columns are scanned. Received blocks only; hidden terrain stays unknown.',status:'Automatic underground scans'},
  {id:'search_chunk',name:'Sus Chunk',category:'Finder',available:true,note:'Red full-height columns for currently scanned chunks with enough mature amethyst clusters. A search hint; natural growth and your own simulation also produce crystals.',status:'Received mature-cluster candidates'},
  {id:'auto_relog',name:'Auto Relog',category:'Utility',available:true,note:'One reconnect to the same server after 1 second at the chosen body Y. Cancellable countdown, no camera or movement actions. Turns off before reconnecting.',status:'One attempt, then off'},

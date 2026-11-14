@@ -1,4 +1,5 @@
 const GUIDES = {
+ "hard_crystal": {"how":"One fresh physical use click can place one crystal and request one attack on its matching server-confirmed spawn. The crosshair can stay on obsidian.","start":"Arsenal → Hard Crystal. Hold an end crystal, click once on obsidian or bedrock, then release. Assign an optional toggle key in the gear menu. Auto Crystal is mutually exclusive.","limit":"No held repeat, attack retries, enemy targeting or extra reach. Wait for the current placement to finish before clicking again. Server acceptance is not guaranteed. Menus, lost focus, death and world changes cancel pending actions."},
   "cave_detector": {
     "how": "Automatically scans all received underground blocks in each nearby chunk. Green full-height columns mean no air, water or lava cavities were detected in the scanned band.",
     "start": "World Tools → Finder → Auto Cave Detector. Enable and wait for complete scans. Range and visible chunk limit use the chunk highlight controls. Assign its own key in the gear menu.",

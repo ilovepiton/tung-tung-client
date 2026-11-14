@@ -18,19 +18,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(MultiPlayerGameMode.class)
 public abstract class PvpManualUseMixin {
     @Unique private ManualCombatAssist.Observation tuntung$manualUse;
+    @Unique private dev.amethyst.finder.modules.pvp.HardCrystal.Placement tuntung$hardUse;
 
     @Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)
     private void tuntung$capture(LocalPlayer player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
-        tuntung$manualUse = null;
+        tuntung$manualUse = null; tuntung$hardUse=null;
         if (dev.amethyst.finder.modules.pvp.LootProtection.blocksUse(Minecraft.getInstance(),hand,hit)) { cir.setReturnValue(InteractionResult.FAIL); return; }
         if (ChunkFinderClient.PVP == null) return;
         Minecraft client = Minecraft.getInstance();
+        if(ChunkFinderClient.HARD_CRYSTAL!=null&&ChunkFinderClient.HARD_CRYSTAL.applies(client,hand)) {
+            if(!ChunkFinderClient.HARD_CRYSTAL.beginUse(client)) {cir.setReturnValue(InteractionResult.FAIL);return;}
+            tuntung$hardUse=ChunkFinderClient.HARD_CRYSTAL.capture(client,hit);return;
+        }
         if (ChunkFinderClient.PVP.blocksManualRepeat(client)) { cir.setReturnValue(InteractionResult.FAIL); return; }
         tuntung$manualUse = ChunkFinderClient.PVP.captureManualUse(client, hand, hit, player.getItemInHand(hand));
     }
 
     @Inject(method = "useItemOn", at = @At("RETURN"))
     private void tuntung$observe(LocalPlayer player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
+        var hard=tuntung$hardUse;tuntung$hardUse=null;
+        if(hard!=null)ChunkFinderClient.HARD_CRYSTAL.observed(Minecraft.getInstance(),hard,cir.getReturnValue().consumesAction());
         ManualCombatAssist.Observation observation = tuntung$manualUse;
         tuntung$manualUse = null;
         if (observation != null && ChunkFinderClient.PVP != null)

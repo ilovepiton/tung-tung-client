@@ -85,6 +85,7 @@ public final class DesktopBridge {
             String live=dev.amethyst.finder.modules.MovementModules.capability(e.id())?ChunkFinderClient.MOVEMENT.status(e.id())
                     :dev.amethyst.finder.modules.PvpModules.capability(e.id())?ChunkFinderClient.PVP.status(e.id())
                     :dev.amethyst.finder.modules.ClientModules.capability(e.id())?ChunkFinderClient.MODULES.status(e.id()):"";
+            if (e.id().equals("hard_crystal")) live=ChunkFinderClient.HARD_CRYSTAL.status();
             if (e.id().equals("cave_detector")) live=ChunkFinderClient.CAVES.status();
             if (e.id().equals("auto_relog")) live=ChunkFinderClient.RELOG.status();
             if (e.id().equals("search_chunk")) live=connected?ChunkFinderClient.SCANNER.susStatus(client).summary():"Join a world to scan received chunks";
