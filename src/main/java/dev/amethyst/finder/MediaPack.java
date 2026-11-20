@@ -28,7 +28,23 @@ public final class MediaPack {
     public static Map<String,Object> state() {
         var cfg=ChunkFinderClient.CONFIG;
         return Map.of("skyEnabled",cfg.customSkyEnabled,"skyAvailable",skyAvailable(),"skyMod",skyMod(),
-                "thinCrosshair",cfg.thinCrosshair,"fillSounds",cfg.packSoundsEnabled,"filledSounds",filledSounds,"error",skyError);
+                "thinCrosshair",cfg.thinCrosshair,"fillSounds",cfg.packSoundsEnabled,"filledSounds",filledSounds,"error",skyError,"skyPresets",List.of("northern_lights"));
+    }
+    /** Bundled local cosmetic. Keep a copy of the user's previous image before replacing it. */
+    public static void northernLights() throws IOException {
+        if(!skyMod())throw new IOException("Install Custom Skyboxes for Minecraft 26.3 first.");
+        byte[] panorama;
+        try(var in=MediaPack.class.getResourceAsStream("/assets/amethyst_chunk_finder/textures/sky/northern_lights.png")) {
+            if(in==null)throw new IOException("The Northern Lights panorama is missing from this core.");
+            panorama=in.readNBytes(16*1024*1024+1);
+        }
+        if(panorama.length>16*1024*1024)throw new IOException("The bundled panorama is too large.");
+        Path target=media().resolve("sky.png");
+        if(Files.isRegularFile(target)) {
+            byte[] previous=Files.readAllBytes(target);
+            if(!Arrays.equals(previous,panorama))write(media().resolve("sky-backups/"+UUID.randomUUID()+".png"),previous);
+        }
+        write(target,panorama);
     }
     public static void prepare() {
         String key=ChunkFinderClient.CONFIG.pigPackVariant; boolean enabled=false;

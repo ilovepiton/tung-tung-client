@@ -1,3 +1,10 @@
+## 1.35.1 — Manual Shield Breaker
+
+- Arsenal: one physical use-click with a mace against a blocking crosshair player. One hotbar axe attack, restore mace, then one follow-up after observed unblock and cooldown. No held repeat or attack retries.
+- Independent toggle key, Minecraft axe icon and a dedicated description. Normal attacks stay manual.
+- Download page with platform downloads, screenshots and installation instructions.
+- 143 Java tests passed; live multiplayer combo and Windows runtime remain unverified.
+
 # Changelog
 
 ## 1.34.0

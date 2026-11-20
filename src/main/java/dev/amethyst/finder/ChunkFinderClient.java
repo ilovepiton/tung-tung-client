@@ -40,6 +40,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
     public static ResourceScanner RESOURCES;
     public static VaultAssistant VAULTS;
     public static dev.amethyst.finder.modules.pvp.MaceBot MACE;
+    public static final dev.amethyst.finder.builder.AutoBuilder AUTO_BUILDER = new dev.amethyst.finder.builder.AutoBuilder();
     public static KeyMapping TOGGLE, ANALYSIS, DISCOVERY;
 
     @Override public void onInitializeClient() {
@@ -113,6 +114,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
             SCANNER.tick(client);
             CAVES.tick(client);
             HARD_CRYSTAL.tick(client);
+            PVP.tickShieldBreaker(client);
             boolean botHandled=BOT.handledThisTick()||MACE.handledThisTick();
             if(!botHandled){if(MACE.enabled())MACE.tick(client);else {BOT.tick(client);MODULES.tick(client);}}
             MOVEMENT.tick(client);
@@ -123,6 +125,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
             ELYTRA.tick(client);
             ITEMS.tick(client);
             VAULTS.tick(client);
+            AUTO_BUILDER.tick(client);
             if(BRIDGE!=null)BRIDGE.publish(client);
         });
         HudElementRegistry.attachElementBefore(VanillaHudElements.CHAT, Identifier.fromNamespaceAndPath(ID, "world_esp"), WorldOverlay::extract);

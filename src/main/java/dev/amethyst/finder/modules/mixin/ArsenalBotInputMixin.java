@@ -17,6 +17,7 @@ public abstract class ArsenalBotInputMixin extends ClientInput {
     private void tuntung$botMovement(CallbackInfo ci) {
         if(ChunkFinderClient.BOT==null)return;
         var next=ChunkFinderClient.MACE!=null&&ChunkFinderClient.MACE.enabled()?ChunkFinderClient.MACE.movement(Minecraft.getInstance(),keyPresses):ChunkFinderClient.BOT.movement(Minecraft.getInstance(),keyPresses);
+        if(ChunkFinderClient.AUTO_BUILDER.active())next=ChunkFinderClient.AUTO_BUILDER.movement(Minecraft.getInstance(),keyPresses);
         if(next.equals(keyPresses))return;
         keyPresses=next;
         moveVector=new Vec2((next.left()?1:0)-(next.right()?1:0),(next.forward()?1:0)-(next.backward()?1:0)).normalized();

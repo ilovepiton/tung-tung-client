@@ -55,6 +55,7 @@ public final class DesktopBridge {
         snapshot.put("stream",ChatStreamer.state());
         snapshot.put("streamerMode",StreamerMode.state());
         snapshot.put("vault",ChunkFinderClient.VAULTS.state(client));
+        snapshot.put("autoBuilder",AUTO_BUILDER_STATE());
         snapshot.put("combatBot",ChunkFinderClient.BOT.state());
         snapshot.put("elytraFinder",ChunkFinderClient.ELYTRA.state());
         snapshot.put("itemFinder",ChunkFinderClient.ITEMS.state(client));
@@ -195,6 +196,7 @@ public final class DesktopBridge {
             }
         } catch(Exception ex) { return new LoopbackServer.Response(400,JSON.toJson(Map.of("message",String.valueOf(ex.getCause()==null?ex.getMessage():ex.getCause().getMessage())))); }
     }
+    private static Map<String,Object> AUTO_BUILDER_STATE(){return ChunkFinderClient.AUTO_BUILDER.state();}
     private void mutate(String path,JsonObject data,Minecraft client) throws IOException {
         FinderConfig c=ChunkFinderClient.CONFIG;
         refreshWorldSession(client);
@@ -356,7 +358,11 @@ public final class DesktopBridge {
             c.sanitize();message="Settings saved";
         } else if("/action".equals(path)) {
             String action=data.get("action").getAsString();
-            if("vault_config".equals(action)) {
+            if("auto_builder".equals(action)) {
+                try {ChunkFinderClient.AUTO_BUILDER.command(client,data);message="";}
+                catch(Exception ex){throw new IllegalArgumentException(ex.getMessage());}
+            }
+            else if("vault_config".equals(action)) {
                 if(c.isModuleEnabled("auto_vault")||Boolean.TRUE.equals(ChunkFinderClient.VAULTS.state(client).get("movingKey")))throw new IllegalStateException("Switch the vault helper off and wait for the key move before changing its target");
                 String type=data.get("type").getAsString(),reward=data.get("reward").getAsString();
                 if(!VaultRewards.validType(type)||VaultRewards.find(type,reward)==null)throw new IllegalArgumentException("Choose a reward available in this vault type");
@@ -389,6 +395,13 @@ public final class DesktopBridge {
                 boolean on=booleanSetting(data,"enabled",false);
                 texturePacks.apply(client,data.get("variant").getAsString(),on);
                 message=on?"Applying "+TexturePacks.variant(data.get("variant").getAsString()).name():"Pig pack switched off";
+            }
+            else if("sky_preset".equals(action)) {
+                if(!data.has("preset")||!"northern_lights".equals(data.get("preset").getAsString()))throw new IllegalArgumentException("Unknown sky preset");
+                texturePacks.checkIdle();
+                try{MediaPack.northernLights();}catch(java.io.IOException ex){throw new IllegalStateException(ex.getMessage(),ex);}
+                c.customSkyEnabled=true;c.save();texturePacks.refreshMedia(client);
+                message="Applying Northern Lights sky";
             }
             else if("media_setting".equals(action)) {
                 String key=data.has("key")?data.get("key").getAsString():"";

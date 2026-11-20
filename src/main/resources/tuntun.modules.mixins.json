@@ -33,7 +33,8 @@
     "RiptideReleaseMixin",
     "MaceDamageMixin",
     "ElytraAlertMixin",
-    "HardCrystalUseMixin"
+    "HardCrystalUseMixin",
+    "BuilderMiningMixin"
   ],
   "injectors": {
     "defaultRequire": 1

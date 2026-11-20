@@ -32,7 +32,7 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
     private var ready = false
     private var installing = false
     private var installProgress = 0
-    private var installStatus = "Close Minecraft and its Launcher, then install Fabric Core 1.34.0."
+    private var installStatus = "Close Minecraft and its Launcher, then install Fabric Core 1.35.1."
     private var lastError = ""
     private var bridgeError = ""
     private var pendingReplies: [(String, Any)] = []
@@ -195,7 +195,7 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
     @objc func quit() { NSApp.terminate(nil) }
     @objc func about() {
         NSApp.orderFrontStandardAboutPanel(options: [.applicationName: "Tung Tung Client",
-            .applicationVersion: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.34.0",
+            .applicationVersion: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.35.1",
             .credits: NSAttributedString(string: "Native macOS client · Minecraft Java 26.3 / Fabric\nGame functions use the authenticated localhost bridge.")])
     }
     private func launcherURL() -> URL? {
@@ -237,6 +237,84 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
             }
         }
     }
+    private var switchingEngine = false
+    private func switchEngine(_ mode: String, id: String) {
+        guard !switchingEngine else { reply(id, error: "An engine switch is already in progress."); return }
+        do { _ = try EngineModes.selection(mode, root: directory) }
+        catch { reply(id, error: error.localizedDescription); return }
+        guard let launcher = launcherURL() else { reply(id, error: "Install the official Minecraft Launcher first."); return }
+        switchingEngine = true
+        // Request normal application termination only. Never kill Java or force-save a world.
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self else { return }
+            do {
+                let scan = Process(), pipe = Pipe()
+                scan.executableURL = URL(fileURLWithPath: "/bin/ps"); scan.arguments = ["-axo", "pid=,comm="]
+                scan.standardOutput = pipe; scan.standardError = FileHandle.nullDevice
+                try scan.run()
+                let bytes = pipe.fileHandleForReading.readDataToEndOfFile(); scan.waitUntilExit()
+                let lines = (String(data: bytes, encoding: .utf8) ?? "").split(separator: "\n")
+                var gamePIDs: [pid_t] = []
+                for line in lines {
+                    let fields = line.split(maxSplits: 1, whereSeparator: { $0.isWhitespace })
+                    guard fields.count == 2, let pid = Int32(fields[0]),
+                          String(fields[1]).hasSuffix("/bin/java") else { continue }
+                    let probe = Process(), output = Pipe()
+                    probe.executableURL = URL(fileURLWithPath: "/usr/sbin/lsof")
+                    probe.arguments = ["-a", "-p", String(pid), "-d", "cwd", "-Fn"]
+                    probe.standardOutput = output; probe.standardError = FileHandle.nullDevice
+                    try probe.run()
+                    let paths = String(data: output.fileHandleForReading.readDataToEndOfFile(), encoding: .utf8) ?? ""
+                    probe.waitUntilExit()
+                    if ["tun-tun-26.3", "anubis-1.21.11"].contains(where: { paths.contains("n" + self.directory.appendingPathComponent($0).path + "\n") }) { gamePIDs.append(pid) }
+                }
+                DispatchQueue.main.async {
+                    var applications = gamePIDs.compactMap { NSRunningApplication(processIdentifier: $0) }
+                    guard applications.count == gamePIDs.count else {
+                        self.switchingEngine = false
+                        self.reply(id, error: "Quit Minecraft normally, then click the engine button again. macOS could not request a normal game exit."); return
+                    }
+                    applications += NSWorkspace.shared.runningApplications.filter { $0.bundleIdentifier == "com.mojang.minecraftlauncher" }
+                    for app in applications where !app.isTerminated {
+                        guard app.terminate() else {
+                            self.switchingEngine = false
+                            self.reply(id, error: "Quit Minecraft and Launcher normally, then click the engine button again."); return
+                        }
+                    }
+                    let deadline = Date().addingTimeInterval(60)
+                    Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { timer in
+                        let stillRunning = gamePIDs.contains { Darwin.kill($0, 0) == 0 } || applications.contains { !$0.isTerminated }
+                        if stillRunning {
+                            if Date() >= deadline {
+                                timer.invalidate(); self.switchingEngine = false
+                                self.reply(id, error: "Minecraft or Launcher is still closing. Finish its normal exit, then try again. Nothing was force-closed.")
+                            }
+                            return
+                        }
+                        timer.invalidate()
+                        do {
+                            let backup = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support/Tung Tung Client/engine-backups")
+                            let selected = try EngineModes.select(mode, root: self.directory, backupRoot: backup)
+                            self.defaults.set(mode, forKey: "selectedEngine")
+                            self.installStatus = selected.name + " selected. Press Play in Minecraft Launcher."
+                            NSWorkspace.shared.openApplication(at: launcher, configuration: NSWorkspace.OpenConfiguration()) { _, error in
+                                DispatchQueue.main.async {
+                                    self.switchingEngine = false
+                                    if let error { self.reply(id, error: error.localizedDescription) }
+                                    else { self.reply(id, data: ["message": self.installStatus]) }
+                                    self.publish()
+                                }
+                            }
+                        } catch {
+                            self.switchingEngine = false; self.reply(id, error: error.localizedDescription)
+                        }
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async { self.switchingEngine = false; self.reply(id, error: error.localizedDescription) }
+            }
+        }
+    }
     @objc func menuLaunchMinecraft() { launchMinecraft(id: nil) }
     private func launchMinecraft(id: String?) {
         guard let launcher = launcherURL() else {
@@ -255,10 +333,10 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
         }
     }
     @objc func menuChooseFolder() { chooseFolder(id: nil) }
-    private func chooseFolder(id: String?) {
+    private func chooseFolder(id: String?, builderActor: Bool = false) {
         let panel = NSOpenPanel()
-        panel.title = "Choose the Minecraft folder"
-        panel.message = "Default: ~/Library/Application Support/minecraft. For Prism, choose the instance Minecraft folder."
+        panel.title = builderActor ? "Connect a builder bot" : "Choose the Minecraft folder"
+        panel.message = builderActor ? "Launch a second Minecraft instance with this core and your bot account. Choose that instance’s Minecraft folder. The client will control the connected character; no account credentials are stored here." : "Default: ~/Library/Application Support/minecraft. For Prism, choose the instance Minecraft folder."
         panel.canChooseDirectories = true; panel.canChooseFiles = false; panel.allowsMultipleSelection = false
         panel.directoryURL = directory
         panel.beginSheetModal(for: window) { [weak self] response in
@@ -297,15 +375,16 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
     private func preferences() -> [String: Any] {
         ["minecraftFolder": directory.path, "soundsEnabled": soundsEnabled, "installing": installing,
          "installProgress": installProgress, "installStatus": currentCoreStatus(), "launcherAvailable": launcherURL() != nil, "voiceRuntime": VoiceRuntime.status(),
-         "simpleVoiceChat": simpleVoiceChat,
+         "simpleVoiceChat": simpleVoiceChat, "selectedEngine": defaults.string(forKey: "selectedEngine") ?? "tung",
+         "anubisAvailable": FileManager.default.fileExists(atPath: directory.appendingPathComponent("anubis-1.21.11/mods/Anubis_Client_1.0.jar").path),
          "lastError": lastError.isEmpty ? bridgeError : lastError,
-         "version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.34.0"]
+         "version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.35.1"]
     }
     private func currentCoreStatus() -> String {
         guard !installing, bridge.latestState["transportConnected"] as? Bool == true else { return installStatus }
         guard let version = bridge.latestState["gameVersion"] as? String,
-              version.compare("1.34.0", options: .numeric) != .orderedAscending else {
-            return "Core update required. Close Minecraft and its Launcher, install Fabric Core 1.34.0, then restart Tung Tung Client 26.3."
+              version.compare("1.35.1", options: .numeric) != .orderedAscending else {
+            return "Core update required. Close Minecraft and its Launcher, install Fabric Core 1.35.1, then restart Tung Tung Client 26.3."
         }
         return "Game core \(version) is connected. Enable a module, then click Return to Minecraft."
     }
@@ -425,9 +504,14 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
         case "hide", "windowClose": hideClient(); reply(id)
         case "install", "installCore": installCore(id: id)
         case "chooseFolder", "chooseMinecraftFolder": chooseFolder(id: id)
+        case "connectBuilderBot": chooseFolder(id: id, builderActor: true)
+        case "importSchematic":
+            guard let actionGeneration, actionGeneration == bridge.connectionGeneration else { reply(id, error: "Connect the updated Minecraft core before importing a schematic."); return }
+            importSchematic(id:id,generation:actionGeneration)
         case "importSky":
             guard let actionGeneration, actionGeneration == bridge.connectionGeneration else { reply(id, error: "Connect Minecraft before choosing a sky image."); return }
             importSky(id: id, generation: actionGeneration)
+        case "switchEngine": switchEngine(payload["mode"] as? String ?? "", id: id)
         case "launchMinecraft": launchMinecraft(id: id)
         case "openChess":
             let pages=["play":"https://www.chess.com/play/online","bots":"https://www.chess.com/play/computer","puzzles":"https://www.chess.com/puzzles","analysis":"https://www.chess.com/analysis","learn":"https://www.chess.com/lessons"]
@@ -454,6 +538,23 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
         case "about": about(); reply(id)
         case "quit": reply(id); quit()
         default: reply(id, error: "Unknown native operation: \(action)")
+        }
+    }
+    private func importSchematic(id: String, generation: Int) {
+        let panel=NSOpenPanel()
+        panel.title="Import a build"
+        panel.message="Sponge .schem, Litematica .litematic or structure .nbt. Import creates a preview; building starts only when you press Start."
+        panel.allowedContentTypes=["schem","schematic","litematic","nbt"].compactMap { UTType(filenameExtension:$0) }
+        panel.canChooseDirectories=false; panel.canChooseFiles=true; panel.allowsMultipleSelection=false
+        let target=directory!
+        panel.beginSheetModal(for:window) { [weak self] response in
+            guard let self else {return}
+            guard response == .OK, let source=panel.url else {self.reply(id,data:["cancelled":true]);return}
+            guard self.bridge.connectionGeneration == generation, self.directory == target else {self.reply(id,error:"The Minecraft connection changed. Import again.");return}
+            do {
+                let filename=try BuilderFiles.copy(source:source,minecraftDirectory:target)
+                self.bridge.send(path:"/action",payload:["action":"auto_builder","op":"import","file":filename,"label":source.lastPathComponent],expectedGeneration:generation) { [weak self] result in self?.reply(id,result:result) }
+            } catch { self.reply(id,error:error.localizedDescription) }
         }
     }
     private func importSky(id: String, generation: Int) {
@@ -722,7 +823,7 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
         }
     }
     private func capturePages(index: Int, result: [String: Any], completion: @escaping ([String: Any]) -> Void) {
-        let pages = ["home", "world-tools", "findings", "finder-settings", "pvp", "pvp-settings", "player-settings", "tutorials", "settings", "camera-settings", "assist-settings", "find-player", "resource-highlights", "microphone", "texture-packs", "media-settings", "module-settings", "keyboard-customize"]
+        let pages = ["home", "auto-builder", "world-tools", "findings", "finder-settings", "pvp", "pvp-settings", "player-settings", "tutorials", "settings", "camera-settings", "assist-settings", "find-player", "resource-highlights", "microphone", "texture-packs", "media-settings", "module-settings", "keyboard-customize"]
         guard index < pages.count, let qaOutput else { completion(result); return }
         let page = pages[index]
         web.evaluateJavaScript("window.TungNative.navigate('\(page)');document.querySelector('#continue-intro')?.click()") { [weak self] _, navigationError in
@@ -765,6 +866,13 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
         if CommandLine.arguments.contains("--voice-runtime-status") {
             let data = try! JSONSerialization.data(withJSONObject: VoiceRuntime.status(), options: [.sortedKeys])
             FileHandle.standardOutput.write(data); print(""); return
+        }
+        if CommandLine.arguments.contains("--engine-self-test") {
+            do {
+                let checks = try EngineModes.runSelfTests()
+                let data = try JSONSerialization.data(withJSONObject: ["ok": true, "checks": checks], options: [.prettyPrinted, .sortedKeys])
+                FileHandle.standardOutput.write(data); return
+            } catch { FileHandle.standardError.write(Data((error.localizedDescription + "\n").utf8)); exit(1) }
         }
         if CommandLine.arguments.contains("--installer-self-test") {
             do {

@@ -33,11 +33,11 @@ public abstract class PvpAcknowledgementMixin {
     private void tuntung$worldReceipt(CallbackInfo ci) { tuntung$receipt(); }
     @Inject(method="handleBlockUpdate",at=@At("HEAD"))
     private void tuntung$blockState(net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket packet,CallbackInfo ci) {
-        if(net.minecraft.client.Minecraft.getInstance().isSameThread())PvpAcknowledgements.serverBlockUpdate((ClientPacketListener)(Object)this,packet.getPos(),packet.getBlockState());
+        if(net.minecraft.client.Minecraft.getInstance().isSameThread()){PvpAcknowledgements.serverBlockUpdate((ClientPacketListener)(Object)this,packet.getPos(),packet.getBlockState());ChunkFinderClient.AUTO_BUILDER.received(packet.getPos(),packet.getBlockState());}
     }
     @Inject(method="handleChunkBlocksUpdate",at=@At("HEAD"))
     private void tuntung$chunkBlockState(net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket packet,CallbackInfo ci) {
-        if(net.minecraft.client.Minecraft.getInstance().isSameThread())packet.runUpdates((pos,state)->PvpAcknowledgements.serverBlockUpdate((ClientPacketListener)(Object)this,pos,state));
+        if(net.minecraft.client.Minecraft.getInstance().isSameThread())packet.runUpdates((pos,state)->{PvpAcknowledgements.serverBlockUpdate((ClientPacketListener)(Object)this,pos,state);ChunkFinderClient.AUTO_BUILDER.received(pos,state);});
     }
     @Inject(method = "handleBlockChangedAck", at = @At("TAIL"))
     private void tuntung$blockAck(ClientboundBlockChangedAckPacket packet, CallbackInfo ci) {

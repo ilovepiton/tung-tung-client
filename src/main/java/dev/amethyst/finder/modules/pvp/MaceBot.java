@@ -109,6 +109,7 @@ public final class MaceBot {
   if(self!=c.player||level!=c.level||c.getConnection()==null){stop(c,"World changed · rearm Mace PvP");return;}
   if(!self.isAlive()||self.isSpectator()){stop(c,"Player unavailable · rearm after respawning");return;}
   if(target!=null&&(target.getHealth()<=0||target.getRemovalReason()==Entity.RemovalReason.KILLED)){stop(c,"Target defeated · Mace PvP stopped");return;}
+  if(ChunkFinderClient.PVP.shieldBreakerBusy()){releaseShield(c,true);goal=null;phase="manual";status="Manual shield-break combo owns combat";return;}
   pickTarget(c);kit=MaceLoadout.scan(self);if(target!=null)observe(c);else incoming=false;
   double hp=health();if(lastHealth>hp+4)recoverUntil=Math.max(recoverUntil,clock+12);lastHealth=hp;
   emergency=hp<=config.maceRetreatHealth||clock<recoverUntil||lethalIncoming()||(!self.onGround()&&fallRisk()>=hp-2);

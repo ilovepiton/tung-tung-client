@@ -25,11 +25,12 @@ import java.util.*;
 
 /** PvP helpers using ordinary game interactions, bounded action rates and explicit runtime failures. */
 public final class PvpModules {
-    private static final List<String> IDS = List.of("mace_bot", "combat_bot", "auto_crystal", "auto_anchor", "auto_gapple", "trigger_bot", "auto_weapon", "aim_cursor", "auto_punch", "auto_kill_steal");
+    private static final List<String> IDS = List.of("auto_shield_breaker", "mace_bot", "combat_bot", "auto_crystal", "auto_anchor", "auto_gapple", "trigger_bot", "auto_weapon", "aim_cursor", "auto_punch", "auto_kill_steal");
     private static final String[] WEAPONS = {"NETHERITE_SWORD", "NETHERITE_AXE", "DIAMOND_SWORD", "DIAMOND_AXE", "IRON_SWORD", "IRON_AXE", "COPPER_SWORD", "COPPER_AXE", "STONE_SWORD", "STONE_AXE", "WOODEN_SWORD", "WOODEN_AXE", "GOLDEN_SWORD", "GOLDEN_AXE"};
     private final FinderConfig config;
     private final PvpAccess access = new PvpAccess();
     private final ManualCombatAssist manual;
+    private final dev.amethyst.finder.modules.pvp.ShieldBreaker shieldBreaker;
     private final dev.amethyst.finder.modules.pvp.BotCombatPlanner botPlanner;
     private int ownedInteractionDepth;
     private final Map<String, String> states = new HashMap<>();
@@ -51,13 +52,14 @@ public final class PvpModules {
     private long foodInventoryRevision;
     private int weaponSlot = -1, weaponPreviousSlot = -1;
 
-    public PvpModules(FinderConfig config) { this.config = config; this.manual = new ManualCombatAssist(config, this);this.botPlanner=new dev.amethyst.finder.modules.pvp.BotCombatPlanner(config,this); }
+    public PvpModules(FinderConfig config) { this.config = config; this.shieldBreaker = new dev.amethyst.finder.modules.pvp.ShieldBreaker(config); this.manual = new ManualCombatAssist(config, this);this.botPlanner=new dev.amethyst.finder.modules.pvp.BotCombatPlanner(config,this); }
     public static boolean capability(String id) { return IDS.contains(id); }
     public boolean setEnabled(String id, boolean enabled) {
         if (!capability(id)) return false;
         if("mace_bot".equals(id)){ChunkFinderClient.MACE.setEnabled(Minecraft.getInstance(),enabled);config.save();return true;}
         if("combat_bot".equals(id)){if(enabled&&ChunkFinderClient.MACE.enabled())ChunkFinderClient.MACE.setEnabled(Minecraft.getInstance(),false);ChunkFinderClient.BOT.setEnabled(Minecraft.getInstance(),enabled);config.save();return true;}
         if(enabled&&"auto_crystal".equals(id)&&ChunkFinderClient.HARD_CRYSTAL!=null)ChunkFinderClient.HARD_CRYSTAL.setEnabled(Minecraft.getInstance(),false);
+        if ("auto_shield_breaker".equals(id)) shieldBreaker.reset(Minecraft.getInstance());
         config.setModuleEnabled(id, enabled);
         states.put(id, enabled ? "Waiting for a valid interaction" : "Disabled");
         failedUntil.remove(id);
@@ -76,7 +78,7 @@ public final class PvpModules {
     }
     public void reset() {
         Minecraft client = Minecraft.getInstance();
-        manual.reset(client);
+        manual.reset(client); shieldBreaker.reset(client);
         stopEating(client); restoreWeapon(client);
         sessionPlayer = null; sessionLevel = null; anchor = null; lastAnchor = null; crystal = null; crystalAttackPending = false;
         ticks = nextActionTick = nextExplosionTick = 0; lastCrystalId = -1; lastCrystalTick = lastAnchorTick = -100;
@@ -84,6 +86,7 @@ public final class PvpModules {
     }
     public String status(String id) {
         if (!capability(id)) return "Not implemented by the PvP service";
+        if("auto_shield_breaker".equals(id))return shieldBreaker.status();
         if("mace_bot".equals(id))return ChunkFinderClient.MACE.status();
         if("combat_bot".equals(id))return ChunkFinderClient.BOT.status();
         if (!config.isModuleEnabled(id)) return "Disabled";
@@ -101,6 +104,7 @@ public final class PvpModules {
             reset(); sessionPlayer = client.player; sessionLevel = client.level;
         }
         ticks++;
+        if(shieldBreaker.busy()) { stopEating(client); return; }
         if(ChunkFinderClient.MACE!=null&&ChunkFinderClient.MACE.enabled())return;
         if (!client.player.isAlive() || client.player.isSpectator()) pause = "Paused: player unavailable";
         else if (client.player.isHandsBusy()) pause = "Paused: player hands are busy";
@@ -159,14 +163,17 @@ public final class PvpModules {
             && !dev.amethyst.finder.modules.pvp.LootProtection.blocked(client) && manual.blocksRepeat(client); }
     public boolean hasPendingExplosiveAssist() {return manual.hasWork()||anchor!=null||crystal!=null||crystalAttackPending;}
     public boolean ownsInventory() { return manual.ownsInventory()||(ChunkFinderClient.MACE!=null&&ChunkFinderClient.MACE.ownsInventory()); }
-    public boolean reservesInventorySlot(int slot) { return manual.reservesInventorySlot(slot)
+    public boolean reservesInventorySlot(int slot) { return shieldBreaker.reserves(slot) || manual.reservesInventorySlot(slot)
             || ChunkFinderClient.MACE!=null&&ChunkFinderClient.MACE.reservesInventorySlot(slot); }
     public boolean ownsCombat() {
-        return (ChunkFinderClient.MACE!=null&&ChunkFinderClient.MACE.enabled()) || (ChunkFinderClient.BOT!=null&&ChunkFinderClient.BOT.enabled()) || (ChunkFinderClient.HARD_CRYSTAL!=null&&ChunkFinderClient.HARD_CRYSTAL.busy()) || manual.hasWork() || anchor != null || crystal != null || crystalAttackPending || eating
+        return shieldBreaker.busy() || (ChunkFinderClient.MACE!=null&&ChunkFinderClient.MACE.enabled()) || (ChunkFinderClient.BOT!=null&&ChunkFinderClient.BOT.enabled()) || (ChunkFinderClient.HARD_CRYSTAL!=null&&ChunkFinderClient.HARD_CRYSTAL.busy()) || manual.hasWork() || anchor != null || crystal != null || crystalAttackPending || eating
                 || config.isModuleEnabled("auto_punch") || config.isModuleEnabled("auto_kill_steal")
                 || (ChunkFinderClient.MODULES != null && ChunkFinderClient.MODULES.totemSwapPending());
     }
-    public void onManualMouseButton(Minecraft client, int button, int action) { manual.mouseButton(client, button, action); if(ChunkFinderClient.HARD_CRYSTAL!=null)ChunkFinderClient.HARD_CRYSTAL.mouse(client,button,action); }
+    public void tickShieldBreaker(Minecraft client) { shieldBreaker.tick(client); }
+    public boolean shieldBreakerBusy() { return shieldBreaker.busy(); }
+    public boolean interceptShieldUse() { return shieldBreaker.interceptUse(); }
+    public void onManualMouseButton(Minecraft client, int button, int action) { manual.mouseButton(client, button, action); shieldBreaker.mouse(client, button, action); if(ChunkFinderClient.HARD_CRYSTAL!=null)ChunkFinderClient.HARD_CRYSTAL.mouse(client,button,action); }
     public void onServerCombatUpdate(Minecraft client) {
         if(dev.amethyst.finder.modules.pvp.LootProtection.blocked(client)) {
             manual.paused(client,dev.amethyst.finder.modules.pvp.LootProtection.status(client));return;
@@ -175,6 +182,7 @@ public final class PvpModules {
         if(client.player==null||client.level==null||client.gameMode==null||!client.player.isAlive()||client.player.isSpectator()
                 ||client.player.isHandsBusy()||client.gui.screen()!=null||!client.isWindowActive()||!client.mouseHandler.isMouseGrabbed())return;
         if(ChunkFinderClient.MODULES!=null&&(ChunkFinderClient.MODULES.cameraActive()||ChunkFinderClient.MODULES.totemSwapPending()))return;
+        if(shieldBreaker.busy())return;
         manual.received(client);
     }
     public ManualCombatAssist.Observation captureManualUse(Minecraft client, InteractionHand hand, BlockHitResult hit, ItemStack held) {

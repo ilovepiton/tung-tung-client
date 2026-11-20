@@ -123,6 +123,10 @@ public final class ChunkWorldRenderer {
                 mesh.chunk(ChunkSelectionMath.Bounds.chunk(chunk.x(),chunk.z(),minY,maxY),0xFFFFC875,.85,1,false,false,0,.35);
             }
         }
+        for(var mark:ChunkFinderClient.AUTO_BUILDER.marks(client)) {
+            var a=mark.min();var b=mark.max();
+            mesh.chunk(new ChunkSelectionMath.Bounds(a.getX(),a.getY(),a.getZ(),b.getX(),b.getY(),b.getZ()),mark.color(),1,1,false,false,0,0.8);
+        }
         mesh.submit(graphics);
 
     }
