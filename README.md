@@ -1,6 +1,6 @@
 # Tung Tung Client
 
-Current desktop: **1.35.1** · Minecraft core: **1.35.1** · Minecraft Java **26.3**.
+Current desktop: **1.35.2** · Minecraft core: **1.35.1** · Minecraft Java **26.3**.
 
 1.30.3 adds 20 original keyboard illustrations, 43 distinct Minecraft PNG item icons, large module
 description dialogs and Find Player skin faces. Chess.com, Roblox and Stream

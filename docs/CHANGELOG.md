@@ -1,3 +1,9 @@
+## 1.35.2 — Shield Breaker visibility
+
+- Auto Shield Breaker is the first Arsenal card and also has its own toggle and settings button inside Mace PvP.
+- Search accepts `shield brake`, `shieldbreak` and Russian shield terms.
+- Desktop-only update, using unchanged game core 1.35.1. No Minecraft restart is required when that core is already loaded.
+
 ## 1.35.1 — Manual Shield Breaker
 
 - Arsenal: one physical use-click with a mace against a blocking crosshair player. One hotbar axe attack, restore mace, then one follow-up after observed unblock and cooldown. No held repeat or attack retries.

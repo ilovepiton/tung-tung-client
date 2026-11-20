@@ -184,3 +184,5 @@ html,body{background:#090705;-webkit-font-smoothing:antialiased}#app{background:
 .engine-mode-home .hero-logo{top:105px;height:130px}.engine-mode-home .hero-subtitle{top:234px}
 
 .sky-panel .media-state{bottom:10px;max-width:570px}
+
+.mace-manual-shield h2{font-size:24px;margin:12px 0}.mace-manual-shield p{font-size:15px;line-height:1.65;color:var(--muted);max-width:90%}.mace-manual-shield>.vault-item{width:42px;height:42px;float:right;image-rendering:pixelated}.mace-manual-shield>.button{position:relative;margin-top:18px;min-height:40px;padding:10px 18px}

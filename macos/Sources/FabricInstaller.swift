@@ -286,7 +286,7 @@ enum FabricInstaller {
         let manifest = try fileData(base.appendingPathComponent("manifest.json"), maximum: 1024 * 1024)
         guard let document = try JSONSerialization.jsonObject(with: manifest) as? [String: Any],
               document["minecraft"] as? String == "26.3", document["loader"] as? String == "0.19.5",
-              document["version"] as? String == "1.35.1", let files = document["files"] as? [[String: Any]] else {
+              ["1.35.1", "1.35.2"].contains(document["version"] as? String ?? ""), let files = document["files"] as? [[String: Any]] else {
             throw problem("The bundled Minecraft/Fabric manifest is invalid. Download a fresh complete Mac ZIP.")
         }
         var withVoiceChat = false

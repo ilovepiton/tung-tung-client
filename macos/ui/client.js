@@ -153,9 +153,15 @@ function openModuleControls(id){
  if(pages[id]){navigate(pages[id]);return;}
  moduleSettingsId=id;moduleReturnPage=page==='texture-packs'?'texture-packs':['pvp','mace-pvp'].includes(page)?'pvp':'world-tools';navigate('module-settings');
 }
+function moduleMatchesSearch(module, value) {
+ const normalize=text=>String(text||'').toLowerCase().replace(/brake/g,'break').replace(/[^a-zа-яё0-9]+/g,' ').trim();
+ const aliases=module.id==='auto_shield_breaker'?'auto shield break breaker shieldbreak shieldbreaker щит авто щит брейкер':'';
+ const haystack=normalize(module.name+' '+aliases),tokens=normalize(value).split(' ').filter(Boolean);
+ return tokens.every(token=>haystack.includes(token));
+}
 function modulePage(){
- const pvp=page==='pvp',list=modules().filter(m=>!['client_maps','map_in_slot'].includes(m.id)&&(m.category==='PvP')===pvp&&(pvp||category==='All modules'||m.category===category)&&m.name.toLowerCase().includes(query.toLowerCase()));
- if(pvp){const priority=['auto_totem','killaura','aim_cursor','combat_bot'];list.sort((a,b)=>{const ai=priority.indexOf(a.id),bi=priority.indexOf(b.id);return (ai<0?priority.length:ai)-(bi<0?priority.length:bi);});}
+ const pvp=page==='pvp',list=modules().filter(m=>!['client_maps','map_in_slot'].includes(m.id)&&(m.category==='PvP')===pvp&&(pvp||category==='All modules'||m.category===category)&&moduleMatchesSearch(m,query));
+ if(pvp){const priority=['auto_shield_breaker','auto_totem','killaura','aim_cursor','combat_bot'];list.sort((a,b)=>{const ai=priority.indexOf(a.id),bi=priority.indexOf(b.id);return (ai<0?priority.length:ai)-(bi<0?priority.length:bi);});}
  const max=Math.max(0,Math.ceil(list.length/2)-3);scrollRow=Math.clamp?Math.clamp(scrollRow,0,max):Math.min(max,Math.max(0,scrollRow));
  return heading(pvp?'Arsenal.':'World Tools.',pvp?'Combat, crystals, anchors and inventory automation.':'In-game highlights, body movement and camera controls.',111)+(pvp?button('TEXTURE PACKS',443,82,123,'data-page="texture-packs"')+button('PLAYER CONTROLS',578,82,130,'data-page="player-settings"')+button('PVP SETTINGS',720,82,147,'data-page="pvp-settings"'):button('AUTO BUILDER',546,82,138,'data-page="auto-builder"')+button('TRIAL CHAMBERS',696,82,171,'data-page="trial-chambers"'))+`<div class="search-box">${icon('search')}<input id="search" placeholder="Search modules…" value="${escapeHTML(query)}" aria-label="Search modules"></div><div class="modules-heading">${pvp?'COMBAT & AUTOMATION':category.toUpperCase()}</div><div class="modules-count">${connected()?list.filter(m=>m.enabled).length+(category==='Movement'&&!pvp?' REQUESTED':' ENABLED'):'DISCONNECTED'} / ${list.length} MODULES</div><div class="cards">${list.slice(scrollRow*2,scrollRow*2+6).map(moduleCard).join('')}</div>`+(max?`<div class="scrollbar"><i class="scrollbar-thumb" style="top:${315*scrollRow/max}px"></i></div>${button('↑',781,642,36,'data-scroll="-1"')}${button('↓',831,642,36,'data-scroll="1"')}`:'')+`<div class="page-note">${pvp?'Enable a module, then click Return to Minecraft. Items and valid targets are required.':category==='Movement'?'A switch saves your request. The live status shows current conditions. Click Return to Minecraft when paused.':'Module switches reflect genuine Minecraft state. Hidden server data remains unavailable.'}</div>`;
 }
