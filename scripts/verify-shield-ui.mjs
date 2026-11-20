@@ -9,6 +9,8 @@ for(const q of ['auto shield brake','Auto Shield Breaker','shieldbreak','shield 
  ctx.query=q;ctx.scrollRow=0;const html=vm.runInContext('modulePage()',ctx);assert.match(html,/data-module="auto_shield_breaker"/);assert.doesNotMatch(html,/data-module="auto_totem"/);
 }
 ctx.query='';ctx.scrollRow=0;const html=vm.runInContext('modulePage()',ctx);assert.ok(html.indexOf('data-module="auto_shield_breaker"')<html.indexOf('data-module="auto_totem"'));
-const mace=vm.runInContext('macePage()',ctx);assert.match(mace,/data-toggle-module="auto_shield_breaker"/);assert.match(mace,/data-module-settings="auto_shield_breaker"/);
-assert.match(mace,/aria-label="Toggle Auto Shield Breaker"[^>]*disabled/);
-console.log('PASS: 5 search variants; first Arsenal card; Mace PvP toggle and settings; offline toggle disabled');
+const mace=vm.runInContext('macePage()',ctx);assert.doesNotMatch(mace,/data-toggle-module="auto_shield_breaker"/);
+ctx.selected="auto_shield_breaker";ctx.busy=new Set();ctx.nativeHandler=()=>true;ctx.preferences={};ctx.isMovementModule=()=>false;ctx.moduleImage=()=>'';ctx.technicalStatus=()=>'';
+vm.runInContext(client.slice(client.indexOf('function moduleCard('),client.indexOf('function moduleDescription(')),ctx);
+const card=vm.runInContext('moduleCard(modules()[0])',ctx);assert.match(card,/data-native="updateClient"/);
+console.log('PASS: 5 search variants; first Arsenal card; Arsenal update buttons; no duplicate Mace PvP toggle');

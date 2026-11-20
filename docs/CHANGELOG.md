@@ -1,3 +1,9 @@
+## 1.35.3 — Single shield hit and client updates
+
+- Shield Breaker: one axe attack and immediate mace restoration. No automatic mace follow-up. Ordinary attacks and unshielded targets do not trigger it.
+- Keep the module in Arsenal; remove the duplicate Mace PvP page control.
+- UPDATE in the header and on module cards checks and installs the full platform release with a SHA256 check and backups. Minecraft is never force-closed.
+
 ## 1.35.2 — Shield Breaker visibility
 
 - Auto Shield Breaker is the first Arsenal card and also has its own toggle and settings button inside Mace PvP.

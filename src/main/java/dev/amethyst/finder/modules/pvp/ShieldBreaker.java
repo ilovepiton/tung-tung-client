@@ -85,11 +85,7 @@ public final class ShieldBreaker {
             // Vanilla attack synchronizes the selected hotbar slot before its attack packet.
             c.gameMode.attack(self, target);
             self.swing(InteractionHand.MAIN_HAND, self.getMainHandItem().getAttackAnimation(), false);
-            select(maceSlot); status = "Mace restored · waiting for shield release and mace cooldown";
-        } else if (action == ShieldBreakSequence.Action.MACE) {
-            c.gameMode.attack(self, target);
-            self.swing(InteractionHand.MAIN_HAND, self.getMainHandItem().getAttackAnimation(), false);
-            finish(c, "Axe and mace attacks sent · release and right-click for another combo");
+            finish(c, "Axe attack sent · mace restored · next attack is yours");
         }
     }
     private static boolean sameWeapon(ItemStack current, ItemStack original) {

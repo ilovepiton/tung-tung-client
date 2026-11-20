@@ -32,7 +32,7 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
     private var ready = false
     private var installing = false
     private var installProgress = 0
-    private var installStatus = "Close Minecraft and its Launcher, then install Fabric Core 1.35.1."
+    private var installStatus = "Close Minecraft and its Launcher, then install Fabric Core 1.35.3."
     private var lastError = ""
     private var bridgeError = ""
     private var pendingReplies: [(String, Any)] = []
@@ -195,7 +195,7 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
     @objc func quit() { NSApp.terminate(nil) }
     @objc func about() {
         NSApp.orderFrontStandardAboutPanel(options: [.applicationName: "Tung Tung Client",
-            .applicationVersion: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.35.1",
+            .applicationVersion: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.35.3",
             .credits: NSAttributedString(string: "Native macOS client · Minecraft Java 26.3 / Fabric\nGame functions use the authenticated localhost bridge.")])
     }
     private func launcherURL() -> URL? {
@@ -378,13 +378,13 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
          "simpleVoiceChat": simpleVoiceChat, "selectedEngine": defaults.string(forKey: "selectedEngine") ?? "tung",
          "anubisAvailable": FileManager.default.fileExists(atPath: directory.appendingPathComponent("anubis-1.21.11/mods/Anubis_Client_1.0.jar").path),
          "lastError": lastError.isEmpty ? bridgeError : lastError,
-         "version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.35.1"]
+         "version": Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.35.3"]
     }
     private func currentCoreStatus() -> String {
         guard !installing, bridge.latestState["transportConnected"] as? Bool == true else { return installStatus }
         guard let version = bridge.latestState["gameVersion"] as? String,
-              version.compare("1.35.1", options: .numeric) != .orderedAscending else {
-            return "Core update required. Close Minecraft and its Launcher, install Fabric Core 1.35.1, then restart Tung Tung Client 26.3."
+              version.compare("1.35.3", options: .numeric) != .orderedAscending else {
+            return "Core update required. Close Minecraft and its Launcher, install Fabric Core 1.35.3, then restart Tung Tung Client 26.3."
         }
         return "Game core \(version) is connected. Enable a module, then click Return to Minecraft."
     }
@@ -490,6 +490,25 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
                     if let error { self?.reply(id, error: error.localizedDescription) }
                     else { self?.reply(id, data: ["opened": true]) }
                 }
+            }
+        case "updateClient":
+            guard !installing else { reply(id,error:"Wait for the current installation or update"); return }
+            installing=true
+            let root=directory!, resources=self.resources, current=Bundle.main.object(forInfoDictionaryKey:"CFBundleShortVersionString") as? String ?? "0.0.0"
+            DispatchQueue.global(qos:.userInitiated).async { [weak self] in
+                guard let self else {return}
+                do {
+                    let helper=try ClientUpdater.prepare(current:current,minecraft:root,resources:resources) { message in
+                        DispatchQueue.main.async { self.installStatus=message;self.publish() }
+                    }
+                    DispatchQueue.main.async {
+                        self.installing=false
+                        do {
+                            if let helper {try helper.run();self.reply(id,data:["message":"Update installed · restarting client"]);NSApp.terminate(nil)}
+                            else {self.reply(id,data:["message":"You're up to date · "+current]);self.publish()}
+                        } catch {self.reply(id,error:error.localizedDescription);self.publish()}
+                    }
+                } catch {DispatchQueue.main.async{self.installing=false;self.installStatus=error.localizedDescription;self.reply(id,error:error.localizedDescription);self.publish()}}
             }
         case "getPreferences": reply(id, data: preferences())
         case "getState": reply(id, data: presentedState())
@@ -859,6 +878,10 @@ final class MacApplication: NSObject, NSApplicationDelegate, NSWindowDelegate, W
 @main struct TungTungMain {
     static func main() {
         let app = NSApplication.shared
+        if let index=CommandLine.arguments.firstIndex(of:"--install-core-update"), index+1<CommandLine.arguments.count {
+            do { let result=try FabricInstaller.installUpdate(minecraftDirectory:URL(fileURLWithPath:CommandLine.arguments[index+1]),resources:Bundle.main.resourceURL!);print(result.summary);return }
+            catch {FileHandle.standardError.write(Data((error.localizedDescription+"\n").utf8));exit(1)}
+        }
         if CommandLine.arguments.contains("--apply-microphone-fix") {
             do { print(try VoiceRuntime.apply()); return }
             catch { FileHandle.standardError.write(Data((error.localizedDescription + "\n").utf8)); exit(1) }

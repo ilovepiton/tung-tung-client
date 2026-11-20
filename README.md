@@ -1,16 +1,16 @@
 # Tung Tung Client
 
-Current desktop: **1.35.2** · Minecraft core: **1.35.1** · Minecraft Java **26.3**.
+Current desktop: **1.35.3** · Minecraft core: **1.35.3** · Minecraft Java **26.3**.
 
 1.30.3 adds 20 original keyboard illustrations, 43 distinct Minecraft PNG item icons, large module
 description dialogs and Find Player skin faces. Chess.com, Roblox and Stream
 are visible but locked. Player faces require the 1.30.3 game core.
 
-## Auto Shield Breaker — 1.35.1
+## Auto Shield Breaker — 1.35.3
 
-Arsenal → Auto Shield Breaker: hold a mace and right-click a blocking player once. A hotbar axe attacks once, then the original mace is restored for one follow-up after observed unblock and attack cooldown. No held repeat. Normal left-click stays manual. [Use and limitations](docs/SHIELD-BREAKER.md).
+In Arsenal, hold a mace and right-click a blocking crosshair opponent once. One hotbar axe attack, immediate return to the mace, then stop. No automatic mace attack and no axe selection for non-blocking targets. [Instructions](docs/SHIELD-BREAKER.md).
 
-143 Java tests passed. The new combo has not been tested in a live multiplayer match; Windows runtime remains unverified.
+UPDATE in the header or on module cards checks GitHub Releases and updates the whole package after Minecraft and Launcher are closed. Archives are checksum-verified; replaced app files are backed up. Future-release self-update and Windows runtime remain unverified.
 
 ## Auto Builder — 1.35.0
 

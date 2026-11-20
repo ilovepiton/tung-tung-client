@@ -12,9 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 MAC = ROOT / "macos"
 OUT = ROOT / "build" / "macos"
 DIST = ROOT / "dist"
-APP = DIST / "Tung-Tung-Client-Mac-1.35.2" / "Tung Tung Client.app"
-VERSION = "1.35.2"
-PAYLOAD_VERSION = "1.35.1"
+APP = DIST / "Tung-Tung-Client-Mac-1.35.3" / "Tung Tung Client.app"
+VERSION = "1.35.3"
+PAYLOAD_VERSION = "1.35.3"
 VOICE_RUNTIME_VERSION = "1.12.0"
 VOICE_RUNTIME_BUILD = "1120"
 VOICE_FILE = "voicechat-fabric-2.6.27+26.3.jar"
@@ -38,6 +38,7 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
     resources.mkdir()
     shutil.copytree(MAC / "ui", resources / "ui",
                     ignore=shutil.ignore_patterns("screenshots", "*-report.json", "__pycache__", "*.tmp"))
+    shutil.copy2(MAC / "update-apply.sh", resources / "update-apply.sh")
     (resources / "chess").mkdir()
     for name in ("engine.js", "native.js"):
         shutil.copy2(ROOT / "chess" / name, resources / "chess" / name)

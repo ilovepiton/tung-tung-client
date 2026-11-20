@@ -8,8 +8,8 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.35.2"
-CORE = "1.35.1"
+VERSION = "1.35.3"
+CORE = "1.35.3"
 DEPS = ROOT / ".tools/windows-build"
 STAGE = ROOT / "dist" / f"Tung-Tung-Client-Windows-{VERSION}"
 
@@ -77,9 +77,10 @@ def build(reuse_stage=None):
     for name, source in [("LICENSE.txt", ROOT / "LICENSE"), ("FABRIC-API-LICENSE.txt", ROOT / ".tools/FABRIC-API-LICENSE.txt"), ("SIMPLE-VOICE-CHAT-NOTICE.txt", ROOT / "macos/SIMPLE-VOICE-CHAT-NOTICE.txt"), ("COMPATIBILITY-MODS-NOTICE.txt", ROOT / "packaging/COMPATIBILITY-MODS-NOTICE.txt"), ("CLIENT-MAPS-LICENSE.txt", ROOT / ".tools/map-art/CLIENT-MAPS-LICENSE.txt"), ("MAP-IN-SLOT-LICENSE.txt", ROOT / ".tools/map-art/MAP-IN-SLOT-LICENSE.txt"), ("WEBVIEW2-LICENSE.txt", DEPS / "webview2/LICENSE.txt"), ("NEWTONSOFT-LICENSE.txt", DEPS / "newtonsoft/LICENSE.md")]:
         shutil.copy2(source, STAGE / "licenses" / name)
     (STAGE / "source").mkdir(exist_ok=True)
-    for name in ("Client.cs", "Bridge.cs", "RobloxBridge.cs", "compile.ps1", "build.py"):
+    for name in ("Client.cs", "Bridge.cs", "RobloxBridge.cs", "compile.ps1", "build.py", "ClientUpdater.cs"):
         shutil.copy2(ROOT / "windows" / name, STAGE / "source" / name)
     copy_tree(ROOT / "roblox", STAGE / "roblox", ("tests", "tools", ".tools", "cache", ".cache", "__pycache__", "*.pyc", "*.tmp", "test-output.txt", ".DS_Store"))
+    shutil.copy2(ROOT / "windows/Update-Client.ps1", STAGE / "desktop/Update-Client.ps1")
     payload = STAGE / "payload"
     (payload / "mods").mkdir(parents=True, exist_ok=True)
     for old_core in (payload / "mods").glob("tung-tung-bridge-*.jar"):

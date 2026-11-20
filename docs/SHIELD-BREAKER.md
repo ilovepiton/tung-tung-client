@@ -1,14 +1,15 @@
-# Auto Shield Breaker — 1.35.1
+# Auto Shield Breaker — 1.35.3
 
-1. Open Arsenal → Auto Shield Breaker and enable it. Its toggle key is independently configurable.
-2. Put a mace and a usable axe in your hotbar. Hold the mace.
-3. Aim at an opponent currently blocking with a shield, within normal reach, and click your mouse use button once (right-click by default).
-4. Keep aiming at that opponent. The helper selects the axe and waits for normal attack cooldown before one axe attack, restores your original mace slot, then waits for observed shield release and mace cooldown before one mace attack.
+Open **Arsenal → Auto Shield Breaker** and enable it. Put a mace and a usable axe in your hotbar. Hold the mace, aim at an opponent blocking with a raised shield, and click your mouse use button once (right-click by default).
 
-A held button never repeats the combo. A normal left-click does not start it and cancels a pending combo. Changing the selected hotbar slot, opening a screen, losing focus, detaching the camera, changing sessions, losing the target or an inventory conflict cancels it. The module never turns the camera or searches for another opponent. Listed friends are excluded. The axe is selected only from the hotbar; it does not rearrange inventory.
+The helper selects the axe, waits for a normal attack cooldown, sends **one axe attack**, then immediately restores your original mace slot and finishes. **It does not attack with the mace.** Your next mace hit stays manual. This also applies during a Wind Burst descent; normal reach and visibility still apply.
 
-The mace slot is restored only while still owned by the helper. If you select a different slot, your choice is respected. The combo times out after 60 client ticks, and gives up if the shield stays raised for more than 20 ticks after the axe attack. There are no attack retries. Server shield-disable/attack acceptance is not guaranteed. A lowered shield is an observed state, not proof that an axe broke it.
+No shield means no axe selection. An ordinary left-click does not start the helper; it cancels a pending axe action. Holding use does not repeat. A new physical click is required for each attempt. If the shield lowers before the axe attack, the target leaves the crosshair/reach, you change slots, open a menu, lose focus or change worlds, the action is cancelled. Your manual slot choice is preserved. A usable axe must be in the hotbar; no inventory rearrangement is performed. Listed friends are excluded.
 
-The dedicated helper runs even when the separate Mace PvP module has handled the tick; that bot pauses combat during the manual combo. Combat Bot inventory ownership takes priority. Streamer Mode pauses the helper.
+The helper is a separate Arsenal module, with its own keybind. It is not another control inside the autonomous Mace PvP bot. That bot yields during the pending manual action. Server shield disable and attack acceptance are not guaranteed.
 
-Validation: Java build and 143 JUnit tests passed, including five new combo/gating cases. Windows compiled and Mac universal app signatures verified. No live multiplayer verification of the new combo has been completed.
+## Update
+
+**UPDATE** in the top bar or on any module card updates the whole desktop/core package from `ilovepiton/tung-tung-client` GitHub Releases. Modules are bundled, so they do not have separate version downloads. Close Minecraft and Launcher first. The updater checks the release version, verifies the matching SHA256 archive, prepares the new core, backs up replaced application files and restarts the desktop app. It never force-closes Minecraft. Existing downloaded/verified archives can be reused on retry. Backups and update logs are in the platform's TungTungClient application-data Updates folder.
+
+Windows runtime and a future-release end-to-end self-update are not yet verified. Automated core and updater contract checks are separate from live gameplay validation.
