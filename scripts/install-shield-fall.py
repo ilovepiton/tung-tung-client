@@ -37,6 +37,12 @@ def blockers():
             result.append({"pid":int(pid),"executable":executable})
     filtered=[]
     for entry in result:
+        # This updater writes only the existing profile's core JAR and desktop app
+        # Contents. It never writes Launcher profiles, versions or account metadata.
+        # A dormant Launcher therefore is not a file writer for these targets.
+        executable=entry["executable"].lower()
+        if "/minecraft.app/contents/macos/launcher" in executable or "/minecraft/launcher/launcher.bundle/" in executable:
+            continue
         command=subprocess.check_output(["ps","-p",str(entry["pid"]),"-o","args="],text=True).strip()
         if "org.gradle.launcher.daemon.bootstrap.GradleDaemon" in command or "GradleWorkerMain" in command:
             continue
