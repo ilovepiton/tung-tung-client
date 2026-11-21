@@ -1,8 +1,8 @@
-# Auto Shield Breaker — 1.35.3
+# Auto Shield Breaker — 1.35.4
 
 Open **Arsenal → Auto Shield Breaker** and enable it. Put a mace and a usable axe in your hotbar. Hold the mace, aim at an opponent blocking with a raised shield, and click your mouse use button once (right-click by default).
 
-The helper selects the axe, waits for a normal attack cooldown, sends **one axe attack**, then immediately restores your original mace slot and finishes. **It does not attack with the mace.** Your next mace hit stays manual. This also applies during a Wind Burst descent; normal reach and visibility still apply.
+The helper selects the axe and immediately sends **one axe attack**, then immediately restores your original mace slot and finishes. **It does not attack with the mace.** Your next mace hit stays manual. This also applies during a Wind Burst descent; normal reach and visibility still apply.
 
 No shield means no axe selection. An ordinary left-click does not start the helper; it cancels a pending axe action. Holding use does not repeat. A new physical click is required for each attempt. If the shield lowers before the axe attack, the target leaves the crosshair/reach, you change slots, open a menu, lose focus or change worlds, the action is cancelled. Your manual slot choice is preserved. A usable axe must be in the hotbar; no inventory rearrangement is performed. Listed friends are excluded.
 

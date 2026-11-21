@@ -1,3 +1,10 @@
+## 1.35.4 — Shield Breaker during descent
+
+- Process a shielded-target use-click immediately instead of swapping to an axe and waiting for a full cooldown while falling out of reach.
+- One normal axe attack, immediate local and server slot restoration. No auto-mace hit or held repeat. Server cooldown/damage and reach remain authoritative.
+- Status explains disabled mode, left-click, missing axe, non-blocking target and unavailable reach.
+- 12 checks execute the production mouse handler against a fake client, including zero attack charge, exact action order, no shield/left-click/held repeat and restoration on exception. No live-server success is claimed.
+
 ## 1.35.3 — Single shield hit and client updates
 
 - Shield Breaker: one axe attack and immediate mace restoration. No automatic mace follow-up. Ordinary attacks and unshielded targets do not trigger it.

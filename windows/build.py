@@ -8,8 +8,8 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.35.3"
-CORE = "1.35.3"
+VERSION = "1.35.4"
+CORE = "1.35.4"
 DEPS = ROOT / ".tools/windows-build"
 STAGE = ROOT / "dist" / f"Tung-Tung-Client-Windows-{VERSION}"
 
