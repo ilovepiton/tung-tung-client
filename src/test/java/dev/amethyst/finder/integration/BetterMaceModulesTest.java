@@ -9,6 +9,10 @@ class BetterMaceModulesTest {
   assertEquals(19,BetterMaceModules.FEATURES.size());
   for(var feature:BetterMaceModules.FEATURES)for(String key:feature.settings())assertTrue(BetterMaceModules.OPTIONS.containsKey(key),key);
  }
+ @Test void originalAutomaticAimIsNotReplaced(){
+  assertFalse(BetterMaceModules.handles("aim_cursor"));assertFalse(BetterMaceModules.replaces("aim_cursor"));
+  assertNotNull(BetterMaceModules.find("bms_aim_assist"));
+ }
  @Test void writesRealNativeFieldsAndEnums() throws Exception {
   Object cfg=config();
   BetterMaceModules.applySetting(cfg,"breachSwapBackTicks",new JsonPrimitive(5));

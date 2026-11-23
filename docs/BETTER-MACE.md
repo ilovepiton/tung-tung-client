@@ -1,4 +1,4 @@
-# BetterMaceSwap in Arsenal — 1.36.0
+# BetterMaceSwap in Arsenal — 1.36.2
 
 The original BetterMaceSwap 5.0.0 for Minecraft 26.3 is bundled with Cloth Config 26.3.159 and Mod Menu 21.0.1. Pinned URLs and SHA-256 hashes: `packaging/better-mace-mods.json`.
 
@@ -7,7 +7,7 @@ The original BetterMaceSwap 5.0.0 for Minecraft 26.3 is bundled with Cloth Confi
 3. Open **Arsenal → BETTER MACE** (button at the top), choose a module and use its switch or settings gear.
 4. Assign a separate keybind on each module page. Native BetterMaceSwap default hotkeys are unbound in this managed profile to avoid duplicate commands.
 
-Existing Aim Assist, TriggerBot and Shield Breaker cards now control BetterMaceSwap. Shield Breaker is named **Auto Stun Slam** because the original mod uses an axe/mace/sword sequence; this differs from Tung Tung’s former right-click axe-only helper. Shared Players/Mobs filters are native BetterMaceSwap filters. Tung Tung friend/damage filters do not apply to the original mod.
+Automatic Aim keeps the original Tung Tung implementation, its range, filters and keybind. BetterMace Aim Assist is a separate module; the two aim helpers cannot run together. TriggerBot and Shield Breaker cards control BetterMaceSwap. Shield Breaker is named **Auto Stun Slam** because the original mod uses an axe/mace/sword sequence; this differs from Tung Tung’s former right-click axe-only helper. Shared Players/Mobs filters are native BetterMaceSwap filters. Tung Tung friend/damage filters do not apply to the original mod.
 
 Every native feature starts off on first managed adoption. Gear Up has three separate cards: arrange your inventory, click **Record Kit**, then use **Equip Kit** or its assigned gameplay key. Recording overwrites that kit’s saved arrangement. Arm Elytra Boost is a one-shot action and requires Elytra Boost enabled.
 

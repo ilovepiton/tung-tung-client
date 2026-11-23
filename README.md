@@ -1,6 +1,6 @@
-## BetterMaceSwap — 1.36.0
+## BetterMaceSwap — 1.36.2
 
-Original BetterMaceSwap 5.0.0 for Minecraft 26.3 is bundled in Mac and Windows downloads. **Arsenal** has separate switches, native settings, keybinds, three Gear Up kits and an Elytra Boost action. Aim Assist, TriggerBot and Shield Breaker now use the original mod; Shield Breaker is named **Auto Stun Slam**. See [setup and behavior](docs/BETTER-MACE.md).
+Original BetterMaceSwap 5.0.0 for Minecraft 26.3 is bundled in Mac and Windows downloads. **Arsenal** has separate switches, native settings, keybinds, three Gear Up kits and an Elytra Boost action. Automatic Aim keeps the original Tung Tung implementation. BetterMace Aim Assist is separate; TriggerBot and Shield Breaker use the original mod; Shield Breaker is named **Auto Stun Slam**. See [setup and behavior](docs/BETTER-MACE.md).
 
 # Tung Tung Client
 

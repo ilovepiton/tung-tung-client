@@ -22,7 +22,7 @@ public final class BetterMaceModules {
   f("bms_lunge_swap","Lunge Swap","lungeSwapEnabled","BetterMaceSwap's spear/lunge swap and return.","lungeSwapDelay"),
   f("bms_pearl_catch","Pearl Catch","pearlCatchEnabled","Original pearl throw and wind-charge catch sequence.","pearlCatchDelayTicks","pearlCatchAngle","pearlCatchReturnAngle","pearlReturnAngle","pearlReturnMode"),
   f("bms_experimental_pearl","Experimental Pearl Timing","experimentalPearlCatch","Experimental flight-timing mode. Also enable Pearl Catch."),
-  f("aim_cursor","Aim Assist","aimAssistEnabled","BetterMaceSwap target tracking with its native Players/Mobs filters, distance, speed and target bone.","aimSpeed","aimIntensity","aimBone","aimMode","aimTargetPlayers","aimTargetMobs"),
+  f("bms_aim_assist","BetterMace Aim Assist","aimAssistEnabled","BetterMaceSwap target tracking with its native Players/Mobs filters, distance, speed and target bone.","aimSpeed","aimIntensity","aimBone","aimMode","aimTargetPlayers","aimTargetMobs"),
   f("trigger_bot","TriggerBot","triggerBotEnabled","BetterMaceSwap's crosshair attack while falling.","aimIntensity","combatTargetPlayers","combatTargetMobs"),
   f("bms_auto_chestplate","Auto Chestplate","autoChestplateOnTrigger","Original close-target elytra/chestplate swap and return.","aimTargetPlayers","aimTargetMobs"),
   f("bms_wind_charge","Right-Click Wind Charge","windOnRightClickEnabled","Original weapon right-click wind-charge use from the hotbar."),
@@ -56,7 +56,7 @@ public final class BetterMaceModules {
  private BetterMaceModules(){}
  public static Feature find(String id){return FEATURES.stream().filter(f->f.id.equals(id)).findFirst().orElse(null);}
  public static boolean handles(String id){return find(id)!=null;}
- public static boolean replaces(String id){return Set.of("auto_shield_breaker","aim_cursor","trigger_bot").contains(id);}
+ public static boolean replaces(String id){return Set.of("auto_shield_breaker","trigger_bot").contains(id);}
  public static boolean action(String id){var f=find(id);return f!=null&&f.field.startsWith("@");}
  public static boolean available(){return FabricLoader.getInstance().getModContainer("bettermaceswap").map(m->m.getMetadata().getVersion().getFriendlyString().equals("5.0.0+mc26.3")).orElse(false);}
  private static Object config() throws ReflectiveOperationException {
@@ -90,9 +90,10 @@ public final class BetterMaceModules {
    Object cfg=config();if(!initialized){validateSchema(cfg);initialized=true;}
    if(!ChunkFinderClient.CONFIG.betterMaceManaged){
     for(Feature f:FEATURES)if(!f.field.startsWith("@"))cfg.getClass().getField(f.field).setBoolean(cfg,false);
-    for(String id:List.of("auto_shield_breaker","aim_cursor","trigger_bot"))ChunkFinderClient.CONFIG.setModuleEnabled(id,false);
+    for(String id:List.of("auto_shield_breaker","trigger_bot"))ChunkFinderClient.CONFIG.setModuleEnabled(id,false);
     ChunkFinderClient.CONFIG.betterMaceManaged=true;save(cfg);ChunkFinderClient.CONFIG.save();
    }
+   if(ChunkFinderClient.CONFIG.isModuleEnabled("aim_cursor")&&cfgBoolean(cfg,"aimAssistEnabled")){cfg.getClass().getField("aimAssistEnabled").setBoolean(cfg,false);save(cfg);}
    if(!keysUnbound){
     for(Field field:Class.forName("com.ritesh.keybind.KeyBindings").getFields())if(field.getType()==KeyMapping.class&&field.get(null) instanceof KeyMapping mapping)mapping.setKey(InputConstants.UNKNOWN);
     KeyMapping.resetMapping();keysUnbound=true;
@@ -108,6 +109,7 @@ public final class BetterMaceModules {
   try{
    Object cfg=config();validateSchema(cfg);
    if(f.field.startsWith("@")){if(value)run(client,id,"run");return;}
+   if(value&&id.equals("bms_aim_assist")&&ChunkFinderClient.CONFIG.isModuleEnabled("aim_cursor"))throw new IllegalStateException("Turn Automatic Aim off before enabling the separate BetterMace aim helper");
    if(value&&(id.equals("bms_experimental_pearl")&&!cfgBoolean(cfg,"pearlCatchEnabled")))throw new IllegalArgumentException("Enable Pearl Catch first");
    if(value&&ChunkFinderClient.MACE!=null&&ChunkFinderClient.MACE.enabled())ChunkFinderClient.MACE.setEnabled(client,false);
    if(value&&ChunkFinderClient.BOT!=null&&ChunkFinderClient.BOT.enabled())ChunkFinderClient.BOT.setEnabled(client,false);

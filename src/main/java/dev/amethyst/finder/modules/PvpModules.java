@@ -135,7 +135,7 @@ public final class PvpModules {
         if (client.player.isUsingItem() || client.options.keyUse.isDown()) {
             restoreWeapon(client); setCombatPause("Paused: manual item use"); return;
         }
-        if (!dev.amethyst.finder.integration.BetterMaceModules.replaces("aim_cursor") && config.isModuleEnabled("aim_cursor")) {
+        if (config.isModuleEnabled("aim_cursor")) {
             if (config.isModuleEnabled("auto_kill_steal") && playerTarget(client, true) != null) states.put("aim_cursor", "Paused: Auto Kill Steal owns target aim");
             else run("aim_cursor", () -> tickAim(client));
         }

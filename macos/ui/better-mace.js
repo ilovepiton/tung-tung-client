@@ -84,8 +84,8 @@ const BETTER_MACE_FEATURES = [
   "controlType": "toggle"
  },
  {
-  "id": "aim_cursor",
-  "name": "Aim Assist",
+  "id": "bms_aim_assist",
+  "name": "BetterMace Aim Assist",
   "field": "aimAssistEnabled",
   "note": "BetterMaceSwap target tracking with its native Players/Mobs filters, distance, speed and target bone.",
   "settings": [
