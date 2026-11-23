@@ -1,4 +1,4 @@
-# BetterMaceSwap in Arsenal — 1.36.2
+# BetterMaceSwap in Arsenal — 1.36.3
 
 The original BetterMaceSwap 5.0.0 for Minecraft 26.3 is bundled with Cloth Config 26.3.159 and Mod Menu 21.0.1. Pinned URLs and SHA-256 hashes: `packaging/better-mace-mods.json`.
 
@@ -16,3 +16,9 @@ Settings and switches write the original mod configuration, not simulated UI sta
 Development: run `python3 scripts/fetch-better-mace.py` before Gradle/platform builds. The adapter is reflective; required mod JARs remain separate in the installed mods folder. Source licenses and attribution are in `packaging/BETTER-MACE-NOTICE.txt`.
 
 Validation: production core build, tests against the actual downloaded ModConfig class, desktop rendering/control checks and installer fixture checks. Live PvP behavior depends on inventory, native trigger settings and the server; automated tests do not establish live-server success.
+
+## Shield Breaker / Auto Stun Slam
+
+Enable Auto Stun Slam in Arsenal, put a usable **axe** and your **mace** in the hotbar, hold the mace and right-click a visibly blocking opponent once at normal axe reach. That gesture sends one axe attack and queues the native mace follow-up. Holding RMB cannot repeat it; release before the next click. The same gesture does not also run the native wind-charge helper.
+
+The upstream left-click trigger remains available. Its axe lookup is corrected to exclude pickaxes and unusable axes. Players targeting must be enabled. Request counters and unmet conditions are shown in the card status; a sent attack does not establish that the server accepted shield damage. Auto Aim is unchanged.

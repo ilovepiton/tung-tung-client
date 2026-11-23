@@ -27,9 +27,10 @@ public final class ShieldBreaker {
     public boolean busy(){return acting;}
     public boolean reserves(int slot){return acting&&(slot==ownedMace||slot==ownedAxe);}
     public boolean interceptUse(){return gestureOwned||acting;}
-    public String status(){return config.isModuleEnabled(ID)?status:"Disabled · turn on Auto Shield Breaker in Arsenal";}
+    private boolean enabled(){return dev.amethyst.finder.integration.BetterMaceModules.replaces(ID)?dev.amethyst.finder.integration.BetterMaceModules.enabled(ID):config.isModuleEnabled(ID);}
+    public String status(){return enabled()?status:"Disabled · turn on Auto Shield Breaker in Arsenal";}
     private String unavailable(Minecraft c){
-        if(!config.isModuleEnabled(ID))return "Disabled · turn on Auto Shield Breaker in Arsenal";
+        if(!enabled())return "Disabled · turn on Auto Shield Breaker in Arsenal";
         if(config.streamerMode)return "Paused: Streamer Mode";
         if(c.player==null||c.level==null||c.getConnection()==null||c.gameMode==null)return "Join a world first";
         if(!c.player.isAlive()||c.player.isSpectator())return "Paused: player unavailable";
@@ -44,9 +45,8 @@ public final class ShieldBreaker {
         return null;
     }
     public void mouse(Minecraft c,int button,int action){
-        if(dev.amethyst.finder.integration.BetterMaceModules.replaces(ID))return;
         if(!c.options.keyUse.matches(InputConstants.Type.MOUSE.getOrCreate(button))){
-            if(action==1&&config.isModuleEnabled(ID)&&c.options.keyAttack.matches(InputConstants.Type.MOUSE.getOrCreate(button)))status="Left-click is manual · use right-click with your mace against a raised shield";
+            if(action==1&&enabled()&&c.options.keyAttack.matches(InputConstants.Type.MOUSE.getOrCreate(button)))status=dev.amethyst.finder.integration.BetterMaceModules.replaces(ID)?"Native attack trigger · right-click with a mace also starts Stun Slam":"Left-click is manual · use right-click with your mace against a raised shield";
             return;
         }
         if(action==0){clicks.mouse(0,false);gestureOwned=false;return;}
@@ -76,9 +76,11 @@ public final class ShieldBreaker {
             if(ticket.claimAttack(true)){
                 // Vanilla synchronizes the axe slot before the attack packet. Do not wait for a
                 // post-swap cooldown here: during descent that would discard the click/target.
-                c.gameMode.attack(self,enemy);
-                self.swing(InteractionHand.MAIN_HAND,self.getMainHandItem().getAttackAnimation(),false);
-                requests++;status="Axe attack #"+requests+" sent · mace restored · next hit is yours";
+                Runnable attack=()->{c.gameMode.attack(self,enemy);self.swing(InteractionHand.MAIN_HAND,self.getMainHandItem().getAttackAnimation(),false);};
+                if(dev.amethyst.finder.integration.BetterMaceModules.replaces(ID)){
+                    dev.amethyst.finder.integration.BetterMaceModules.manualStun(c,enemy,original,attack);
+                    requests++;status="Right-click #"+requests+" · axe sent · native mace follow-up queued";
+                }else{attack.run();requests++;status="Axe attack #"+requests+" sent · mace restored · next hit is yours";}
             }
         }catch(RuntimeException|LinkageError error){status="Axe request failed · "+error.getClass().getSimpleName();}
         finally{
@@ -93,7 +95,7 @@ public final class ShieldBreaker {
         }
     }
     public void tick(Minecraft c){
-        if(c.player==null||c.level==null||c.gui.screen()!=null||!c.isWindowActive()||!config.isModuleEnabled(ID)){
+        if(c.player==null||c.level==null||c.gui.screen()!=null||!c.isWindowActive()||!enabled()){
             clicks.reset();gestureOwned=false;
         }
     }

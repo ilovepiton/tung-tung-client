@@ -12,9 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 MAC = ROOT / "macos"
 OUT = ROOT / "build" / "macos"
 DIST = ROOT / "dist"
-APP = DIST / "Tung-Tung-Client-Mac-1.36.2" / "Tung Tung Client.app"
-VERSION = "1.36.2"
-PAYLOAD_VERSION = "1.36.2"
+APP = DIST / "Tung-Tung-Client-Mac-1.36.3" / "Tung Tung Client.app"
+VERSION = "1.36.3"
+PAYLOAD_VERSION = "1.36.3"
 VOICE_RUNTIME_VERSION = "1.12.0"
 VOICE_RUNTIME_BUILD = "1120"
 VOICE_FILE = "voicechat-fabric-2.6.27+26.3.jar"
@@ -105,7 +105,7 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
         "CFBundleName": "Tung Tung Client", "CFBundleDisplayName": "Tung Tung Client",
         "CFBundleIdentifier": "dev.tungtung.client", "CFBundleExecutable": "TungTungClient",
         "CFBundlePackageType": "APPL", "CFBundleShortVersionString": VERSION,
-        "CFBundleVersion": "1362", "LSMinimumSystemVersion": "13.0",
+        "CFBundleVersion": "1363", "LSMinimumSystemVersion": "13.0",
         "NSHighResolutionCapable": True, "NSPrincipalClass": "NSApplication",
         "NSMicrophoneUsageDescription": "Simple Voice Chat in Tung Tung Minecraft needs your microphone so other players can hear you.",
         "NSAppTransportSecurity": {"NSAllowsLocalNetworking": True},
@@ -121,7 +121,7 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
         binaries = []
         for architecture in ("arm64", "x86_64"):
             binary = OUT / f"TungTungClient-{architecture}"
-            run(["xcrun", "swiftc", "-swift-version", "5", "-O", "-sdk", sdk,
+            run(["xcrun", "swiftc", "-swift-version", "5", "-O", "-whole-module-optimization", "-sdk", sdk,
                  "-target", f"{architecture}-apple-macos13.0", "-framework", "Cocoa", "-framework", "WebKit",
                  *sources, "-o", binary])
             binaries.append(binary)
@@ -143,7 +143,7 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
             for architecture in ("arm64", "x86_64"):
                 part = OUT / f"voice-{kind}-{architecture}"
                 flags = ["-D", "VOICE_HOST"] if kind == "host" else []
-                run(["xcrun", "swiftc", "-parse-as-library", "-swift-version", "5", "-O", "-sdk", sdk,
+                run(["xcrun", "swiftc", "-parse-as-library", "-swift-version", "5", "-O", "-whole-module-optimization", "-sdk", sdk,
                      "-target", f"{architecture}-apple-macos13.0", "-framework", "Cocoa", "-framework", "AVFoundation",
                      *flags, runtime_source, "-o", part])
                 parts.append(part)

@@ -171,6 +171,7 @@ public final class PvpModules {
                 || config.isModuleEnabled("auto_punch") || config.isModuleEnabled("auto_kill_steal")
                 || (ChunkFinderClient.MODULES != null && ChunkFinderClient.MODULES.totemSwapPending());
     }
+    public String shieldBreakerStatus(){return shieldBreaker.status();}
     public void tickShieldBreaker(Minecraft client) { shieldBreaker.tick(client); }
     public boolean shieldBreakerBusy() { return shieldBreaker.busy(); }
     public boolean interceptShieldUse() { return shieldBreaker.interceptUse(); }

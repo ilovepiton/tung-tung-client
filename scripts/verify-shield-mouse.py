@@ -6,6 +6,11 @@ def put(name,text):
  p=S/(name.replace('.','/')+'.java');p.parent.mkdir(parents=True,exist_ok=True);package=name.rsplit('.',1)[0];p.write_text('package '+package+';\n'+text)
 put('com.mojang.blaze3d.platform.InputConstants','public class InputConstants {public enum Type {MOUSE;public int getOrCreate(int n){return n;}}}')
 put('dev.amethyst.finder.FinderConfig','public class FinderConfig {public boolean on=true,streamerMode;public boolean isModuleEnabled(String id){return on;}}')
+put('dev.amethyst.finder.integration.BetterMaceModules','''public class BetterMaceModules {
+public static boolean nativeProvider=false,on=true;
+public static boolean replaces(String id){return nativeProvider;}public static boolean enabled(String id){return on;}
+public static void manualStun(net.minecraft.client.Minecraft c,net.minecraft.world.entity.player.Player p,int slot,Runnable attack){attack.run();net.minecraft.client.Minecraft.events.add("native-queued:"+slot);}
+}''')
 put('dev.amethyst.finder.Friends','public class Friends {public static boolean listed(FinderConfig c,net.minecraft.world.entity.player.Player p){return p.friend;}}')
 put('dev.amethyst.finder.ChunkFinderClient','''public class ChunkFinderClient {
 public static Gate MODULES=new Gate(),BOT=new Gate(),MACE=new Gate(),PVP=new Gate(),HARD_CRYSTAL=new Gate();
@@ -53,6 +58,14 @@ c=setup();s=new ShieldBreaker(new FinderConfig());c.player.inv.items[5]=new net.
 c=setup();var disabled=new FinderConfig();disabled.on=false;s=new ShieldBreaker(disabled);s.mouse(c,1,1);check(Minecraft.events.isEmpty()&&s.status().contains("Disabled"),"disabled module never acts");
 c=setup();s=new ShieldBreaker(new FinderConfig());c.gameMode.fail=true;s.mouse(c,1,1);check(c.player.inv.slot==2&&!s.busy(),"attack exception still restores mace and releases ownership");
 check(Minecraft.events.stream().noneMatch(e->e.equals("attack:mace")),"no automatic mace follow-up");
+dev.amethyst.finder.integration.BetterMaceModules.nativeProvider=true;
+c=setup();var nativeConfig=new FinderConfig();nativeConfig.on=false;s=new ShieldBreaker(nativeConfig);s.mouse(c,1,1);
+check(Minecraft.events.equals(java.util.List.of("select:5","attack:axe","swing:axe","native-queued:2","select:2","restore-packet:2")),"native provider enabled must dispatch RMB even when legacy flag is false");
+s.mouse(c,1,1);check(Minecraft.events.stream().filter(e->e.startsWith("native-queued:")).count()==1,"native held RMB cannot queue a second combo");
+s.mouse(c,1,0);s.mouse(c,1,1);check(Minecraft.events.stream().filter(e->e.startsWith("native-queued:")).count()==2,"native new RMB starts one new combo");
+c=setup();c.player.inv.items[0]=new net.minecraft.world.item.ItemStack("pickaxe");s=new ShieldBreaker(nativeConfig);s.mouse(c,1,1);check(Minecraft.events.contains("select:5")&&!Minecraft.events.contains("select:0"),"pickaxe cannot be chosen instead of an axe");
+c=setup();((Player)((EntityHitResult)c.hitResult).getEntity()).blocking=false;s=new ShieldBreaker(nativeConfig);s.mouse(c,1,1);check(Minecraft.events.isEmpty(),"native unshielded target does not trigger on RMB");
+c=setup();dev.amethyst.finder.integration.BetterMaceModules.on=false;s=new ShieldBreaker(nativeConfig);s.mouse(c,1,1);check(Minecraft.events.isEmpty(),"native disabled toggle blocks RMB regardless of provider presence");
 System.out.println("PASS: "+checks+" production mouse-handler checks on fake client; no live server claim");
 }}
 ''')
@@ -60,4 +73,4 @@ java=Path.home()/'Library/Application Support/minecraft/runtime/java-runtime-eps
 files=[str(p) for p in S.rglob('*.java')]+[str(R/'src/main/java/dev/amethyst/finder/core/ClickActionGate.java'),str(R/'src/main/java/dev/amethyst/finder/modules/pvp/ShieldBreaker.java')]
 subprocess.run([str(java/'javac'),'-d',str(W/'classes'),*files],check=True)
 subprocess.run([str(java/'java'),'-ea','-cp',str(W/'classes'),'qa.ShieldMouseChecks'],check=True)
-out=R/'artifacts/shield-fall-1.35.4';out.mkdir(exist_ok=True);(out/'mouse-checks.json').write_text(json.dumps({'passed':True,'checks':12,'productionHandler':True,'fakeClient':True,'liveServerTested':False},indent=2)+'\n')
+out=R/'artifacts/shield-input-1.36.3';out.mkdir(exist_ok=True);(out/'mouse-checks.json').write_text(json.dumps({'passed':True,'checks':18,'productionHandler':True,'fakeClient':True,'liveServerTested':False},indent=2)+'\n')

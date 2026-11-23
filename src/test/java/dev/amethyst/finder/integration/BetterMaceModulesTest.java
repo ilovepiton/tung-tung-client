@@ -13,6 +13,11 @@ class BetterMaceModulesTest {
   assertFalse(BetterMaceModules.handles("aim_cursor"));assertFalse(BetterMaceModules.replaces("aim_cursor"));
   assertNotNull(BetterMaceModules.find("bms_aim_assist"));
  }
+ @Test void nativeStunQueueAndRecursionGuardExistInPinnedJar() throws Exception {
+  Class<?> slam=Class.forName("com.ritesh.feature.StunSlam",false,getClass().getClassLoader());
+  assertNotNull(slam.getMethod("queueMaceSlam",net.minecraft.world.entity.Entity.class,int.class,int.class,int.class));
+  assertNotNull(slam.getMethod("setInSlamCombo",boolean.class));
+ }
  @Test void writesRealNativeFieldsAndEnums() throws Exception {
   Object cfg=config();
   BetterMaceModules.applySetting(cfg,"breachSwapBackTicks",new JsonPrimitive(5));

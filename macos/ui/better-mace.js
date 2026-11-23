@@ -32,7 +32,7 @@ const BETTER_MACE_FEATURES = [
   "id": "auto_shield_breaker",
   "name": "Auto Stun Slam",
   "field": "autoStunSlamEnabled",
-  "note": "BetterMaceSwap's original shield combo: axe stun, mace follow-up and sword finish. Uses its own weapon/attack trigger settings; replaces the old Shield Breaker.",
+  "note": "Right-click once with a mace at a blocking player: usable hotbar axe hit, then the native mace follow-up. Native left-click triggers also remain available. Holding right-click does not repeat.",
   "settings": [
    "stunSlamTriggerMode",
    "stunSlamReturnSlot",

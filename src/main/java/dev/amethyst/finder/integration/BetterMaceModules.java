@@ -18,7 +18,7 @@ public final class BetterMaceModules {
  public static final List<Feature> FEATURES=List.of(
   f("bms_attribute_swap","Attribute Swap","autoBreachSwapEnabled","BetterMaceSwap: swap from a sword/axe hit to the selected mace, then restore the original slot.","breachSwapBackTicks","breachSwapTriggerMode","maceMode","attributeSwapMode","combatTargetPlayers","combatTargetMobs"),
   f("bms_smart_switch","Smart Mace Switch","smartSwitchEnabled","BetterMaceSwap chooses Density while falling and Breach on the ground.","maceMode"),
-  f("auto_shield_breaker","Auto Stun Slam","autoStunSlamEnabled","BetterMaceSwap's original shield combo: axe stun, mace follow-up and sword finish. Uses its own weapon/attack trigger settings; replaces the old Shield Breaker.","stunSlamTriggerMode","stunSlamReturnSlot","stunSlamMode","noMaceAxeHitDelay","combatTargetPlayers","combatTargetMobs"),
+  f("auto_shield_breaker","Auto Stun Slam","autoStunSlamEnabled","Right-click once with a mace at a blocking player: usable hotbar axe hit, then the native mace follow-up. Native left-click triggers also remain available. Holding right-click does not repeat.","stunSlamTriggerMode","stunSlamReturnSlot","stunSlamMode","noMaceAxeHitDelay","combatTargetPlayers","combatTargetMobs"),
   f("bms_lunge_swap","Lunge Swap","lungeSwapEnabled","BetterMaceSwap's spear/lunge swap and return.","lungeSwapDelay"),
   f("bms_pearl_catch","Pearl Catch","pearlCatchEnabled","Original pearl throw and wind-charge catch sequence.","pearlCatchDelayTicks","pearlCatchAngle","pearlCatchReturnAngle","pearlReturnAngle","pearlReturnMode"),
   f("bms_experimental_pearl","Experimental Pearl Timing","experimentalPearlCatch","Experimental flight-timing mode. Also enable Pearl Catch."),
@@ -138,8 +138,28 @@ public final class BetterMaceModules {
    }else throw new IllegalArgumentException("Choose an existing BetterMaceSwap action");
   }catch(ReflectiveOperationException e){throw new IllegalStateException("Cannot run BetterMaceSwap action",e);}
  }
+ /** Native combo from one physical use gesture; handler supplies the verified axe and original mace slot. */
+ public static void manualStun(Minecraft client,net.minecraft.world.entity.player.Player target,int maceSlot,Runnable axeAttack){
+  if(!enabled("auto_shield_breaker"))throw new IllegalStateException("Enable Auto Stun Slam first");
+  try{
+   if(!cfgBoolean(config(),"combatTargetPlayers"))throw new IllegalStateException("BetterMace target players is off");
+   Class<?> slam=Class.forName("com.ritesh.feature.StunSlam");
+   var guard=slam.getMethod("setInSlamCombo",boolean.class);
+   guard.invoke(null,true);try{axeAttack.run();}finally{guard.invoke(null,false);}
+   Object mode=config().getClass().getField("stunSlamMode").get(config());
+   int delay=((Enum<?>)mode).name().equals("SAFE")?1:0;
+   slam.getMethod("queueMaceSlam",net.minecraft.world.entity.Entity.class,int.class,int.class,int.class).invoke(null,target,maceSlot,maceSlot,delay);
+  }catch(ReflectiveOperationException e){throw new IllegalStateException("Native Stun Slam could not be queued",e);}
+ }
+ /** Upstream's substring search also matches pickaxes. Only real usable axes may break a shield. */
+ public static int usableAxe(net.minecraft.world.entity.player.Player player){
+  for(int slot=0;slot<9;slot++){
+   var item=player.getInventory().getItem(slot);
+   if(item.is(net.minecraft.tags.ItemTags.AXES)&&!item.isEmpty()&&(!item.isDamageableItem()||item.getDamageValue()<item.getMaxDamage()-1))return slot;
+  }return -1;
+ }
  public static boolean inventoryBusy(){try{return available()&&(boolean)Class.forName("com.ritesh.feature.GearUp").getMethod("isRunning").invoke(null);}catch(ReflectiveOperationException|RuntimeException e){return false;}}
- public static String status(String id){if(!available())return "Install BetterMaceSwap 5.0.0 for 26.3";if(!error.isEmpty())return error;if(action(id))return id.equals("bms_elytra_arm")?"Arm one boost · enable Elytra Boost first":"Record or equip this kit in settings";return enabled(id)?"BetterMaceSwap 5.0.0 · ON":"BetterMaceSwap 5.0.0 · OFF";}
+ public static String status(String id){if(!available())return "Install BetterMaceSwap 5.0.0 for 26.3";if(!error.isEmpty())return error;if(action(id))return id.equals("bms_elytra_arm")?"Arm one boost · enable Elytra Boost first":"Record or equip this kit in settings";if(id.equals("auto_shield_breaker")&&enabled(id))return ChunkFinderClient.PVP.shieldBreakerStatus();return enabled(id)?"BetterMaceSwap 5.0.0 · ON":"BetterMaceSwap 5.0.0 · OFF";}
  public static Map<String,Object> state(){
   var result=new LinkedHashMap<String,Object>();result.put("installed",available());result.put("version","5.0.0+mc26.3");result.put("error",error);
   var features=new ArrayList<Map<String,Object>>();for(Feature f:FEATURES)features.add(Map.of("id",f.id,"name",f.name,"action",action(f.id),"settings",f.settings));result.put("features",features);
