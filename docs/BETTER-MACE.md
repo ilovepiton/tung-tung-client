@@ -4,7 +4,7 @@ The original BetterMaceSwap 5.0.0 for Minecraft 26.3 is bundled with Cloth Confi
 
 1. Install/update Tung Tung Client and its Fabric Core with Minecraft closed.
 2. Start **Tung Tung Client 26.3** in Minecraft Launcher and join your world.
-3. Open **Arsenal**, choose a module and use its switch or settings gear.
+3. Open **Arsenal → BETTER MACE** (button at the top), choose a module and use its switch or settings gear.
 4. Assign a separate keybind on each module page. Native BetterMaceSwap default hotkeys are unbound in this managed profile to avoid duplicate commands.
 
 Existing Aim Assist, TriggerBot and Shield Breaker cards now control BetterMaceSwap. Shield Breaker is named **Auto Stun Slam** because the original mod uses an axe/mace/sword sequence; this differs from Tung Tung’s former right-click axe-only helper. Shared Players/Mobs filters are native BetterMaceSwap filters. Tung Tung friend/damage filters do not apply to the original mod.

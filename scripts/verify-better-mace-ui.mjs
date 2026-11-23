@@ -8,3 +8,9 @@ for(const f of features){ctx.m={...f,known:true,enabled:false};const html=vm.run
 ctx.m={...features.find(f=>f.id==='aim_cursor'),known:true};const html=vm.runInContext('betterMacePage(m)',ctx);for(const key of ['aimMode','aimSpeed','aimTargetMobs'])assert.ok(html.includes(`data-bms-field="${key}"`));assert.match(html,/value="ALWAYS" selected/);assert.doesNotMatch(html,/<input type="checkbox"[^>]*checked/);
 ctx.connectionState.betterMace.ready=false;assert.match(vm.runInContext('betterMacePage(m)',ctx),/data-toggle-module="aim_cursor"[^>]*disabled/);
 console.log('PASS: 19 unique cards, real setting controls, action buttons, keybinds, disconnected locking');
+const client=fs.readFileSync('macos/ui/client.js','utf8');
+Object.assign(ctx,{page:'pvp',arsenalProvider:'better-mace',query:'',category:'All modules',scrollRow:0,connected:()=>false,icon:()=>'',moduleCard:m=>`<article data-id="${m.id}">${m.name}</article>`});
+vm.runInContext('function modules(){return MODULES;}'+client.slice(client.indexOf('function moduleMatchesSearch('),client.indexOf('function liveFindings(')),ctx);
+let group=vm.runInContext('modulePage()',ctx);assert.match(group,/BetterMaceSwap/);assert.match(group,/19 MODULES/);assert.match(group,/data-id="bms_attribute_swap"/);assert.doesNotMatch(group,/data-id="auto_totem"/);
+ctx.arsenalProvider='all';ctx.query='BetterMaceSwap';ctx.scrollRow=0;group=vm.runInContext('modulePage()',ctx);assert.match(group,/19 MODULES/);assert.doesNotMatch(group,/data-id="auto_totem"/);
+console.log('PASS: dedicated Arsenal group exposes 19 original functions; provider search finds the same 19 cards');
