@@ -10,7 +10,7 @@ public final class ModuleCatalog {
     public record Entry(String id, String name, String category, String note) {}
     private static final Set<String> VISUALS = Set.of("invis_mode", "client_maps", "map_in_slot", "chunk_finder", "storage_esp", "player_esp", "player_info", "amethyst_esp", "player_chunks", "base_chunks", "spawner_chunks", "xray", "night_vision", "diamond_esp", "ore_esp", "lava_esp");
     private static final Set<String> MOVEMENT = Set.of("flight", "noclip", "boat_fly", "fast_swim", "super_trident", "donut_flight_bypass");
-    public static final List<Entry> ENTRIES = List.of(
+    private static final List<Entry> BASE_ENTRIES = List.of(
             new Entry("auto_shield_breaker", "Auto Shield Breaker", "PvP", "Hold a mace and right-click a raised enemy shield once. Uses a hotbar axe for one attack and restores your mace immediately. No automatic mace follow-up. Normal attacks and held clicks never start another combo."),
             new Entry("cave_detector", "Auto Cave Detector", "Finder", "Green full-height chunks with no detected underground air, water or lava cavities. Checks all 256 columns, from the world floor + 5 to five blocks below the received opaque surface. Only completed current scans count; hidden server terrain remains unknown."),
             new Entry("hard_crystal", "Hard Crystal", "PvP", "One physical right-click places a crystal; attacks only its matching received spawn once. No held repeat or attack retries. Normal reach and visibility apply; anti-cheat acceptance is not guaranteed."),
@@ -62,8 +62,14 @@ public final class ModuleCatalog {
             new Entry("donut_flight_bypass", "Donut Flight Bypass", "Server", "No verified Donut SMP flight bypass is implemented."),
             new Entry("auction_sniper", "Auction Sniper", "Server", "Requires an adapter for the auction plugin and its price format. Not implemented.")
     );
+    public static final List<Entry> ENTRIES;
+    static {
+        var rows=new java.util.ArrayList<Entry>(BASE_ENTRIES);
+        for(var feature:dev.amethyst.finder.integration.BetterMaceModules.FEATURES){rows.removeIf(e->e.id().equals(feature.id()));rows.add(new Entry(feature.id(),feature.name(),"PvP",feature.note()));}
+        ENTRIES=List.copyOf(rows);
+    }
     private ModuleCatalog() {}
-    public static boolean available(String id) { return "hard_crystal".equals(id)||"cave_detector".equals(id)||"search_chunk".equals(id)||"auto_relog".equals(id)||"item_finder".equals(id) || "elytra_finder".equals(id) || "auto_vault".equals(id) || MapArtModules.available(id) || VISUALS.contains(id) && !Set.of("client_maps","map_in_slot").contains(id) || ClientModules.capability(id) || PvpModules.capability(id) || MovementModules.capability(id); }
+    public static boolean available(String id) { if(dev.amethyst.finder.integration.BetterMaceModules.handles(id))return dev.amethyst.finder.integration.BetterMaceModules.available(); return "hard_crystal".equals(id)||"cave_detector".equals(id)||"search_chunk".equals(id)||"auto_relog".equals(id)||"item_finder".equals(id) || "elytra_finder".equals(id) || "auto_vault".equals(id) || MapArtModules.available(id) || VISUALS.contains(id) && !Set.of("client_maps","map_in_slot").contains(id) || ClientModules.capability(id) || PvpModules.capability(id) || MovementModules.capability(id); }
     public static Entry find(String id) { return ENTRIES.stream().filter(e -> e.id.equals(id)).findFirst().orElse(null); }
 
     /** Technical observability labels; these do not promise any particular anti-cheat outcome. */

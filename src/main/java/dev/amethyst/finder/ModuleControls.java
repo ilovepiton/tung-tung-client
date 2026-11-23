@@ -5,11 +5,13 @@ import net.minecraft.client.Minecraft;
 /** Both the desktop switch and an in-game key use the same module lifecycle. */
 public final class ModuleControls {
     private ModuleControls() {}
+    public static boolean enabled(String id){return dev.amethyst.finder.integration.BetterMaceModules.handles(id)?dev.amethyst.finder.integration.BetterMaceModules.enabled(id):ChunkFinderClient.CONFIG.isModuleEnabled(id);}
     public static void setEnabled(Minecraft client,String id,boolean enabled) {
         if(ModuleCatalog.find(id)==null||!ModuleCatalog.available(id))throw new IllegalArgumentException("Module is not available: "+id);
         if(enabled&&ChunkFinderClient.CONFIG.streamerMode&&!StreamerMode.allowsModule(id))
             throw new IllegalStateException("Streamer Mode keeps gameplay modules off. Turn Streamer Mode off first.");
-        if("hard_crystal".equals(id))ChunkFinderClient.HARD_CRYSTAL.setEnabled(client,enabled);
+        if(dev.amethyst.finder.integration.BetterMaceModules.handles(id))dev.amethyst.finder.integration.BetterMaceModules.setEnabled(client,id,enabled);
+        else if("hard_crystal".equals(id))ChunkFinderClient.HARD_CRYSTAL.setEnabled(client,enabled);
         else if("auto_relog".equals(id))ChunkFinderClient.RELOG.setEnabled(enabled);
         else if("elytra_finder".equals(id))ChunkFinderClient.ELYTRA.setEnabled(client,enabled);
         else if("auto_vault".equals(id))ChunkFinderClient.VAULTS.setEnabled(client,enabled);

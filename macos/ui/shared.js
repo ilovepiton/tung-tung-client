@@ -23,7 +23,7 @@ function icon(name, cls = '') {
 }
 function moduleImage(id,cls='module-icon'){
  const known=MODULES.find(m=>m.id===id);
- const paths={auto_shield_breaker:'mace/diamond_axe',hard_crystal:'items/auto_crystal',cave_detector:'items/cave_detector',search_chunk:'items/search_chunk',auto_relog:'items/auto_relog',auto_sell:'items/auto_sell',auto_logout:'items/auto_logout',mace_bot:'mace/mace',auto_vault:'vault/ominous_trial_key'};
+ const paths={"bms_attribute_swap":"mace/mace","bms_smart_switch":"mace/mace","bms_lunge_swap":"mace/mace","bms_pearl_catch":"mace/ender_pearl","bms_experimental_pearl":"mace/ender_pearl","bms_auto_chestplate":"mace/mace","bms_wind_charge":"mace/wind_charge","bms_rocket_boost":"mace/mace","bms_auto_jump":"mace/wind_charge","bms_air_pots":"mace/wind_charge","bms_elytra_boost":"items/freecam","bms_elytra_arm":"items/freecam","bms_gear_up_1":"mace/mace","bms_gear_up_2":"mace/mace","bms_gear_up_3":"mace/mace","bms_action_bar":"mace/mace",auto_shield_breaker:'mace/diamond_axe',hard_crystal:'items/auto_crystal',cave_detector:'items/cave_detector',search_chunk:'items/search_chunk',auto_relog:'items/auto_relog',auto_sell:'items/auto_sell',auto_logout:'items/auto_logout',mace_bot:'mace/mace',auto_vault:'vault/ominous_trial_key'};
  return `<img class="${cls}" src="assets/${paths[id]||'items/'+(known?id:'chunk_finder')}.png" alt="${escapeHTML(known?.name||'Minecraft item')}" draggable="false">`;
 }
 function moduleIcon(id) {

@@ -17,7 +17,7 @@ public final class StreamerMode {
         FinderConfig config=ChunkFinderClient.CONFIG;
         if(enabled) {
             // Run normal lifecycles first so cameras, movement and held inputs are restored cleanly.
-            for(var entry:ModuleCatalog.ENTRIES)if(config.isModuleEnabled(entry.id())&&ModuleCatalog.available(entry.id())&&!allowsModule(entry.id()))
+            for(var entry:ModuleCatalog.ENTRIES)if(ModuleControls.enabled(entry.id())&&ModuleCatalog.available(entry.id())&&!allowsModule(entry.id()))
                 ModuleControls.setEnabled(client,entry.id(),false);
         }
         config.streamerMode=enabled;

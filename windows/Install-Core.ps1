@@ -59,7 +59,7 @@ function Install-TunTun {
         throw 'Minecraft Launcher profiles were not found. Open the official Launcher once, close it, and select its .minecraft folder.'
     }
     $manifest = Get-Content -LiteralPath (Join-Path $BundlePath 'manifest.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-    if (!$manifest -or !$manifest.PSObject.Properties['files'] -or @($manifest.files).Count -eq 0 -or !$manifest.PSObject.Properties['version'] -or @('1.30.7', '1.30.8', '1.30.9', '1.31.0', '1.32.0', '1.33.0', '1.33.1', '1.35.1', '1.35.2', '1.35.3', '1.35.4') -notcontains $manifest.version -or !$manifest.PSObject.Properties['gameCoreVersion'] -or $manifest.gameCoreVersion -ne $(if ($manifest.version -eq '1.35.2') {'1.35.1'} elseif (@('1.31.0','1.32.0','1.33.0','1.33.1','1.35.1','1.35.3','1.35.4') -contains $manifest.version) {$manifest.version} else {'1.30.3'}) -or !$manifest.PSObject.Properties['minecraft'] -or $manifest.minecraft -ne '26.3') { throw 'The ZIP manifest must describe a matching desktop/core release (1.30.7-1.30.9 / 1.30.3 or matching 1.31.0 / 1.32.0 / 1.33.0 / 1.33.1 / 1.35.1) for Minecraft 26.3. Extract a fresh complete copy.' }
+    if (!$manifest -or !$manifest.PSObject.Properties['files'] -or @($manifest.files).Count -eq 0 -or !$manifest.PSObject.Properties['version'] -or @('1.30.7', '1.30.8', '1.30.9', '1.31.0', '1.32.0', '1.33.0', '1.33.1', '1.35.1', '1.35.2', '1.35.3', '1.35.4','1.36.0') -notcontains $manifest.version -or !$manifest.PSObject.Properties['gameCoreVersion'] -or $manifest.gameCoreVersion -ne $(if ($manifest.version -eq '1.35.2') {'1.35.1'} elseif (@('1.31.0','1.32.0','1.33.0','1.33.1','1.35.1','1.35.3','1.35.4','1.36.0') -contains $manifest.version) {$manifest.version} else {'1.30.3'}) -or !$manifest.PSObject.Properties['minecraft'] -or $manifest.minecraft -ne '26.3') { throw 'The ZIP manifest must describe a matching desktop/core release (1.30.7-1.30.9 / 1.30.3 or matching 1.31.0 / 1.32.0 / 1.33.0 / 1.33.1 / 1.35.1) for Minecraft 26.3. Extract a fresh complete copy.' }
     $prefix = $BundlePath.TrimEnd([char[]]@([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)) + [IO.Path]::DirectorySeparatorChar
     $verified = 0
     foreach ($asset in $manifest.files) {
@@ -78,7 +78,15 @@ function Install-TunTun {
     $voiceAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'voicechat-fabric-2.6.27+26.3.jar' })
     $clientMapsAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'client_maps-1.3.4.jar' })
     $mapInSlotAssets = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'map-in-slot-3.5.0.jar' })
-    if ($bridgeAssets.Count -ne 1 -or $fabricAssets.Count -ne 1 -or $voiceAssets.Count -ne 1 -or $clientMapsAssets.Count -ne 1 -or $mapInSlotAssets.Count -ne 1 -or $modAssets.Count -ne 5) { throw 'The bundle must contain the Tung Tung Client bridge, Fabric API, Simple Voice Chat and both map-art mods.' }
+    if ($bridgeAssets.Count -ne 1 -or $fabricAssets.Count -ne 1 -or $voiceAssets.Count -ne 1 -or $clientMapsAssets.Count -ne 1 -or $mapInSlotAssets.Count -ne 1 -or $modAssets.Count -ne $(if ($manifest.version -eq '1.36.0') {8} else {5})) { throw 'The bundle must contain the Tung Tung Client bridge, Fabric API, Simple Voice Chat and both map-art mods.' }
+    if ($manifest.version -eq '1.36.0') {
+        $required = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'BetterMaceSwap-5.0.0-mc26.3.jar' })
+        if ($required.Count -ne 1 -or $required[0].sha256 -ne '1c271a72f33b53b5509dc95385457b752e3bf04580c9a427f14eb74edcc131f5') { throw 'Missing or altered BetterMaceSwap dependency.' }
+        $required = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'cloth-config-fabric-26.3.159.jar' })
+        if ($required.Count -ne 1 -or $required[0].sha256 -ne '1716b9964f90d2b885f9bd3887f8824b71b55c32a4123a5853486e722f7c2e4b') { throw 'Missing or altered BetterMaceSwap dependency.' }
+        $required = @($modAssets | Where-Object { [IO.Path]::GetFileName($_.path) -eq 'modmenu-21.0.1.jar' })
+        if ($required.Count -ne 1 -or $required[0].sha256 -ne 'd7be5d007b1d908ee3c3109e337b208d94e6ef7dd6bd143397237a0e03579005') { throw 'Missing or altered BetterMaceSwap dependency.' }
+    }
     $voiceHash = (Get-FileHash -LiteralPath (Join-Path $BundlePath $voiceAssets[0].path) -Algorithm SHA512).Hash.ToLowerInvariant()
     if ($voiceHash -ne 'f2de66761c0f249bb0f9a4b348f98b97ab4e89d3ed3fd37638420364b7431b757933aa08c0cc3e7ba3dd85a602d6c2de313c2309fc587e93cabf31fc5f6df27e') { throw 'Simple Voice Chat does not match the official pinned download.' }
     $fabricJson = Get-Content -LiteralPath (Join-Path $BundlePath 'payload/fabric-profile.json') -Raw -Encoding UTF8

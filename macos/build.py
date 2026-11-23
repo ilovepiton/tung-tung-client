@@ -12,9 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 MAC = ROOT / "macos"
 OUT = ROOT / "build" / "macos"
 DIST = ROOT / "dist"
-APP = DIST / "Tung-Tung-Client-Mac-1.35.4" / "Tung Tung Client.app"
-VERSION = "1.35.4"
-PAYLOAD_VERSION = "1.35.4"
+APP = DIST / "Tung-Tung-Client-Mac-1.36.0" / "Tung Tung Client.app"
+VERSION = "1.36.0"
+PAYLOAD_VERSION = "1.36.0"
 VOICE_RUNTIME_VERSION = "1.12.0"
 VOICE_RUNTIME_BUILD = "1120"
 VOICE_FILE = "voicechat-fabric-2.6.27+26.3.jar"
@@ -69,6 +69,12 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
             raise RuntimeError("The Simple Voice Chat download does not match its official Modrinth hash")
         shutil.copy2(voice, payload / "mods")
     shutil.copy2(ROOT / ".tools" / "fabric-profile-26.3.json", payload / "fabric-profile.json")
+    shutil.copy2(ROOT / "packaging/BETTER-MACE-NOTICE.txt", resources / "BETTER-MACE-NOTICE.txt")
+    for mod in json.loads((ROOT / "packaging/better-mace-mods.json").read_text()):
+        source = ROOT / ".tools/bettermaceswap" / mod["file"]
+        if hashlib.sha256(source.read_bytes()).hexdigest() != mod["sha256"]:
+            raise RuntimeError("BetterMaceSwap dependency checksum mismatch: " + mod["file"])
+        shutil.copy2(source, payload / "mods" / mod["file"])
     manifest = {"name": "Tung Tung Client", "version": PAYLOAD_VERSION,
                 "desktopVersion": VERSION, "minecraft": "26.3", "loader": "0.19.5",
                 "simpleVoiceChat": voice_chat, "files": []}
@@ -99,7 +105,7 @@ def build(voice_chat=False, binaries=None, runtime_binaries=None, make_archive=T
         "CFBundleName": "Tung Tung Client", "CFBundleDisplayName": "Tung Tung Client",
         "CFBundleIdentifier": "dev.tungtung.client", "CFBundleExecutable": "TungTungClient",
         "CFBundlePackageType": "APPL", "CFBundleShortVersionString": VERSION,
-        "CFBundleVersion": "1350", "LSMinimumSystemVersion": "13.0",
+        "CFBundleVersion": "1360", "LSMinimumSystemVersion": "13.0",
         "NSHighResolutionCapable": True, "NSPrincipalClass": "NSApplication",
         "NSMicrophoneUsageDescription": "Simple Voice Chat in Tung Tung Minecraft needs your microphone so other players can hear you.",
         "NSAppTransportSecurity": {"NSAllowsLocalNetworking": True},

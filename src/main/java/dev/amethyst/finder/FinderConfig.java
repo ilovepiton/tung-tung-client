@@ -21,6 +21,7 @@ public final class FinderConfig {
     public boolean hud = true, notifications = true;
     public int sensitivity = 65, radiusChunks = 12, budgetMs = 2;
     public String language = "en";
+    public boolean betterMaceManaged = false;
     public Map<String, Boolean> modules = new HashMap<>();
     public Map<String,Integer> moduleKeybinds = new HashMap<>(Map.of("aim_cursor",com.mojang.blaze3d.platform.InputConstants.KEY_R,"combat_bot",com.mojang.blaze3d.platform.InputConstants.KEY_P));
     public Map<String, Boolean> finderTargets = FinderTargets.defaults();

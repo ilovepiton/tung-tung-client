@@ -97,6 +97,7 @@ public final class ChunkFinderClient implements ClientModInitializer {
             MODULES.earlyInventoryTick(client);
             if(!client.getWindow().isFocused())ModuleKeybinds.clearHeld();
             CursorSafety.tick(client);
+            dev.amethyst.finder.integration.BetterMaceModules.tick(client);
             ChatStreamer.tick(client);
             StreamerMode.tick(client);
             while(DISCOVERY.consumeClick()) if(client.player!=null && client.gui.screen()==null)

@@ -56,6 +56,7 @@ public final class PvpModules {
     public static boolean capability(String id) { return IDS.contains(id); }
     public boolean setEnabled(String id, boolean enabled) {
         if (!capability(id)) return false;
+        if(enabled&&("mace_bot".equals(id)||"combat_bot".equals(id)))dev.amethyst.finder.integration.BetterMaceModules.disableAll(Minecraft.getInstance());
         if("mace_bot".equals(id)){ChunkFinderClient.MACE.setEnabled(Minecraft.getInstance(),enabled);config.save();return true;}
         if("combat_bot".equals(id)){if(enabled&&ChunkFinderClient.MACE.enabled())ChunkFinderClient.MACE.setEnabled(Minecraft.getInstance(),false);ChunkFinderClient.BOT.setEnabled(Minecraft.getInstance(),enabled);config.save();return true;}
         if(enabled&&"auto_crystal".equals(id)&&ChunkFinderClient.HARD_CRYSTAL!=null)ChunkFinderClient.HARD_CRYSTAL.setEnabled(Minecraft.getInstance(),false);
@@ -134,7 +135,7 @@ public final class PvpModules {
         if (client.player.isUsingItem() || client.options.keyUse.isDown()) {
             restoreWeapon(client); setCombatPause("Paused: manual item use"); return;
         }
-        if (config.isModuleEnabled("aim_cursor")) {
+        if (!dev.amethyst.finder.integration.BetterMaceModules.replaces("aim_cursor") && config.isModuleEnabled("aim_cursor")) {
             if (config.isModuleEnabled("auto_kill_steal") && playerTarget(client, true) != null) states.put("aim_cursor", "Paused: Auto Kill Steal owns target aim");
             else run("aim_cursor", () -> tickAim(client));
         }
@@ -156,13 +157,13 @@ public final class PvpModules {
         }
         if (!acted && config.isModuleEnabled("auto_kill_steal")) acted = run("auto_kill_steal", () -> tickKillSteal(client));
         if (!acted && config.isModuleEnabled("auto_punch")) acted = run("auto_punch", () -> tickCrosshairAttack(client, "auto_punch"));
-        if (!acted && config.isModuleEnabled("trigger_bot")) acted = run("trigger_bot", () -> tickTrigger(client));
+        if (!acted && !dev.amethyst.finder.integration.BetterMaceModules.replaces("trigger_bot") && config.isModuleEnabled("trigger_bot")) acted = run("trigger_bot", () -> tickTrigger(client));
         if (acted) nextActionTick = ticks + (config.pvpFastAttack ? 1 : delay());
     }
     public boolean blocksManualRepeat(Minecraft client) { return ownedInteractionDepth == 0
             && !dev.amethyst.finder.modules.pvp.LootProtection.blocked(client) && manual.blocksRepeat(client); }
     public boolean hasPendingExplosiveAssist() {return manual.hasWork()||anchor!=null||crystal!=null||crystalAttackPending;}
-    public boolean ownsInventory() { return manual.ownsInventory()||(ChunkFinderClient.MACE!=null&&ChunkFinderClient.MACE.ownsInventory()); }
+    public boolean ownsInventory() { return dev.amethyst.finder.integration.BetterMaceModules.inventoryBusy() || manual.ownsInventory()||(ChunkFinderClient.MACE!=null&&ChunkFinderClient.MACE.ownsInventory()); }
     public boolean reservesInventorySlot(int slot) { return shieldBreaker.reserves(slot) || manual.reservesInventorySlot(slot)
             || ChunkFinderClient.MACE!=null&&ChunkFinderClient.MACE.reservesInventorySlot(slot); }
     public boolean ownsCombat() {

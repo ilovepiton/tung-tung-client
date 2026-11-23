@@ -56,6 +56,7 @@ public final class DesktopBridge {
         snapshot.put("streamerMode",StreamerMode.state());
         snapshot.put("vault",ChunkFinderClient.VAULTS.state(client));
         snapshot.put("autoBuilder",AUTO_BUILDER_STATE());
+        snapshot.put("betterMace",dev.amethyst.finder.integration.BetterMaceModules.state());
         snapshot.put("combatBot",ChunkFinderClient.BOT.state());
         snapshot.put("elytraFinder",ChunkFinderClient.ELYTRA.state());
         snapshot.put("itemFinder",ChunkFinderClient.ITEMS.state(client));
@@ -82,7 +83,7 @@ public final class DesktopBridge {
         for(ModuleCatalog.Entry e:ModuleCatalog.ENTRIES) {
             Map<String,Object> m=new LinkedHashMap<>();
             m.put("id",e.id());m.put("name",e.name());m.put("category",e.category());
-            m.put("enabled",c.isModuleEnabled(e.id()));m.put("available",ModuleCatalog.available(e.id()));
+            m.put("enabled",ModuleControls.enabled(e.id()));m.put("available",ModuleCatalog.available(e.id()));
             String live=dev.amethyst.finder.modules.MovementModules.capability(e.id())?ChunkFinderClient.MOVEMENT.status(e.id())
                     :dev.amethyst.finder.modules.PvpModules.capability(e.id())?ChunkFinderClient.PVP.status(e.id())
                     :dev.amethyst.finder.modules.ClientModules.capability(e.id())?ChunkFinderClient.MODULES.status(e.id()):"";
@@ -97,6 +98,7 @@ public final class DesktopBridge {
             if (e.id().equals("elytra_finder")) live=ChunkFinderClient.ELYTRA.status();
             if (e.id().equals("auto_vault")) live=ChunkFinderClient.VAULTS.status();
             if (e.id().equals("client_maps")||e.id().equals("map_in_slot")) live=MapArtModules.status(e.id());
+            if(dev.amethyst.finder.integration.BetterMaceModules.handles(e.id())){live=dev.amethyst.finder.integration.BetterMaceModules.status(e.id());m.put("provider","BetterMaceSwap");m.put("controlType",dev.amethyst.finder.integration.BetterMaceModules.action(e.id())?"action":"toggle");}
             m.put("note",e.note()+(live==null||live.isEmpty()?"":" · "+live));
             m.put("runtimeStatus",live==null?"":live);
             int bind=ModuleKeybinds.key(e.id());m.put("keybind",bind);m.put("keybindLabel",ModuleKeybinds.label(bind));m.put("keybindConflict",ModuleKeybinds.conflict(client,bind));
@@ -358,7 +360,9 @@ public final class DesktopBridge {
             c.sanitize();message="Settings saved";
         } else if("/action".equals(path)) {
             String action=data.get("action").getAsString();
-            if("auto_builder".equals(action)) {
+            if("better_mace_setting".equals(action)){dev.amethyst.finder.integration.BetterMaceModules.changeSetting(data.get("field").getAsString(),data.get("value"));message="BetterMaceSwap setting saved";}
+            else if("better_mace_run".equals(action)){dev.amethyst.finder.integration.BetterMaceModules.run(client,data.get("module").getAsString(),data.has("op")?data.get("op").getAsString():"run");message="BetterMaceSwap action requested";}
+            else if("auto_builder".equals(action)) {
                 try {ChunkFinderClient.AUTO_BUILDER.command(client,data);message="";}
                 catch(Exception ex){throw new IllegalArgumentException(ex.getMessage());}
             }

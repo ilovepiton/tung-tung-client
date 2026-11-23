@@ -44,6 +44,7 @@ public final class ShieldBreaker {
         return null;
     }
     public void mouse(Minecraft c,int button,int action){
+        if(dev.amethyst.finder.integration.BetterMaceModules.replaces(ID))return;
         if(!c.options.keyUse.matches(InputConstants.Type.MOUSE.getOrCreate(button))){
             if(action==1&&config.isModuleEnabled(ID)&&c.options.keyAttack.matches(InputConstants.Type.MOUSE.getOrCreate(button)))status="Left-click is manual · use right-click with your mace against a raised shield";
             return;

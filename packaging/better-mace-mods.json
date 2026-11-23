@@ -1,0 +1,28 @@
+[
+  {
+    "id": "bettermaceswap",
+    "version": "5.0.0+mc26.3",
+    "file": "BetterMaceSwap-5.0.0-mc26.3.jar",
+    "url": "https://mediafilez.forgecdn.net/files/9435/628/BetterMaceSwap-5.0.0-mc26.3.jar",
+    "sha256": "1c271a72f33b53b5509dc95385457b752e3bf04580c9a427f14eb74edcc131f5",
+    "source": "https://www.curseforge.com/minecraft/mc-mods/bettermaceswap/files/9435628"
+  },
+  {
+    "id": "cloth-config",
+    "version": "26.3.159",
+    "file": "cloth-config-fabric-26.3.159.jar",
+    "url": "https://cdn.modrinth.com/data/9s6osm5g/versions/fg2uyxOW/cloth-config-fabric-26.3.159.jar",
+    "sha512": "8924e19d41845096724fa10f3717bc51964a0edbbbcad0ff1e6c6187a398b08f356e49579a657c2dc44a7f92e3850771f3ca70bf8c1f654de60425163b91dbb1",
+    "sha256": "1716b9964f90d2b885f9bd3887f8824b71b55c32a4123a5853486e722f7c2e4b",
+    "source": "https://modrinth.com/mod/cloth-config"
+  },
+  {
+    "id": "modmenu",
+    "version": "21.0.1",
+    "file": "modmenu-21.0.1.jar",
+    "url": "https://cdn.modrinth.com/data/mOgUt4GM/versions/xckkBHD5/modmenu-21.0.1.jar",
+    "sha512": "d00d52d5342728da13a6237f76c50fc5fd1c62d8112ae4e07726bbc64d2019a76130d6b2968765df81c6499225588eacee6681eebc13c0ada3cad91fc8ab2984",
+    "sha256": "d7be5d007b1d908ee3c3109e337b208d94e6ef7dd6bd143397237a0e03579005",
+    "source": "https://modrinth.com/mod/modmenu"
+  }
+]

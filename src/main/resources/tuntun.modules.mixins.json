@@ -34,7 +34,8 @@
     "MaceDamageMixin",
     "ElytraAlertMixin",
     "HardCrystalUseMixin",
-    "BuilderMiningMixin"
+    "BuilderMiningMixin",
+    "BetterMaceFocusMixin"
   ],
   "injectors": {
     "defaultRequire": 1

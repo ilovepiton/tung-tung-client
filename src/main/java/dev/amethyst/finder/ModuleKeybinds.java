@@ -48,10 +48,10 @@ public final class ModuleKeybinds {
         if(c.options.keyDebugModifier.isDown()||InputConstants.isKeyDown(InputConstants.getKey(c.options.keyDebugModifier.saveString()).getValue()))return false;
         if(!conflict(c,code).isEmpty())return false;
         for(var entry:ChunkFinderClient.CONFIG.moduleKeybinds.entrySet())if(entry.getValue()==code&&ModuleCatalog.available(entry.getKey())) {
-            String id=entry.getKey();boolean enabled=!ChunkFinderClient.CONFIG.isModuleEnabled(id);
+            String id=entry.getKey();boolean enabled=!ModuleControls.enabled(id);
             ModuleControls.setEnabled(c,id,enabled);
             c.getFramerateLimitTracker().onInputReceived();
-            c.gui.hud.setOverlayMessage(Component.literal(ModuleCatalog.find(id).name()+" · "+(enabled?"ON":"OFF")),true);
+            c.gui.hud.setOverlayMessage(Component.literal(ModuleCatalog.find(id).name()+" · "+(dev.amethyst.finder.integration.BetterMaceModules.action(id)?"RUN":enabled?"ON":"OFF")),true);
             if(ChunkFinderClient.BRIDGE!=null)ChunkFinderClient.BRIDGE.publish(c);
             return true;
         }

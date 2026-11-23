@@ -8,8 +8,8 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "1.35.4"
-CORE = "1.35.4"
+VERSION = "1.36.0"
+CORE = "1.36.0"
 DEPS = ROOT / ".tools/windows-build"
 STAGE = ROOT / "dist" / f"Tung-Tung-Client-Windows-{VERSION}"
 
@@ -81,6 +81,7 @@ def build(reuse_stage=None):
         shutil.copy2(ROOT / "windows" / name, STAGE / "source" / name)
     copy_tree(ROOT / "roblox", STAGE / "roblox", ("tests", "tools", ".tools", "cache", ".cache", "__pycache__", "*.pyc", "*.tmp", "test-output.txt", ".DS_Store"))
     shutil.copy2(ROOT / "windows/Update-Client.ps1", STAGE / "desktop/Update-Client.ps1")
+    shutil.copy2(ROOT / "packaging/BETTER-MACE-NOTICE.txt", STAGE / "licenses/BETTER-MACE-NOTICE.txt")
     payload = STAGE / "payload"
     (payload / "mods").mkdir(parents=True, exist_ok=True)
     for old_core in (payload / "mods").glob("tung-tung-bridge-*.jar"):
@@ -91,6 +92,11 @@ def build(reuse_stage=None):
     copy_tree(ROOT / ".tools/anti-leak-1.28.0/library/resourcepacks", payload / "resourcepacks")
     shutil.copy2(ROOT / ".tools/anti-leak-1.28.0/library/THIRD-PARTY-NOTICES.txt", STAGE / "licenses/TEXTURE-PACKS.txt")
     shutil.copy2(ROOT / ".tools/fabric-profile-26.3.json", payload / "fabric-profile.json")
+    for mod in json.loads((ROOT / "packaging/better-mace-mods.json").read_text()):
+        source = ROOT / ".tools/bettermaceswap" / mod["file"]
+        if hashlib.sha256(source.read_bytes()).hexdigest() != mod["sha256"]:
+            raise RuntimeError("BetterMaceSwap dependency checksum mismatch: " + mod["file"])
+        shutil.copy2(source, payload / "mods" / mod["file"])
     manifest = {"name": "Tung Tung Client", "version": VERSION, "gameCoreVersion": CORE, "minecraft": "26.3", "simpleVoiceChat": True, "platform": "Windows x64", "files": []}
     for path in sorted(payload.rglob("*")):
         if path.is_file():
