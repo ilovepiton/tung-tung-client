@@ -174,6 +174,7 @@ public final class PvpModules {
     public String shieldBreakerStatus(){return shieldBreaker.status();}
     public void tickShieldBreaker(Minecraft client) { shieldBreaker.tick(client); }
     public boolean shieldBreakerBusy() { return shieldBreaker.busy(); }
+    public boolean useShieldBreaker(Minecraft client){return shieldBreaker.use(client);}
     public boolean interceptShieldUse() { return shieldBreaker.interceptUse(); }
     public void onManualMouseButton(Minecraft client, int button, int action) { manual.mouseButton(client, button, action); shieldBreaker.mouse(client, button, action); if(ChunkFinderClient.HARD_CRYSTAL!=null)ChunkFinderClient.HARD_CRYSTAL.mouse(client,button,action); }
     public void onServerCombatUpdate(Minecraft client) {

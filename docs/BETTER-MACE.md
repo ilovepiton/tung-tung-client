@@ -1,4 +1,4 @@
-# BetterMaceSwap in Arsenal — 1.36.3
+# BetterMaceSwap in Arsenal — 1.36.4
 
 The original BetterMaceSwap 5.0.0 for Minecraft 26.3 is bundled with Cloth Config 26.3.159 and Mod Menu 21.0.1. Pinned URLs and SHA-256 hashes: `packaging/better-mace-mods.json`.
 
@@ -22,3 +22,5 @@ Validation: production core build, tests against the actual downloaded ModConfig
 Enable Auto Stun Slam in Arsenal, put a usable **axe** and your **mace** in the hotbar, hold the mace and right-click a visibly blocking opponent once at normal axe reach. That gesture sends one axe attack and queues the native mace follow-up. Holding RMB cannot repeat it; release before the next click. The same gesture does not also run the native wind-charge helper.
 
 The upstream left-click trigger remains available. Its axe lookup is corrected to exclude pickaxes and unusable axes. Players targeting must be enabled. Request counters and unmet conditions are shown in the card status; a sent attack does not establish that the server accepted shield damage. Auto Aim is unchanged.
+
+Right-clicks are evaluated at vanilla item use, after hotbar selection is applied. A wind-charge-to-mace switch in the same frame no longer checks the previous item. Short released taps remain valid; holding does not repeat. The card reports the actual held item ID and hotbar slot if a mace is not selected, and normal left-clicks preserve the last use diagnostic.

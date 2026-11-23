@@ -1,10 +1,10 @@
-"""Install 1.36.3 apps and pinned BetterMaceSwap with rollback; never change launcher accounts."""
+"""Install 1.36.4 apps and pinned BetterMaceSwap with rollback; never change launcher accounts."""
 from pathlib import Path
 import hashlib,json,os,plistlib,shutil,subprocess,uuid,zipfile
 import importlib.util,argparse
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('guard',ROOT/'scripts/install-shield-fall.py');guard=importlib.util.module_from_spec(spec);spec.loader.exec_module(guard)
-VERSION='1.36.3';SOURCE=ROOT/f'dist/Tung-Tung-Client-Mac-{VERSION}/Tung Tung Client.app';PROFILE=Path.home()/'Library/Application Support/minecraft/tun-tun-26.3'
+VERSION='1.36.4';SOURCE=ROOT/f'dist/Tung-Tung-Client-Mac-{VERSION}/Tung Tung Client.app';PROFILE=Path.home()/'Library/Application Support/minecraft/tun-tun-26.3'
 def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def verify(app):
  assert plistlib.loads((app/'Contents/Info.plist').read_bytes())['CFBundleShortVersionString']==VERSION
@@ -23,7 +23,7 @@ def install():
   assert any(f['path']=='mods/'+name and f['sha256']==sha for f in manifest['files'])
  mods=PROFILE/'mods';assert mods.is_dir()
  apps=[p for p in [Path('/Applications/Tung Tung Client.app'),Path.home()/'Applications/Tung Tung Client.app'] if p.is_dir()];assert apps
- backup=ROOT/'build/install-backups/better-mace-1.36.3'/uuid.uuid4().hex
+ backup=ROOT/'build/install-backups/better-mace-1.36.4'/uuid.uuid4().hex
  (backup/'mods').mkdir(parents=True);staged=[];replaced=[];saved=[];written=[]
  try:
   for i,app in enumerate(apps):
@@ -45,7 +45,7 @@ def install():
     store=backup/'mods'/name;assert not store.exists();target.rename(store);saved.append((target,store))
    pending=target.with_suffix('.pending');shutil.copy2(payload/name,pending);assert digest(pending)==sha;os.replace(pending,target);written.append(target)
   report={'installed':True,'version':VERSION,'applications':list(map(str,apps)),'profile':str(PROFILE),'backup':str(backup),'mods':selected,'launcherMetadataChanged':False,'accountFilesAccessed':False}
-  out=ROOT/'artifacts/better-mace-1.36.3/installation.json';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(report,indent=2)+'\n');return report
+  out=ROOT/'artifacts/better-mace-1.36.4/installation.json';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(report,indent=2)+'\n');return report
  except BaseException:
   for p in written:p.unlink(missing_ok=True)
   for target,store in reversed(saved):store.rename(target)

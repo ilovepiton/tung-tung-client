@@ -20,7 +20,8 @@ public final class ShieldBreaker {
     public static final String ID="auto_shield_breaker";
     private final FinderConfig config;
     private final ClickActionGate clicks=new ClickActionGate();
-    private boolean gestureOwned,acting;
+    private boolean gestureOwned,acting,useDown;
+    private final java.util.ArrayDeque<ClickActionGate.Ticket> pendingUses=new java.util.ArrayDeque<>();
     private int ownedMace=-1,ownedAxe=-1,requests;
     private String status="Hold a mace and right-click a raised enemy shield";
     public ShieldBreaker(FinderConfig config){this.config=config;}
@@ -44,33 +45,44 @@ public final class ShieldBreaker {
         if(ChunkFinderClient.HARD_CRYSTAL!=null&&ChunkFinderClient.HARD_CRYSTAL.busy())return "Paused: Hard Crystal is pending";
         return null;
     }
+    /** Capture the physical edge, but let vanilla apply hotbar keys before evaluating the held item. */
     public void mouse(Minecraft c,int button,int action){
-        if(!c.options.keyUse.matches(InputConstants.Type.MOUSE.getOrCreate(button))){
-            if(action==1&&enabled()&&c.options.keyAttack.matches(InputConstants.Type.MOUSE.getOrCreate(button)))status=dev.amethyst.finder.integration.BetterMaceModules.replaces(ID)?"Native attack trigger · right-click with a mace also starts Stun Slam":"Left-click is manual · use right-click with your mace against a raised shield";
-            return;
-        }
-        if(action==0){clicks.mouse(0,false);gestureOwned=false;return;}
+        if(!c.options.keyUse.matches(InputConstants.Type.MOUSE.getOrCreate(button)))return;
+        if(action==0){useDown=false;clicks.mouse(0,false);gestureOwned=false;return;}
         if(action!=1)return;
+        useDown=true;
         String reason=unavailable(c);
-        boolean maceHeld=c.player!=null&&c.player.getMainHandItem().is(Items.MACE);
-        clicks.mouse(1,reason==null&&maceHeld&&!acting);
+        clicks.mouse(1,reason==null&&!acting);
         var ticket=clicks.consume();
-        if(ticket==null){if(reason!=null)status=reason;else if(!maceHeld)status="Hold a mace in your main hand";return;}
-        if(!(c.hitResult instanceof EntityHitResult hit)||!(hit.getEntity() instanceof Player enemy)){status="No crosshair player · no weapon switch";return;}
+        if(ticket!=null&&pendingUses.size()<8)pendingUses.addLast(ticket);
+        else if(reason!=null)status=reason;
+    }
+    /** Called at Minecraft.startUseItem, after vanilla has consumed the selected-hotbar key. */
+    public boolean use(Minecraft c){
+        if(acting)return true;
+        var ticket=pendingUses.pollFirst();
+        if(ticket==null)return gestureOwned;
+        String reason=unavailable(c);
+        if(reason!=null){status=reason;return false;}
+        if(!c.player.getMainHandItem().is(Items.MACE)){
+            status="Use held "+net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(c.player.getMainHandItem().getItem())+" · hotbar "+(c.player.getInventory().getSelectedSlot()+1)+" · select a mace";
+            return false;
+        }
+        if(!(c.hitResult instanceof EntityHitResult hit)||!(hit.getEntity() instanceof Player enemy)){status="No crosshair player · no weapon switch";return false;}
         LocalPlayer self=c.player;
-        if(enemy==self||!enemy.isAlive()||enemy.isSpectator()||Friends.listed(config,enemy)){status="Target excluded · no weapon switch";return;}
-        if(!enemy.isBlocking()){status="Opponent is not blocking · mace stays selected";return;}
-        if(!self.hasLineOfSight(enemy)||!self.isWithinEntityInteractionRange(enemy,0)){status="Opponent outside normal visible reach";return;}
+        if(enemy==self||!enemy.isAlive()||enemy.isSpectator()||Friends.listed(config,enemy)){status="Target excluded · no weapon switch";return false;}
+        if(!enemy.isBlocking()){status="Opponent is not blocking · mace stays selected";return false;}
+        if(!self.hasLineOfSight(enemy)||!self.isWithinEntityInteractionRange(enemy,0)){status="Opponent outside normal visible reach";return false;}
         int axeSlot=-1;
         for(int i=0;i<9;i++){
             ItemStack item=self.getInventory().getItem(i);
             if(item.is(ItemTags.AXES)&&!item.isEmpty()&&(!item.isDamageableItem()||item.getDamageValue()<item.getMaxDamage()-1)){axeSlot=i;break;}
         }
-        if(axeSlot<0){status="Put a usable axe in your hotbar";return;}
-        if(!self.isWithinAttackRange(self.getInventory().getItem(axeSlot),enemy.getBoundingBox(),0)){status="Axe cannot reach this player · no weapon switch";return;}
+        if(axeSlot<0){status="Put a usable axe in your hotbar";return false;}
+        if(!self.isWithinAttackRange(self.getInventory().getItem(axeSlot),enemy.getBoundingBox(),0)){status="Axe cannot reach this player · no weapon switch";return false;}
         int original=self.getInventory().getSelectedSlot();ItemStack mace=self.getMainHandItem().copy();
         var world=c.level;var connection=c.getConnection();
-        gestureOwned=true;acting=true;ownedMace=original;ownedAxe=axeSlot;
+        gestureOwned=useDown;acting=true;ownedMace=original;ownedAxe=axeSlot;
         try{
             self.getInventory().setSelectedSlot(axeSlot);
             if(ticket.claimAttack(true)){
@@ -93,11 +105,12 @@ public final class ShieldBreaker {
             }catch(RuntimeException|LinkageError restoreError){status="Mace restoration interrupted · "+restoreError.getClass().getSimpleName();}
             finally{acting=false;ownedMace=ownedAxe=-1;}
         }
+        return true;
     }
     public void tick(Minecraft c){
         if(c.player==null||c.level==null||c.gui.screen()!=null||!c.isWindowActive()||!enabled()){
-            clicks.reset();gestureOwned=false;
+            clicks.reset();pendingUses.clear();useDown=false;gestureOwned=false;
         }
     }
-    public void reset(Minecraft c){clicks.reset();gestureOwned=false;status="Hold a mace and right-click a raised enemy shield";}
+    public void reset(Minecraft c){clicks.reset();pendingUses.clear();useDown=false;gestureOwned=false;status="Hold a mace and right-click a raised enemy shield";}
 }

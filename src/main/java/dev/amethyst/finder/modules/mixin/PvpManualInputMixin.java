@@ -14,7 +14,7 @@ public abstract class PvpManualInputMixin {
     @Shadow private int rightClickDelay;
     @Inject(method = "startUseItem", at = @At("HEAD"), cancellable = true)
     private void tuntung$ownedUse(CallbackInfo ci) {
-        if (ChunkFinderClient.PVP != null && (ChunkFinderClient.PVP.interceptShieldUse() || ChunkFinderClient.PVP.blocksManualRepeat((Minecraft) (Object) this))) ci.cancel();
+        if (ChunkFinderClient.PVP != null && (ChunkFinderClient.PVP.useShieldBreaker((Minecraft)(Object)this) || ChunkFinderClient.PVP.interceptShieldUse() || ChunkFinderClient.PVP.blocksManualRepeat((Minecraft) (Object) this))) ci.cancel();
     }
     @Inject(method="startUseItem",at=@At("RETURN"))
     private void tuntung$fastHeldCrystal(CallbackInfo ci) {
