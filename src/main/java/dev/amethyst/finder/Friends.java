@@ -57,6 +57,7 @@ public final class Friends {
         for(String name:names(c)) {
             var player=players.stream().filter(p->p.name().equalsIgnoreCase(name)||p.id().equalsIgnoreCase(name)).findFirst().orElse(null);
             var row=new LinkedHashMap<String,Object>();row.put("name",name);row.put("rules",c.friendRules.getOrDefault(name.toLowerCase(Locale.ROOT),Map.of()));
+            row.put("face",player==null?PlayerFaces.friendFace(name,""):PlayerFaces.friendFace(name,player.face()));
             row.put("online",player!=null);row.put("observable",player!=null&&player.observable());row.put("id",player==null?"":player.id());rows.add(row);
         }
         return rows;

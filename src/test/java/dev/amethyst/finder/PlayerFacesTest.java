@@ -40,4 +40,30 @@ class PlayerFacesTest {
     @Test void malformedImagesAreRejected() {
         assertThrows(java.io.IOException.class,()->PlayerFaces.crop(new byte[]{1,2,3}));
     }
+    @Test void offlineProfileKeysAreNormalizedAndBounded() {
+        assertEquals("alex_01",PlayerFaces.profileKey(" Alex_01 "));
+        assertEquals("069a79f444e94726a5befca90e38aaf5",PlayerFaces.profileKey("069a79f444e94726a5befca90e38aaf5"));
+        for(String bad:new String[]{"../Alex","Alex?token=x","x".repeat(17),"<script>",""})assertEquals("",PlayerFaces.profileKey(bad));
+        assertEquals("",PlayerFaces.profileKey(null));
+    }
+    @Test void profileResponsesMustSupplyARealUuid() {
+        assertEquals("a".repeat(32),PlayerFaces.profileId(com.google.gson.JsonParser.parseString("{\"id\":\""+"A".repeat(32)+"\"}").getAsJsonObject()));
+        for(String value:new String[]{"../../file","short","g".repeat(32)})assertEquals("",PlayerFaces.profileId(com.google.gson.JsonParser.parseString("{\"id\":\""+value+"\"}").getAsJsonObject()));
+        assertEquals("",PlayerFaces.profileId(new com.google.gson.JsonObject()));
+    }
+    @Test void offlineSkinPropertiesUseOnlyOfficialMinecraftTextures() {
+        for(String url:new String[]{"https://textures.minecraft.net/texture/"+"b".repeat(64),"https://evil.test/image.png"}){
+            var data=new com.google.gson.JsonObject();var list=new com.google.gson.JsonArray();var property=new com.google.gson.JsonObject();property.addProperty("name","textures");
+            property.addProperty("value",Base64.getEncoder().encodeToString(("{\"textures\":{\"SKIN\":{\"url\":\""+url+"\"}}}").getBytes(StandardCharsets.UTF_8)));list.add(property);data.add("properties",list);
+            assertEquals(url.contains("evil")?"":url,PlayerFaces.sessionSkinUrl(data));
+        }
+        assertEquals("",PlayerFaces.sessionSkinUrl(new com.google.gson.JsonObject()));
+    }
+    @Test void cachedOnlineFacesRemainAvailableForOfflineFriends() {
+        String face="data:image/png;base64,known-server-face";
+        assertEquals(face,PlayerFaces.friendFace("CacheFriend",face));
+        assertEquals(face,PlayerFaces.friendFace("cachefriend",""));
+        assertEquals(face,PlayerFaces.friendFace("CACHEFRIEND",null));
+        assertEquals("",PlayerFaces.friendFace("../bad",""));
+    }
 }

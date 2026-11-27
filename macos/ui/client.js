@@ -57,6 +57,7 @@ function applyState(state){
  if(!connected()||connectionChanged){findingKey=null;for(const key of Object.keys(draftSettings)){delete draftSettings[key];delete draftRevisions[key];}}
  if(state.message&&state.message!==lastMessage){lastMessage=state.message;notify(state.message);}
  const active=document.activeElement;
+ if(!connectionChanged&&page==='friends'&&active?.id==='friend-name')refreshFriendSuggestions();
  if(connectionChanged||!active||!['INPUT','TEXTAREA'].includes(active.tagName))render();
 }
 function modules(){

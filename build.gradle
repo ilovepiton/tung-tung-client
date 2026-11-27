@@ -75,3 +75,10 @@ jar { from('LICENSE') { rename { 'LICENSE_amethyst-chunk-finder' } } }
 tasks.named('runClient') { dependsOn tasks.named('mapInSlotPatchedJar') }
 tasks.named('build') { dependsOn tasks.named('mapInSlotPatchedJar') }
 
+
+tasks.register('friendFaceProbe', JavaExec) {
+    dependsOn testClasses, tasks.named('mapInSlotPatchedJar')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'dev.amethyst.finder.FriendFaceProbe'
+    systemProperty 'java.awt.headless', 'true'
+}
